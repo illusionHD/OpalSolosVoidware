@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then
@@ -254,22 +255,49 @@ vape.Libraries.auraanims = {
 		{CFrame = CFrame.Angles(math.rad(-10), math.rad(90), math.rad(-80)), Time = 0.12},
 		{CFrame = CFrame.Angles(math.rad(-10), 0, math.rad(-80)), Time = 0.12}
 	},
-	['Vertical Spin'] = {
-		{CFrame = CFrame.Angles(math.rad(-90), 0, math.rad(15)), Time = 0.12},
-		{CFrame = CFrame.Angles(math.rad(180), 0, math.rad(15)), Time = 0.12},
-		{CFrame = CFrame.Angles(math.rad(90), 0, math.rad(15)), Time = 0.12},
-		{CFrame = CFrame.Angles(0, 0, math.rad(15)), Time = 0.12}
+	['blackMeteor'] = {
+		{CFrame = CFrame.new(0.80, -0.77, 0.9) * CFrame.Angles(math.rad(-30), math.rad(55), math.rad(-90)), Time = 0.20},
+		{CFrame = CFrame.new(0.32, -0.81, 0.10) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-95)), Time = 0.20}
 	},
 	Exhibition = {
 		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.1},
 		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.2}
 	},
-	['Exhibition Old'] = {
-		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.15},
-		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.05},
-		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.1},
-		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.05},
-		{CFrame = CFrame.new(0.63, -0.1, 1.37) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.15}
+	['meteor4'] = {
+		{CFrame = CFrame.new(0.2, -0.7, 0) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.2},
+		{CFrame = CFrame.new(0.2, -1, 0) * CFrame.Angles(math.rad(23), math.rad(67), math.rad(-111)), Time = 0.35}
+	},
+	['meteor'] = {
+		{CFrame = CFrame.new(0, 0, -1) * CFrame.Angles(math.rad(-40), math.rad(60), math.rad(-80)), Time = 0.17},
+		{CFrame = CFrame.new(0, 0, -1) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 0.17}
+	},
+	-- meteor
+	['meteor2'] = {
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-70)), Time = 0.15},
+		{CFrame = CFrame.new(0.5, -0.7, -0.2) * CFrame.Angles(math.rad(-120), math.rad(60), math.rad(-50)), Time = 0.15}
+	},
+	["M3T30R V6"] = {
+		{CFrame = CFrame.new(0.3, -0.8, -1.3) * CFrame.Angles(math.rad(160), math.rad(84), math.rad(90)), Time = 0.48},
+		{CFrame = CFrame.new(0.3, -0.9, -1.17) * CFrame.Angles(math.rad(160), math.rad(70), math.rad(90)), Time = 0.33},
+		{CFrame = CFrame.new(0.4, -0.65, -0.8) * CFrame.Angles(math.rad(160), math.rad(111), math.rad(90)), Time = 0.33}
+	},
+	['meteor7'] = {
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-70)), Time = 0.15},
+		{CFrame = CFrame.new(0.5, -0.7, -0.2) * CFrame.Angles(math.rad(-120), math.rad(60), math.rad(10)), Time = 0.14},
+	},
+	['meteor3'] = {
+		{CFrame = CFrame.new(-0.3, -0.53, -0.6) * CFrame.Angles(math.rad(160), math.rad(127), math.rad(90)), Time = 0.13},
+		{CFrame = CFrame.new(-0.27, -0.8, -1.2) * CFrame.Angles(math.rad(160), math.rad(90), math.rad(90)), Time = 0.13},
+		{CFrame = CFrame.new(-0.01, -0.65, -0.8) * CFrame.Angles(math.rad(160), math.rad(111), math.rad(90)), Time = 0.13},
+	},
+	['meteor8'] = {
+		{CFrame = CFrame.new(0.9, 0, 0) * CFrame.Angles(math.rad(-80), math.rad(60), math.rad(-40)), Time = 0.14},
+		{CFrame = CFrame.new(0.5, -0.2, -0.7) * CFrame.Angles(math.rad(-150), math.rad(55), math.rad(20)), Time = 0.14},
+	},
+	['meteor6'] = {
+		{CFrame = CFrame.new(-0.4, -0.7, -1.3) * CFrame.Angles(math.rad(111), math.rad(111), math.rad(130)), Time = 0.23},
+		{CFrame = CFrame.new(-0.8, -0.9, -1.7) * CFrame.Angles(math.rad(20), math.rad(130), math.rad(180)), Time = 0.23},
+		{CFrame = CFrame.new(-0.4, -0.7, -1.3) * CFrame.Angles(math.rad(111), math.rad(111), math.rad(130)), Time = 0.23},
 	}
 }
 
@@ -6767,10 +6795,44 @@ run(function()
 end)
 	
 run(function()
-	local Atmosphere
-	local Toggles = {}
-	local newobjects, oldobjects = {}, {}
-	local apidump = {
+	local Atmosphere: table = {["Enabled"] = false};
+	local Toggles: table = {}
+	local themeName: any;
+	local newobjects: table, oldobjects: table = {}, {}
+	local function BeforeShaders()
+	        return {
+	            Brightness = lightingService.Brightness,
+	            ColorShift_Bottom = lightingService.ColorShift_Bottom,
+	            ColorShift_Top = lightingService.ColorShift_Top,
+	            OutdoorAmbient = lightingService.OutdoorAmbient,
+	            TimeOfDay = lightingService.TimeOfDay,
+	            FogColor = lightingService.FogColor,
+	            FogEnd = lightingService.FogEnd,
+	            FogStart = lightingService.FogStart,
+	            ExposureCompensation = lightingService.ExposureCompensation,
+	            ShadowSoftness = lightingService.ShadowSoftness,
+	            Ambient = lightingService.Ambient,
+	            children = lightingService:GetChildren()
+	        }
+	end;
+	local function restoreDefault(lightingState)
+	        lightingService:ClearAllChildren();
+	        lightingService.Brightness = lightingState.Brightness;
+	        lightingService.ColorShift_Bottom = lightingState.ColorShift_Bottom;
+	        lightingService.ColorShift_Top = lightingState.ColorShift_Top;
+	        lightingService.OutdoorAmbient = lightingState.OutdoorAmbient;
+	        lightingService.TimeOfDay = lightingState.TimeOfDay;
+	        lightingService.FogColor = lightingState.FogColor;
+	        lightingService.FogEnd = lightingState.FogEnd;
+	        lightingService.FogStart = lightingState.FogStart;
+	        lightingService.ExposureCompensation = lightingState.ExposureCompensation;
+	        lightingService.ShadowSoftness = lightingState.ShadowSoftness;
+	        lightingService.Ambient = lightingState.Ambient;
+	        for _, child in next, workspace.ItemDrops:GetChildren() do
+	            child.Parent = lightingService;
+	        end;
+	end;
+	local apidump: table = {
 		Sky = {
 			SkyboxUp = 'Text',
 			SkyboxDn = 'Text',
@@ -6814,101 +6876,477 @@ run(function()
 			Brightness = 'Number'
 		}
 	}
+    	local skyThemes: table = {
+		        NetherWorld = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://14365019002',
+			            SkyboxDn = 'rbxassetid://14365023350',
+			            SkyboxFt = 'rbxassetid://14365018399',
+			            SkyboxLf = 'rbxassetid://14365018705',
+			            SkyboxRt = 'rbxassetid://14365018143',
+			            SkyboxUp = 'rbxassetid://14365019327',
+		        },
+		        Neptune = {
+				    SkyboxBk = 'rbxassetid://218955819',
+				    SkyboxDn = 'rbxassetid://218953419',
+				    SkyboxFt = 'rbxassetid://218954524',
+				    SkyboxLf = 'rbxassetid://218958493',
+				    SkyboxRt = 'rbxassetid://218957134',
+				    SkyboxUp = 'rbxassetid://218950090',
+		        },
+		        Velocity = {
+			            SkyboxBk = 'rbxassetid://570557514',
+			            SkyboxDn = 'rbxassetid://570557775',
+			            SkyboxFt = 'rbxassetid://570557559',
+			            SkyboxLf = 'rbxassetid://570557620',
+			            SkyboxRt = 'rbxassetid://570557672',
+			            SkyboxUp = 'rbxassetid://570557727',
+		        },
+		        Minecraft = {
+			            SkyboxBk = 'rbxassetid://591058823',
+			            SkyboxDn = 'rbxassetid://591059876',
+			            SkyboxFt = 'rbxassetid://591058104',
+			            SkyboxLf = 'rbxassetid://591057861',
+			            SkyboxRt = 'rbxassetid://591057625',
+			            SkyboxUp = 'rbxassetid://591059642',
+		        },
+		        Purple = {
+			            SkyboxBk = "rbxassetid://8539982183",
+			            SkyboxDn = "rbxassetid://8539981943",
+			            SkyboxFt = "rbxassetid://8539981721",
+			            SkyboxLf = "rbxassetid://8539981424",
+			            SkyboxRt = "rbxassetid://8539980766",
+			            SkyboxUp = "rbxassetid://8539981085",
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            StarCount = 3000,
+		        }, 
+		        ["日の出"] = {
+				    SkyboxBk = "rbxassetid://600830446",
+				    SkyboxDn = "rbxassetid://600831635",
+				    SkyboxFt = "rbxassetid://600832720",
+				    SkyboxLf = "rbxassetid://600886090",
+				    SkyboxRt = "rbxassetid://600833862",
+				    SkyboxUp = "rbxassetid://600835177",
+		        },
+		        Sakura = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=16694315897",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=16694319417",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=16694324910",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=16694328308",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=16694331447",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=16694334666",
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Hexagonal = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=15876463105",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=15876464432",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=15876465852",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=15876467260",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=15876469097",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=15876470945",
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Reality = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=6778646360",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=6778658683",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=6778648039",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=6778649136",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=6778650519",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=6778658364",
+		        },
+		        LunarNight = {
+			            SkyboxBk = 'rbxassetid://187713366',
+			            SkyboxDn = 'rbxassetid://187712428',
+			            SkyboxFt = 'rbxassetid://187712836',
+			            SkyboxLf = 'rbxassetid://187713755',
+			            SkyboxRt = 'rbxassetid://187714525',
+			            SkyboxUp = 'rbxassetid://187712111',
+			            SunAngularSize = 0,
+			            StarCount = 0,
+		        },
+		        FPSBoost = {
+			            SkyboxBk = 'rbxassetid://11457548274',
+			            SkyboxDn = 'rbxassetid://11457548274',
+			            SkyboxFt = 'rbxassetid://11457548274',
+			            SkyboxLf = 'rbxassetid://11457548274',
+			            SkyboxRt = 'rbxassetid://11457548274',
+			            SkyboxUp = 'rbxassetid://11457548274',
+			            SunAngularSize = 0,
+			            StarCount = 3000,
+		        },
+		        Etheral = {
+			            SkyboxBk = 'rbxassetid://16262356578',
+			            SkyboxDn = 'rbxassetid://16262358026',
+			            SkyboxFt = 'rbxassetid://16262360469',
+			            SkyboxLf = 'rbxassetid://16262362003',
+			            SkyboxRt = 'rbxassetid://16262363873',
+			            SkyboxUp = 'rbxassetid://16262366016',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Pandora = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16739324092',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16739325541',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16739327056',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16739329370',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16739331050',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16739332736',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Polaris = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16823270864',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16823272150',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16823273508',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16823274898',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16823276281',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16823277547',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Diaphanous = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16888989874',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16888991855',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16888995219',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16888998994',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16889000916',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16889004122',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Transcendent = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Truth = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=144933338",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=144931530",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=144933262",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=144933244",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=144933299",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=144931564",
+		        },
+		        RayTracing = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=271042516",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=271077243",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=271042556",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=271042310",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=271042467",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=271077958",
+		        },
+		        Nebula = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://5260808177',
+			            SkyboxDn = 'rbxassetid://5260653793',
+			            SkyboxFt = 'rbxassetid://5260817288',
+			            SkyboxLf = 'rbxassetid://5260800833',
+			            SkyboxRt = 'rbxassetid://5260811073',
+			            SkyboxUp = 'rbxassetid://5260824661',
+		        },
+		        Planets = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://15983968922',
+			            SkyboxDn = 'rbxassetid://15983966825',
+			            SkyboxFt = 'rbxassetid://15983965025',
+			            SkyboxLf = 'rbxassetid://15983967420',
+			            SkyboxRt = 'rbxassetid://15983966246',
+			            SkyboxUp = 'rbxassetid://15983964246',
+			            StarCount = 3000,
+		        },
+		        Galaxy = {
+			            SkyboxBk = "rbxassetid://159454299",
+			            SkyboxDn = "rbxassetid://159454296",
+			            SkyboxFt = "rbxassetid://159454293",
+			            SkyboxLf = "rbxassetid://159454293",
+			            SkyboxRt = "rbxassetid://159454293",
+			            SkyboxUp = "rbxassetid://159454288",
+			            SunAngularSize = 0,
+		        }, 
+		        Blues = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Milkyway = {
+			            MoonTextureId = 'rbxassetid://1075087760',
+			            SkyboxBk = 'rbxassetid://2670643994',
+			            SkyboxDn = 'rbxassetid://2670643365',
+			            SkyboxFt = 'rbxassetid://2670643214',
+			            SkyboxLf = 'rbxassetid://2670643070',
+			            SkyboxRt = 'rbxassetid://2670644173',
+			            SkyboxUp = 'rbxassetid://2670644331',
+			            MoonAngularSize = 1.5,
+			            StarCount = 500,
+		        },
+		        Orange = {
+			            SkyboxBk = 'rbxassetid://150939022',
+			            SkyboxDn = 'rbxassetid://150939038',
+			            SkyboxFt = 'rbxassetid://150939047',
+			            SkyboxLf = 'rbxassetid://150939056',
+			            SkyboxRt = 'rbxassetid://150939063',
+			            SkyboxUp = 'rbxassetid://150939082',
+		        },
+		        DarkMountains = {
+			            SkyboxBk = 'rbxassetid://5098814730',
+			            SkyboxDn = 'rbxassetid://5098815227',
+			            SkyboxFt = 'rbxassetid://5098815653',
+			            SkyboxLf = 'rbxassetid://5098816155',
+			            SkyboxRt = 'rbxassetid://5098820352',
+			            SkyboxUp = 'rbxassetid://5098819127',
+		        },
+		        Space = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://166509999',
+			            SkyboxDn = 'rbxassetid://166510057',
+			            SkyboxFt = 'rbxassetid://166510116',
+			            SkyboxLf = 'rbxassetid://166510092',
+			            SkyboxRt = 'rbxassetid://166510131',
+			            SkyboxUp = 'rbxassetid://166510114',
+		        },
+		        Void = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://14543264135',
+			            SkyboxDn = 'rbxassetid://14543358958',
+			            SkyboxFt = 'rbxassetid://14543257810',
+			            SkyboxLf = 'rbxassetid://14543275895',
+			            SkyboxRt = 'rbxassetid://14543280890',
+			            SkyboxUp = 'rbxassetid://14543371676',
+		        },
+		        Stary = {
+			            SkyboxBk = 'rbxassetid://248431616',
+			            SkyboxDn = 'rbxassetid://248431677',
+			            SkyboxFt = 'rbxassetid://248431598',
+			            SkyboxLf = 'rbxassetid://248431686',
+			            SkyboxRt = 'rbxassetid://248431611',
+			            SkyboxUp = 'rbxassetid://248431605',
+				    StarCount = 3000,       
+		        },
+			Violet = {
+				    SkyboxBk = 'rbxassetid://8107841671',
+				    SkyboxDn = 'rbxassetid://6444884785',
+				    SkyboxFt = 'rbxassetid://8107841671',
+				    SkyboxLf = 'rbxassetid://8107841671',
+				    SkyboxRt = 'rbxassetid://8107841671',
+				    SkyboxUp = 'rbxassetid://8107849791',
+				    SunTextureId = 'rbxassetid://6196665106',
+				    MoonTextureId = 'rbxassetid://6444320592',
+				    MoonAngularSize = 0,
+		        },
+			Cloudy = {
+				    SkyboxBk = 'rbxassetid://15876597103',
+				    SkyboxDn = 'rbxassetid://15876592775',
+				    SkyboxFt = 'rbxassetid://15876640231',
+				    SkyboxLf = 'rbxassetid://15876638420',
+				    SkyboxRt = 'rbxassetid://15876595486',
+				    SkyboxUp = 'rbxassetid://15876639348',
+				    SunTextureId = 'rbxasset://sky/sun.jpg',
+				    MoonTextureId = 'rbxasset://sky/moon.jpg',
+				    MoonAngularSize = 11,
+		            	    SunAngularSize = 21,
+				    StarCount = 3000,
+		    	}
+	};																																					
+    	local ILS: any = BeforeShaders()
+	local function removeObject(v: Instance?)
+		if not table.find(newobjects, v) then 
+			local vt: table? = Toggles[v.ClassName]
+			if vt and vt.Toggle["Enabled"] then
+				table.insert(oldobjects, v);
+				v.Parent = game;
+			end;
+		end;
+	end;
 	
-	local function removeObject(v)
-		if not table.find(newobjects, v) then
-			local toggle = Toggles[v.ClassName]
-			if toggle and toggle.Toggle.Enabled then
-				if v.Parent then
-					table.insert(oldobjects, v)
-					v.Parent = game
-				end
-			end
-		end
-	end
-	
+	local function themes(val: any)
+	        local theme: any = skyThemes[themeName["Value"]];
+	        if theme then
+		        local sky: Sky? = lightingService:FindFirstChild("CustomSky") or Instance.new("Sky", lightingService);
+		        for v: any, value: any in next, theme do
+		                if v ~= "Atmosphere" then
+		                        sky[v] = value;
+		                end;
+		        end;
+		end;
+	end;
+
 	Atmosphere = vape.Legit:CreateModule({
-		Name = 'Atmosphere',
-		Function = function(callback)
+		["Name"] = 'Atmosphere',
+		["Function"] = function(callback: boolean): void
 			if callback then
 				for _, v in lightingService:GetChildren() do
-					removeObject(v)
-				end
+			                if v:IsA('PostEffect') or v:IsA('Sky') or v:IsA('Atmosphere') or v:IsA('Clouds') then
+			                        v:Destroy();
+			                end;
+		        	end;
+		
+		                for _, v in workspace:GetDescendants() do
+			                if v:IsA("Clouds") then
+			                        v:Destroy();
+			                end;
+		                end;
+				local d: number = 0;
+				local r: any = workspace.Terrain;
+				for _, v in lightingService:GetChildren() do
+		                	if v:IsA('PostEffect') or v:IsA('Sky') or v:IsA('Atmosphere') or v:IsA('Clouds') then
+		                        	v:Destroy();
+		                        end;
+		                end;
+				lightingService.Brightness = d + 1;
+		                lightingService.EnvironmentDiffuseScale = d + 0.2;
+		                lightingService.EnvironmentSpecularScale = d + 0.82;
+		
+		                local sunRays: SunRaysEffect = Instance.new('SunRaysEffect');
+		                table.insert(newobjects, sunRays);
+		                pcall(function() sunRays.Parent = lightingService end);
+		
+		                local atmosphere: Atmosphere = Instance.new('Atmosphere');
+		                table.insert(newobjects, atmosphere);
+		                pcall(function() atmosphere.Parent = lightingService end);
+		
+		                local sky: Sky = Instance.new('Sky');
+		                table.insert(newobjects, sky);
+		                pcall(function() sky.Parent = lightingService end);
+		
+		                local blur: BlurEffect = Instance.new('BlurEffect');
+		                blur.Size = d + 3.921;
+		                table.insert(newobjects, blur);
+		                pcall(function() blur.Parent = lightingService end);
+		
+		                local color_correction: ColorCorrectionEffect = Instance.new('ColorCorrectionEffect');
+		                color_correction.Saturation = d + 0.092;
+		                table.insert(newobjects, color_correction);
+		                pcall(function() color_correction.Parent = lightingService end);
+		
+		                local clouds: Clouds = Instance.new('Clouds');
+		                clouds.Cover = d + 0.4;
+		                table.insert(newobjects, clouds);
+		                pcall(function() clouds.Parent = r end);
+		
+		                r.WaterTransparency = d + 1;
+		                r.WaterReflectance = d + 1;
+
+				themes()
+				for _, v in lightingService:GetChildren() do
+					removeObject(v);
+				end;
 				Atmosphere:Clean(lightingService.ChildAdded:Connect(function(v)
-					task.defer(removeObject, v)
-				end))
+					task.defer(removeObject, v);
+				end));
 	
-				for i, v in Toggles do
-					if v.Toggle.Enabled then
-						local obj = Instance.new(i)
-						for i2, v2 in v.Objects do
-							if v2.Type == 'ColorSlider' then
-								obj[i2] = Color3.fromHSV(v2.Hue, v2.Sat, v2.Value)
+				for className, classData in Toggles do
+					if classData.Toggle["Enabled"] then
+						local obj: any = Instance.new(className);
+						for propName, propData in classData.Objects do
+							if propData.Type == 'ColorSlider' then
+								obj[propName] = Color3.fromHSV(propData.Hue, propData.Sat, propData.Value);
 							else
-								obj[i2] = apidump[i][i2] ~= 'Number' and v2.Value or tonumber(v2.Value) or 0
-							end
-						end
-						obj.Parent = lightingService
-						table.insert(newobjects, obj)
-					end
-				end
+								if apidump[className][propName] == 'Number' then
+									obj[propName] = tonumber(propData.Value) or 0;
+								else
+									obj[propName] = propData.Value;
+								end;
+							end;
+						end;
+						obj.Name = "Custom" .. className;
+						table.insert(newobjects, obj);
+						task.defer(function()
+							pcall(function() obj.Parent = lightingService end);
+						end);
+					end;
+				end;
 			else
-				for _, v in newobjects do
-					v:Destroy()
-				end
-				for _, v in oldobjects do
-					v.Parent = lightingService
-				end
-				table.clear(newobjects)
-				table.clear(oldobjects)
-			end
+		                for _, v in newobjects do
+			                if v and v.Destroy then
+			                        v:Destroy();
+			                end;
+		                end;
+		                for _, v in oldobjects do
+		                    	pcall(function() v.Parent = lightingService end);
+		                end;
+		                table.clear(newobjects);
+		                table.clear(oldobjects);
+				for _, v in lightingService:GetChildren() do
+		                    	if v:IsA("ColorCorrectionEffect") then
+		                        	v:Destroy();
+		                    	end;
+		                end;
+				restoreDefault(ILS);
+			end;
 		end,
-		Tooltip = 'Custom lighting objects'
+		["Tooltip"] = 'Custom lighting objects'
+	})
+	local skyboxes: table = {};
+	for v,_ in next, skyThemes do
+	        table.insert(skyboxes, v);
+	end;
+	themeName = Atmosphere:CreateDropdown({
+	        ["Name"] = "Mode",
+	        ["List"] = skyboxes,
+	        ["Function"] = function(val) end
 	})
 	for i, v in apidump do
 		Toggles[i] = {Objects = {}}
 		Toggles[i].Toggle = Atmosphere:CreateToggle({
-			Name = i,
-			Function = function(callback)
-				if Atmosphere.Enabled then
-					Atmosphere:Toggle()
-					Atmosphere:Toggle()
-				end
+			["Name"] = i,
+			["Function"] = function(callback: boolean): void
+				if Atmosphere["Enabled"] then
+					Atmosphere:Toggle();
+					Atmosphere:Toggle();
+				end;
 				for _, toggle in Toggles[i].Objects do
-					toggle.Object.Visible = callback
-				end
-			end
+					toggle.Object.Visible = callback;
+				end;
+			end;
 		})
 	
 		for i2, v2 in v do
 			if v2 == 'Text' or v2 == 'Number' then
 				Toggles[i].Objects[i2] = Atmosphere:CreateTextBox({
-					Name = i2,
-					Function = function(enter)
-						if Atmosphere.Enabled and enter then
-							Atmosphere:Toggle()
-							Atmosphere:Toggle()
-						end
+					["Name"] = i2,
+					["Function"] = function(enter)
+						if Atmosphere["Enabled"] and enter then
+							Atmosphere:Toggle();
+							Atmosphere:Toggle();
+						end;
 					end,
-					Darker = true,
-					Default = v2 == 'Number' and '0' or nil,
-					Visible = false
+					["Darker"] = true,
+					["Default"] = v2 == 'Number' and '0' or nil,
+					["Visible"] = false
 				})
 			elseif v2 == 'Color' then
 				Toggles[i].Objects[i2] = Atmosphere:CreateColorSlider({
-					Name = i2,
-					Function = function()
-						if Atmosphere.Enabled then
-							Atmosphere:Toggle()
-							Atmosphere:Toggle()
-						end
+					["Name"] = i2,
+					["Function"] = function()
+						if Atmosphere["Enabled"] then
+							Atmosphere:Toggle();
+							Atmosphere:Toggle();
+						end;
 					end,
-					Darker = true,
-					Visible = false
+					["Darker"] = true,
+					["Visible"] = false
 				})
-			end
-		end
-	end
+			end;
+		end;
+	end;
 end)
 	
 run(function()
@@ -7019,10 +7457,21 @@ run(function()
 end)
 	
 run(function()
-	local Cape
-	local Texture
-	local part, motor
-	
+	local Cape: table = {["Enabled"] = false};
+	local Texture: any;
+	local part: any, motor: any
+	local CapeMode: table = {["Value"] = "Velocity"}
+	local capeModeMap: table = {
+		["Vape"] = "rbxassetid://13380453812",
+		["Portal"] = "rbxassetid://14694086869",
+		["Copium"] = "rbxassetid://14694061995",
+		["Velocity"] = "rbxassetid://16728149213",
+		["Azura"] = "rbxassetid://128937881305197",
+		["Ape"] = "rbxassetid://93367474508586",
+		["Laserware"] = "rbxassetid://125791563280089",
+		["Snoopy"] = "rbxassetid://89328429998004",
+		["Render"] = "rbxassetid://17140106485"
+	}
 	local function createMotor(char)
 		if motor then 
 			motor:Destroy() 
@@ -7038,8 +7487,8 @@ run(function()
 	end
 	
 	Cape = vape.Legit:CreateModule({
-		Name = 'Cape',
-		Function = function(callback)
+		["Name"] = 'Cape',
+		["Function"] = function(callback: boolean): void
 			if callback then
 				part = Instance.new('Part')
 				part.Size = Vector3.new(2, 4, 0.1)
@@ -7082,19 +7531,40 @@ run(function()
 						local velo = math.min(entitylib.character.RootPart.Velocity.Magnitude, 90)
 						motor.DesiredAngle = math.rad(6) + math.rad(velo) + (velo > 1 and math.abs(math.cos(tick() * 5)) / 3 or 0)
 					end
-					capesurface.Enabled = (gameCamera.CFrame.Position - gameCamera.Focus.Position).Magnitude > 0.6
+					capesurface["Enabled"] = (gameCamera.CFrame.Position - gameCamera.Focus.Position).Magnitude > 0.6
 					part.Transparency = (gameCamera.CFrame.Position - gameCamera.Focus.Position).Magnitude > 0.6 and 0 or 1
 					task.wait()
-				until not Cape.Enabled
+				until not Cape["Enabled"]
 			else
 				part = nil
 				motor = nil
 			end
 		end,
-		Tooltip = 'Add\'s a cape to your character'
+		["Tooltip"] = 'Add\'s a cape to your character'
 	})
 	Texture = Cape:CreateTextBox({
-		Name = 'Texture'
+		["Name"] = 'Texture'
+	})
+	CapeMode = Cape:CreateDropdown({
+		["Name"] ='Mode',
+		["List"] = {
+			'Vape',
+			'Render',
+			'Portal',
+			'Copium',
+			'Azura',
+			'Ape',
+			'Laserware',
+			'Snoopy',
+			'Velocity'
+		},
+		["HoverText"] = 'A cape mod.',
+		["Value"] = 'Velocity',
+		["Function"] = function(val) 
+			if capeModeMap[val] then
+                		Texture["Value"] = capeModeMap[val]
+            		end
+		end
 	})
 end)
 	
