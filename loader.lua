@@ -11,7 +11,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/amrho94/meteor/'..readfile('meteor/profiles/commit.txt')..'/'..select(1, path:gsub('meteor/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/'..select(1, path:gsub('myau/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
@@ -34,7 +34,7 @@ local function wipeFolder(path)
 	end
 end
 
-for _, folder in {'meteor', 'meteor/games', 'meteor/profiles', 'meteor/assets', 'meteor/libraries', 'meteor/guis'} do
+for _, folder in {'myau', 'myau/games', 'myau/profiles', 'myau/assets', 'myau/libraries', 'myau/guis'} do
 	if not isfolder(folder) then
 		makefolder(folder)
 	end
@@ -42,18 +42,18 @@ end
 
 if not shared.VapeDeveloper then
 	local _, subbed = pcall(function() 
-		return game:HttpGet('https://github.com/amrho94/meteor') 
+		return game:HttpGet('https://github.com/o1nb/MyauForRoblox') 
 	end)
 	local commit = subbed:find('currentOid')
 	commit = commit and subbed:sub(commit + 13, commit + 52) or nil
 	commit = commit and #commit == 40 and commit or 'main'
-	if commit == 'main' or (isfile('meteor/profiles/commit.txt') and readfile('meteor/profiles/commit.txt') or '') ~= commit then
-		wipeFolder('meteor')
-		wipeFolder('meteor/games')
-		wipeFolder('meteor/guis')
-		wipeFolder('meteor/libraries')
+	if commit == 'main' or (isfile('myau/profiles/commit.txt') and readfile('myau/profiles/commit.txt') or '') ~= commit then
+		wipeFolder('myau')
+		wipeFolder('myau/games')
+		wipeFolder('myau/guis')
+		wipeFolder('myau/libraries')
 	end
-	writefile('meteor/profiles/commit.txt', commit)
+	writefile('myau/profiles/commit.txt', commit)
 end
 
-return loadstring(downloadFile('meteor/main.lua'), 'main')()
+return loadstring(downloadFile('myau/main.lua'), 'main')()
