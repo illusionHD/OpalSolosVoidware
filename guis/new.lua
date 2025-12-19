@@ -1,4 +1,5 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local mainapi = {
 	Categories = {},
 	GUIColor = {
@@ -52,10 +53,12 @@ local tween = {
 	tweenstwo = {}
 }
 local uipallet = {
-	Main = Color3.fromRGB(26, 25, 26),
-	Text = Color3.fromRGB(200, 200, 200),
-	Font = Font.fromEnum(Enum.Font.Arial),
-	FontSemiBold = Font.fromEnum(Enum.Font.Arial, Enum.FontWeight.SemiBold),
+	Main = Color3.fromRGB(0, 0, 0),
+	--Color3.fromRGB(220, 220, 220),
+	Text = Color3.fromRGB(255, 255, 255),
+	--Color3.fromRGB(60, 60, 60),
+	Font = Font.fromEnum(Enum.Font.GothamBold),
+	FontSemiBold = Font.fromEnum(Enum.Font.GothamBold, Enum.FontWeight.SemiBold),
 	Tween = TweenInfo.new(0.16, Enum.EasingStyle.Linear)
 }
 
@@ -88,8 +91,8 @@ local getcustomassets = {
 	['myau/assets/new/guisettings.png'] = 'rbxassetid://14368318994',
 	['myau/assets/new/guislider.png'] = 'rbxassetid://14368320020',
 	['myau/assets/new/guisliderrain.png'] = 'rbxassetid://14368321228',
-	['myau/assets/new/guiv4.png'] = 'rbxassetid://14368322199',
-	['myau/assets/new/guivape.png'] = 'rbxassetid://14657521312',
+	['myau/assets/new/guiv2.png'] = 'rbxassetid://14368322199',
+	['myau/assets/new/guimyau.png'] = 'rbxassetid://14657521312',
 	['myau/assets/new/info.png'] = 'rbxassetid://14368324807',
 	['myau/assets/new/inventoryicon.png'] = 'rbxassetid://14928011633',
 	['myau/assets/new/legit.png'] = 'rbxassetid://14425650534',
@@ -117,8 +120,8 @@ local getcustomassets = {
 	['myau/assets/new/targetplayers2.png'] = 'rbxassetid://14497397862',
 	['myau/assets/new/targetstab.png'] = 'rbxassetid://14497393895',
 	['myau/assets/new/textguiicon.png'] = 'rbxassetid://14368355456',
-	['myau/assets/new/textv4.png'] = 'rbxassetid://14368357095',
-	['myau/assets/new/textvape.png'] = 'rbxassetid://14368358200',
+	['myau/assets/new/textv2.png'] = 'rbxassetid://14368357095',
+	['myau/assets/new/textmyau.png'] = 'rbxassetid://14368358200',
 	['myau/assets/new/utilityicon.png'] = 'rbxassetid://14368359107',
 	['myau/assets/new/vape.png'] = 'rbxassetid://14373395239',
 	['myau/assets/new/warning.png'] = 'rbxassetid://14368361552',
@@ -2487,7 +2490,7 @@ function mainapi:CreateGUI()
 	logo.Size = UDim2.fromOffset(62, 18)
 	logo.Position = UDim2.fromOffset(11, 10)
 	logo.BackgroundTransparency = 1
-	logo.Image = getcustomasset('myau/assets/new/guivape.png')
+	logo.Image = getcustomasset('myau/assets/new/guimyau.png')
 	logo.ImageColor3 = select(3, uipallet.Main:ToHSV()) > 0.5 and uipallet.Text or Color3.new(1, 1, 1)
 	logo.Parent = window
 	local logov4 = Instance.new('ImageLabel')
@@ -2495,7 +2498,7 @@ function mainapi:CreateGUI()
 	logov4.Size = UDim2.fromOffset(28, 16)
 	logov4.Position = UDim2.new(1, 1, 0, 1)
 	logov4.BackgroundTransparency = 1
-	logov4.Image = getcustomasset('myau/assets/new/guiv4.png')
+	logov4.Image = getcustomasset('myau/assets/new/guiv2.png')
 	logov4.Parent = logo
 	local children = Instance.new('Frame')
 	children.Name = 'Children'
@@ -5798,6 +5801,11 @@ mainapi:CreateCategory({
 	Icon = getcustomasset('myau/assets/new/miniicon.png'),
 	Size = UDim2.fromOffset(19, 12)
 })
+mainapi:CreateCategory({
+	Name = 'Legit',
+	Icon = getcustomasset('myau/assets/new/legit.png'),
+	Size = UDim2.fromOffset(20, 14)
+})
 mainapi.Categories.Main:CreateDivider('misc')
 
 --[[
@@ -5912,7 +5920,7 @@ general:CreateButton({
 		if shared.VapeDeveloper then
 			loadstring(readfile('myau/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/amrho94/myau/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end,
 	Tooltip = 'This will set your profile to the default settings of Vape'
@@ -5931,7 +5939,7 @@ general:CreateButton({
 		if shared.VapeDeveloper then
 			loadstring(readfile('myau/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/amrho94/myau/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end,
 	Tooltip = 'Reloads vape for debugging purposes'
@@ -6039,7 +6047,7 @@ guipane:CreateDropdown({
 			if shared.VapeDeveloper then
 				loadstring(readfile('myau/loader.lua'), 'loader')()
 			else
-				loadstring(game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
+				loadstring(game:HttpGet('https://raw.githubusercontent.com/amrho94/myau/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
 			end
 		end
 	end,
@@ -6359,7 +6367,7 @@ VapeLogo.BackgroundTransparency = 1
 VapeLogo.BorderSizePixel = 0
 VapeLogo.Visible = false
 VapeLogo.BackgroundColor3 = Color3.new()
-VapeLogo.Image = getcustomasset('myau/assets/new/textvape.png')
+VapeLogo.Image = getcustomasset('myau/assets/new/textmyau.png')
 VapeLogo.Parent = textgui.Children
 
 local lastside = textgui.Children.AbsolutePosition.X > (gui.AbsoluteSize.X / 2)
@@ -6381,7 +6389,7 @@ VapeLogoV4.Position = UDim2.new(1, 1, 0, 1)
 VapeLogoV4.BackgroundColor3 = Color3.new()
 VapeLogoV4.BackgroundTransparency = 1
 VapeLogoV4.BorderSizePixel = 0
-VapeLogoV4.Image = getcustomasset('myau/assets/new/textv4.png')
+VapeLogoV4.Image = getcustomasset('myau/assets/new/textv2.png')
 VapeLogoV4.Parent = VapeLogo
 local VapeLogoShadow = VapeLogo:Clone()
 VapeLogoShadow.Position = UDim2.fromOffset(1, 1)
