@@ -15,7 +15,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/amrho94/meteor/'..readfile('meteor/profiles/commit.txt')..'/'..select(1, path:gsub('meteor/', '')), true) 
+			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/'..select(1, path:gsub('myau/', '')), true) 
 		end)
 		if not suc or res == '404: Not Found' then 
 			error(res) 
@@ -29,15 +29,15 @@ local function downloadFile(path, func)
 end
 
 vape.Place = 6872274481
-if isfile('meteor/games/'..vape.Place..'.lua') then
-	loadstring(readfile('meteor/games/'..vape.Place..'.lua'), 'bedwars')()
+if isfile('myau/games/'..vape.Place..'.lua') then
+	loadstring(readfile('myau/games/'..vape.Place..'.lua'), 'bedwars')()
 else
 	if not shared.VapeDeveloper then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/amrho94/meteor/'..readfile('meteor/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
+			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
 		end)
 		if suc and res ~= '404: Not Found' then
-			loadstring(downloadFile('meteor/games/'..vape.Place..'.lua'), 'bedwars')()
+			loadstring(downloadFile('myau/games/'..vape.Place..'.lua'), 'bedwars')()
 		end
 	end
 end
