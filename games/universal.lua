@@ -1,10 +1,11 @@
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
 local loadstring = function(...)
 	local res, err = loadstring(...)
-	if err and vape then
-		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert')
+	if err and Opai then
+		Opai:CreateNotification('Opai', 'Failed to load : '..err, 30, 'alert')
 	end
 	return res
 end
@@ -17,13 +18,13 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/'..select(1, path:gsub('myau/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('Opai/profiles/commit.txt')..'/'..select(1, path:gsub('Opai/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -59,11 +60,11 @@ local gameCamera = workspace.CurrentCamera or workspace:FindFirstChildWhichIsA('
 local lplr = playersService.LocalPlayer
 local assetfunction = getcustomasset
 
-local vape = shared.vape
-local tween = vape.Libraries.tween
-local targetinfo = vape.Libraries.targetinfo
-local getfontsize = vape.Libraries.getfontsize
-local getcustomasset = vape.Libraries.getcustomasset
+local Opai = shared.Opai
+local tween = Opai.Libraries.tween
+local targetinfo = Opai.Libraries.targetinfo
+local getfontsize = Opai.Libraries.getfontsize
+local getcustomasset = Opai.Libraries.getcustomasset
 
 local TargetStrafeVector, SpiderShift, WaypointFolder
 local Spider = {Enabled = false}
@@ -75,7 +76,7 @@ local function addBlur(parent)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('myau/assets/new/blur.png')
+	blur.Image = getcustomasset('Opai/assets/new/blur.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -97,10 +98,10 @@ local function calculateMoveVector(vec)
 end
 
 local function isFriend(plr, recolor)
-	if vape.Categories.Friends.Options['Use friends'].Enabled then
-		local friend = table.find(vape.Categories.Friends.ListEnabled, plr.Name) and true
+	if Opai.Categories.Friends.Options['Use friends'].Enabled then
+		local friend = table.find(Opai.Categories.Friends.ListEnabled, plr.Name) and true
 		if recolor then
-			friend = friend and vape.Categories.Friends.Options['Recolor visuals'].Enabled
+			friend = friend and Opai.Categories.Friends.Options['Recolor visuals'].Enabled
 		end
 		return friend
 	end
@@ -108,7 +109,7 @@ local function isFriend(plr, recolor)
 end
 
 local function isTarget(plr)
-	return table.find(vape.Categories.Targets.ListEnabled, plr.Name) and true
+	return table.find(Opai.Categories.Targets.ListEnabled, plr.Name) and true
 end
 
 local function canClick()
@@ -125,7 +126,7 @@ local function canClick()
 			return false
 		end
 	end
-	return (not vape.gui.ScaledGui.ClickGui.Visible) and (not inputService:GetFocusedTextBox())
+	return (not Opai.gui.ScaledGui.ClickGui.Visible) and (not inputService:GetFocusedTextBox())
 end
 
 local function getTableSize(tab)
@@ -139,7 +140,7 @@ local function getTool()
 end
 
 local function notif(...)
-	return vape:CreateNotification(...)
+	return Opai:CreateNotification(...)
 end
 
 local function removeTags(str)
@@ -150,12 +151,12 @@ end
 local visited, attempted, tpSwitch = {}, {}, false
 local cacheExpire, cache = tick()
 local function serverHop(pointer, filter)
-	visited = shared.vapeserverhoplist and shared.vapeserverhoplist:split('/') or {}
+	visited = shared.Opaiserverhoplist and shared.Opaiserverhoplist:split('/') or {}
 	if not table.find(visited, game.JobId) then
 		table.insert(visited, game.JobId)
 	end
 	if not pointer then
-		notif('Vape', 'Searching for an available server.', 2)
+		notif('Opai', 'Searching for an available server.', 2)
 	end
 
 	local suc, httpdata = pcall(function()
@@ -168,7 +169,7 @@ local function serverHop(pointer, filter)
 				cacheExpire, cache = tick() + 60, httpdata
 				table.insert(attempted, v.id)
 
-				notif('Vape', 'Found! Teleporting.', 5)
+				notif('Opai', 'Found! Teleporting.', 5)
 				teleportService:TeleportToPlaceInstance(game.PlaceId, v.id)
 				return
 			end
@@ -177,17 +178,17 @@ local function serverHop(pointer, filter)
 		if data.nextPageCursor then
 			serverHop(data.nextPageCursor, filter)
 		else
-			notif('Vape', 'Failed to find an available server.', 5, 'warning')
+			notif('Opai', 'Failed to find an available server.', 5, 'warning')
 		end
 	else
-		notif('Vape', 'Failed to grab servers. ('..(data and data.errors[1].message or 'no data')..')', 5, 'warning')
+		notif('Opai', 'Failed to grab servers. ('..(data and data.errors[1].message or 'no data')..')', 5, 'warning')
 	end
 end
 
-vape:Clean(lplr.OnTeleport:Connect(function()
+Opai:Clean(lplr.OnTeleport:Connect(function()
 	if not tpSwitch then
 		tpSwitch = true
-		queue_on_teleport("shared.vapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.vapeserverhopprevious = '"..game.JobId.."'")
+		queue_on_teleport("shared.Opaiserverhoplist = '"..table.concat(visited, '/').."'\nshared.Opaiserverhopprevious = '"..game.JobId.."'")
 	end
 end))
 
@@ -222,9 +223,9 @@ local function motorMove(target, cf)
 	task.delay(0, part.Destroy, part)
 end
 
-local hash = loadstring(downloadFile('myau/libraries/hash.lua'), 'hash')()
-local prediction = loadstring(downloadFile('myau/libraries/prediction.lua'), 'prediction')()
-entitylib = loadstring(downloadFile('myau/libraries/entity.lua'), 'entitylibrary')()
+local hash = loadstring(downloadFile('Opai/libraries/hash.lua'), 'hash')()
+local prediction = loadstring(downloadFile('Opai/libraries/prediction.lua'), 'prediction')()
+entitylib = loadstring(downloadFile('Opai/libraries/entity.lua'), 'entitylibrary')()
 local whitelist = {
 	alreadychecked = {},
 	customtags = {},
@@ -239,20 +240,69 @@ local whitelist = {
 	localprio = 0,
 	said = {}
 }
-vape.Libraries.entity = entitylib
-vape.Libraries.whitelist = whitelist
-vape.Libraries.prediction = prediction
-vape.Libraries.hash = hash
-vape.Libraries.auraanims = {
+Opai.Libraries.entity = entitylib
+Opai.Libraries.whitelist = whitelist
+Opai.Libraries.prediction = prediction
+Opai.Libraries.hash = hash
+Opai.Libraries.auraanims = {
 	Normal = {
 		{CFrame = CFrame.new(-0.17, -0.14, -0.12) * CFrame.Angles(math.rad(-53), math.rad(50), math.rad(-64)), Time = 0.1},
 		{CFrame = CFrame.new(-0.55, -0.59, -0.1) * CFrame.Angles(math.rad(-161), math.rad(54), math.rad(-6)), Time = 0.08},
 		{CFrame = CFrame.new(-0.62, -0.68, -0.07) * CFrame.Angles(math.rad(-167), math.rad(47), math.rad(-1)), Time = 0.03},
 		{CFrame = CFrame.new(-0.56, -0.86, 0.23) * CFrame.Angles(math.rad(-167), math.rad(49), math.rad(-1)), Time = 0.03}
 	},
-	Myau = {
+	Opai = {
 		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.1},
 		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.2}
+	},
+	['PRISMASTADAWN'] = {
+		{CFrame = CFrame.new(0.3, -2, .1) * CFrame.Angles(math.rad(190), math.rad(75), math.rad(90)), Time = 0.13},
+		{CFrame = CFrame.new(0.3, -2, .2) * CFrame.Angles(math.rad(190), math.rad(95), math.rad(80)), Time = 0.13},
+		{CFrame = CFrame.new(0.3, -2, .1) * CFrame.Angles(math.rad(120), math.rad(170), math.rad(90)), Time = 0.13},
+	},
+	['Karambit'] = {
+		{CFrame = CFrame.new(-0.01, 0, -1.51) * CFrame.Angles(math.rad(-50), math.rad(0), math.rad(0)), Time = 0},
+		{CFrame = CFrame.new(-0.01, -0.01, -1.51) * CFrame.Angles(math.rad(-155), math.rad(0), math.rad(-0)), Time = 0.03},
+		{CFrame = CFrame.new(-0.01, -0.01, -1.51) * CFrame.Angles(math.rad(120), math.rad(0), math.rad(0)), Time = 0.03},
+		{CFrame = CFrame.new(-0.01, -0.01, -1.51) * CFrame.Angles(math.rad(30), math.rad(-0), math.rad(0)), Time = 0.03},
+		{CFrame = CFrame.new(-0.01, 0, -1.51) * CFrame.Angles(math.rad(-50), math.rad(0), math.rad(0)), Time = 0.15}
+	},
+	['Pop'] = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.15},
+		{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)),Time = 0.25},
+		{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(-30), math.rad(80), math.rad(-90)), Time = 0.35},
+		{CFrame = CFrame.new(0, 1, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)), Time = 0.35}
+	},
+	['ExhiRemake'] = {
+		{CFrame = CFrame.new(1, 0, -0.5) * CFrame.Angles(math.rad(-90), math.rad(60), math.rad(-60)), Time = 0.2},
+		{CFrame = CFrame.new(1, -0.2, -0.5) * CFrame.Angles(math.rad(-160), math.rad(60), math.rad(-30)), Time = 0.12}
+	},
+	['PushRemake'] = {
+		{CFrame = CFrame.new(0.2, -0.7, 0) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.2},
+		{CFrame = CFrame.new(0.2, -1, 0) * CFrame.Angles(math.rad(23), math.rad(67), math.rad(-111)), Time = 0.35}
+	},
+	['SwongRemake'] = {
+		{CFrame = CFrame.new(0, 0, -0.6) * CFrame.Angles(math.rad(-60), math.rad(50), math.rad(-70)), Time = 0.1},
+		{CFrame = CFrame.new(0, -0.3, -0.6) * CFrame.Angles(math.rad(-160), math.rad(60), math.rad(10)), Time = 0.2}
+	},
+	['LiquidBounceV2'] = {
+		{CFrame = CFrame.new(0, 0, -1) * CFrame.Angles(math.rad(-40), math.rad(60), math.rad(-80)), Time = 0.17},
+		{CFrame = CFrame.new(0, 0, -1) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 0.23}
+	},
+	['Tenacity'] = {
+		{CFrame = CFrame.new(0.9, 0, 0) * CFrame.Angles(math.rad(-80), math.rad(60), math.rad(-40)), Time = 0.2},
+		{CFrame = CFrame.new(0.5, -0.2, -0.7) * CFrame.Angles(math.rad(-150), math.rad(55), math.rad(20)), Time = 0.2}
+	},
+	['Custom+'] = {
+		{CFrame = CFrame.new(0.39, 1, 0.2) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.13},
+		{CFrame = CFrame.new(0.39, 1, 0.2) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.03},
+		{CFrame = CFrame.new(0.7, 0.1, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.09},
+		{CFrame = CFrame.new(0.7, 0.1, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.05},
+		{CFrame = CFrame.new(0.39, 0.1, 1.37) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.13}
+	},
+	['FastslowBETTER'] = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(295), math.rad(55), math.rad(290)), Time = 0.8},
+		{CFrame = CFrame.new(0.69, -0.71, 0.6) * CFrame.Angles(math.rad(200), math.rad(60), math.rad(1)), Time = 0.01}
 	},
 	['Pushdown'] = {
 		{CFrame = CFrame.new(1, 0, 0) * CFrame.Angles(math.rad(-40), math.rad(40), math.rad(-80)), Time = 0.12},
@@ -275,7 +325,7 @@ vape.Libraries.auraanims = {
 		{CFrame = CFrame.new(0, 0, -1) * CFrame.Angles(math.rad(-40), math.rad(60), math.rad(-80)), Time = 0.17},
 		{CFrame = CFrame.new(0, 0, -1) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 0.17}
 	},
-	["Myau Bad"] = {
+	["Opai Bad"] = {
 		{CFrame = CFrame.new(0.3, -0.8, -1.3) * CFrame.Angles(math.rad(160), math.rad(84), math.rad(90)), Time = 0.48},
 		{CFrame = CFrame.new(0.3, -0.9, -1.17) * CFrame.Angles(math.rad(160), math.rad(70), math.rad(90)), Time = 0.33},
 		{CFrame = CFrame.new(0.4, -0.65, -0.8) * CFrame.Angles(math.rad(160), math.rad(111), math.rad(90)), Time = 0.33}
@@ -362,7 +412,7 @@ run(function()
 		if ent.NPC then return true end
 		if isFriend(ent.Player) then return false end
 		if not select(2, whitelist:get(ent.Player)) then return false end
-		if vape.Categories.Main.Options['Teams by server'].Enabled then
+		if Opai.Categories.Main.Options['Teams by server'].Enabled then
 			if not lplr.Team then return true end
 			if not ent.Player.Team then return true end
 			if ent.Player.Team ~= lplr.Team then return true end
@@ -373,21 +423,21 @@ run(function()
 
 	entitylib.getEntityColor = function(ent)
 		ent = ent.Player
-		if not (ent and vape.Categories.Main.Options['Use team color'].Enabled) then return end
+		if not (ent and Opai.Categories.Main.Options['Use team color'].Enabled) then return end
 		if isFriend(ent, true) then
-			return Color3.fromHSV(vape.Categories.Friends.Options['Friends color'].Hue, vape.Categories.Friends.Options['Friends color'].Sat, vape.Categories.Friends.Options['Friends color'].Value)
+			return Color3.fromHSV(Opai.Categories.Friends.Options['Friends color'].Hue, Opai.Categories.Friends.Options['Friends color'].Sat, Opai.Categories.Friends.Options['Friends color'].Value)
 		end
 		return tostring(ent.TeamColor) ~= 'White' and ent.TeamColor.Color or nil
 	end
 
-	vape:Clean(function()
+	Opai:Clean(function()
 		entitylib.kill()
 		entitylib = nil
 	end)
-	vape:Clean(vape.Categories.Friends.Update.Event:Connect(function() entitylib.refresh() end))
-	vape:Clean(vape.Categories.Targets.Update.Event:Connect(function() entitylib.refresh() end))
-	vape:Clean(entitylib.Events.LocalAdded:Connect(updateVelocity))
-	vape:Clean(workspace:GetPropertyChangedSignal('CurrentCamera'):Connect(function()
+	Opai:Clean(Opai.Categories.Friends.Update.Event:Connect(function() entitylib.refresh() end))
+	Opai:Clean(Opai.Categories.Targets.Update.Event:Connect(function() entitylib.refresh() end))
+	Opai:Clean(entitylib.Events.LocalAdded:Connect(updateVelocity))
+	Opai:Clean(workspace:GetPropertyChangedSignal('CurrentCamera'):Connect(function()
 		gameCamera = workspace.CurrentCamera or workspace:FindFirstChildWhichIsA('Camera')
 	end))
 end)
@@ -433,9 +483,9 @@ run(function()
 			self.alreadychecked[v.UserId] = true
 			self:hook()
 			if self.localprio == 0 then
-				olduninject = vape.Uninject
-				vape.Uninject = function()
-					notif('Vape', 'No escaping the private members :)', 10)
+				olduninject = Opai.Uninject
+				Opai.Uninject = function()
+					notif('Opai', 'No escaping the private members :)', 10)
 				end
 				if joined then
 					task.wait(10)
@@ -459,9 +509,9 @@ run(function()
 
 		if self.localprio > 0 and not self.said[plr.Name] and msg == 'helloimusinginhaler' and plr ~= lplr then
 			self.said[plr.Name] = true
-			notif('Vape', plr.Name..' is using vape!', 60)
+			notif('Opai', plr.Name..' is using Opai!', 60)
 			self.customtags[plr.Name] = {{
-				text = 'VAPE USER',
+				text = 'Opai USER',
 				color = Color3.new(1, 1, 0)
 			}}
 			local newent = entitylib.getEntity(plr)
@@ -518,7 +568,7 @@ run(function()
 			return oldchat(data, ...)
 		end)
 
-		vape:Clean(function()
+		Opai:Clean(function()
 			hookfunction(func, oldchat)
 		end)
 	end
@@ -530,7 +580,7 @@ run(function()
 		local exp = coreGui:FindFirstChild('ExperienceChat')
 		if textChatService.ChatVersion == Enum.ChatVersion.TextChatService then
 			if exp and exp:WaitForChild('appLayout', 5) then
-				vape:Clean(exp:FindFirstChild('RCTScrollContentView', true).ChildAdded:Connect(function(obj)
+				Opai:Clean(exp:FindFirstChild('RCTScrollContentView', true).ChildAdded:Connect(function(obj)
 					local plr = playersService:GetPlayerByUserId(tonumber(obj.Name:split('-')[1]) or 0)
 					obj = obj:FindFirstChild('TextMessage', true)
 					if obj and obj:IsA('TextLabel') then
@@ -567,7 +617,7 @@ run(function()
 		if exp then
 			local bubblechat = exp:WaitForChild('bubbleChat', 5)
 			if bubblechat then
-				vape:Clean(bubblechat.DescendantAdded:Connect(function(newbubble)
+				Opai:Clean(bubblechat.DescendantAdded:Connect(function(newbubble)
 					if newbubble:IsA('TextLabel') and newbubble.Text:find('helloimusinginhaler') then
 						newbubble.Parent.Parent.Visible = false
 					end
@@ -591,7 +641,7 @@ run(function()
 
 		if not first or whitelist.textdata ~= whitelist.olddata then
 			if not first then
-				whitelist.olddata = isfile('myau/profiles/whitelist.json') and readfile('myau/profiles/whitelist.json') or nil
+				whitelist.olddata = isfile('Opai/profiles/whitelist.json') and readfile('Opai/profiles/whitelist.json') or nil
 			end
 
 			local suc, res = pcall(function()
@@ -613,14 +663,14 @@ run(function()
 				whitelist.connection = playersService.PlayerAdded:Connect(function(v)
 					whitelist:playeradded(v, true)
 				end)
-				vape:Clean(whitelist.connection)
+				Opai:Clean(whitelist.connection)
 			end
 
 			for _, v in playersService:GetPlayers() do
 				whitelist:playeradded(v)
 			end
 
-			if entitylib.Running and vape.Loaded then
+			if entitylib.Running and Opai.Loaded then
 				entitylib.refresh()
 			end
 
@@ -631,19 +681,19 @@ run(function()
 
 					if table.find(targets, tostring(lplr.UserId)) then
 						local hint = Instance.new('Hint')
-						hint.Text = 'VAPE ANNOUNCEMENT: '..whitelist.data.Announcement.text
+						hint.Text = 'Opai ANNOUNCEMENT: '..whitelist.data.Announcement.text
 						hint.Parent = workspace
 						game:GetService('Debris'):AddItem(hint, 20)
 					end
 				end
 				whitelist.olddata = whitelist.textdata
 				pcall(function()
-					writefile('myau/profiles/whitelist.json', whitelist.textdata)
+					writefile('Opai/profiles/whitelist.json', whitelist.textdata)
 				end)
 			end
 
-			if whitelist.data.KillVape then
-				vape:Uninject()
+			if whitelist.data.KillOpai then
+				Opai:Uninject()
 				return true
 			end
 
@@ -657,7 +707,7 @@ run(function()
 	whitelist.commands = {
 		byfron = function()
 			task.spawn(function()
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				local UIBlox = getrenv().require(game:GetService('CorePackages').UIBlox)
@@ -670,7 +720,7 @@ run(function()
 				local tLocalization = getrenv().require(game:GetService('CorePackages').Workspace.Packages.RobloxAppLocales).Localization
 				local localProvider = getrenv().require(game:GetService('CorePackages').Workspace.Packages.Localization).LocalizationProvider
 				lplr.PlayerGui:ClearAllChildren()
-				vape.gui.Enabled = false
+				Opai.gui.Enabled = false
 				coreGui:ClearAllChildren()
 				lightingService:ClearAllChildren()
 				for _, v in workspace:GetChildren() do
@@ -695,7 +745,7 @@ run(function()
 				task.delay(0.6, function()
 					local modPrompt = Roact.createElement(auth, {
 						style = {},
-						screenSize = vape.gui.AbsoluteSize or Vector2.new(1920, 1080),
+						screenSize = Opai.gui.AbsoluteSize or Vector2.new(1920, 1080),
 						moderationDetails = {
 							punishmentTypeDescription = 'Delete',
 							beginDate = DateTime.fromUnixTimestampMillis(DateTime.now().UnixTimestampMillis - ((60 * math.random(1, 6)) * 1000)):ToIsoDate(),
@@ -784,13 +834,13 @@ run(function()
 		toggle = function(args)
 			if #args < 1 then return end
 			if args[1]:lower() == 'all' then
-				for i, v in vape.Modules do
+				for i, v in Opai.Modules do
 					if i ~= 'Panic' and i ~= 'ServerHop' and i ~= 'Rejoin' then
 						v:Toggle()
 					end
 				end
 			else
-				for i, v in vape.Modules do
+				for i, v in Opai.Modules do
 					if i:lower() == args[1]:lower() then
 						v:Toggle()
 						break
@@ -808,12 +858,12 @@ run(function()
 		end,
 		uninject = function()
 			if olduninject then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
-				olduninject(vape)
+				olduninject(Opai)
 			else
-				vape:Uninject()
+				Opai:Uninject()
 			end
 		end,
 		void = function()
@@ -827,10 +877,10 @@ run(function()
 		repeat
 			if whitelist:update(whitelist.loaded) then return end
 			task.wait(10)
-		until vape.Loaded == nil
+		until Opai.Loaded == nil
 	end)
 
-	vape:Clean(function()
+	Opai:Clean(function()
 		table.clear(whitelist.commands)
 		table.clear(whitelist.data)
 		table.clear(whitelist)
@@ -858,7 +908,7 @@ run(function()
 		return num
 	end
 	
-	AimAssist = vape.Categories.Combat:CreateModule({
+	AimAssist = Opai.Categories.Combat:CreateModule({
 		Name = 'AimAssist',
 		Function = function(callback)
 			if CircleObject then
@@ -872,7 +922,7 @@ run(function()
 						CircleObject.Position = inputService:GetMouseLocation()
 					end
 	
-					if rightClicked and not vape.gui.ScaledGui.ClickGui.Visible then
+					if rightClicked and not Opai.gui.ScaledGui.ClickGui.Visible then
 						ent = entitylib.EntityMouse({
 							Range = FOV.Value,
 							Part = Part.Value,
@@ -950,7 +1000,7 @@ run(function()
 				CircleObject = Drawing.new('Circle')
 				CircleObject.Filled = CircleFilled.Enabled
 				CircleObject.Color = Color3.fromHSV(CircleColor.Hue, CircleColor.Sat, CircleColor.Value)
-				CircleObject.Position = vape.gui.AbsoluteSize / 2
+				CircleObject.Position = Opai.gui.AbsoluteSize / 2
 				CircleObject.Radius = FOV.Value
 				CircleObject.NumSides = 100
 				CircleObject.Transparency = 1 - CircleTransparency.Value
@@ -1019,7 +1069,7 @@ run(function()
 	local Mode
 	local CPS
 	
-	AutoClicker = vape.Categories.Combat:CreateModule({
+	AutoClicker = Opai.Categories.Combat:CreateModule({
 		Name = 'AutoClicker',
 		Function = function(callback)
 			if callback then
@@ -1031,7 +1081,7 @@ run(function()
 						end
 					else
 						if mouse1click and (isrbxactive or iswindowactive)() then
-							if not vape.gui.ScaledGui.ClickGui.Visible then
+							if not Opai.gui.ScaledGui.ClickGui.Visible then
 								(Mode.Value == 'Click' and mouse1click or mouse2click)()
 							end
 						end
@@ -1067,7 +1117,7 @@ run(function()
 	Overlay.FilterType = Enum.RaycastFilterType.Include
 	local modified = {}
 	
-	Reach = vape.Categories.Combat:CreateModule({
+	Reach = Opai.Categories.Combat:CreateModule({
 		Name = 'Reach',
 		Function = function(callback)
 			if callback then
@@ -1244,7 +1294,7 @@ run(function()
 	Hooks.FindPartOnRay = Hooks.FindPartOnRayWithIgnoreList
 	Hooks.ViewportPointToRay = Hooks.ScreenPointToRay
 
-	SilentAim = vape.Categories.Combat:CreateModule({
+	SilentAim = Opai.Categories.Combat:CreateModule({
 		Name = 'SilentAim',
 		Function = function(callback)
 			if CircleObject then
@@ -1450,7 +1500,7 @@ run(function()
 				CircleObject = Drawing.new('Circle')
 				CircleObject.Filled = CircleFilled.Enabled
 				CircleObject.Color = Color3.fromHSV(CircleColor.Hue, CircleColor.Sat, CircleColor.Value)
-				CircleObject.Position = vape.gui.AbsoluteSize / 2
+				CircleObject.Position = Opai.gui.AbsoluteSize / 2
 				CircleObject.Radius = Range.Value
 				CircleObject.NumSides = 100
 				CircleObject.Transparency = 1 - CircleTransparency.Value
@@ -1550,7 +1600,7 @@ run(function()
 		end
 	end
 	
-	TriggerBot = vape.Categories.Combat:CreateModule({
+	TriggerBot = Opai.Categories.Combat:CreateModule({
 		Name = 'TriggerBot',
 		Function = function(callback)
 			if callback then
@@ -1621,7 +1671,7 @@ run(function()
 	rayCheck.RespectCanCollide = true
 	local part
 	
-	AntiFall = vape.Categories.Blatant:CreateModule({
+	AntiFall = Opai.Categories.Blatant:CreateModule({
 		Name = 'AntiFall',
 		Function = function(callback)
 			if callback then
@@ -1769,7 +1819,7 @@ run(function()
 		end
 	end
 	
-	HighJump = vape.Categories.Blatant:CreateModule({
+	HighJump = Opai.Categories.Blatant:CreateModule({
 		Name = 'HighJump',
 		Function = function(callback)
 			if callback then
@@ -1817,7 +1867,7 @@ run(function()
 	local Expand
 	local modified = {}
 	
-	HitBoxes = vape.Categories.Blatant:CreateModule({
+	HitBoxes = Opai.Categories.Blatant:CreateModule({
 		Name = 'HitBoxes',
 		Function = function(callback)
 			if callback then
@@ -1960,7 +2010,7 @@ run(function()
 		end
 	end
 	
-	Invisible = vape.Categories.Blatant:CreateModule({
+	Invisible = Opai.Categories.Blatant:CreateModule({
 		Name = 'Invisible',
 		Function = function(callback)
 			if callback then
@@ -2027,7 +2077,7 @@ run(function()
 	local Value
 	local AutoDisable
 	
-	LongJump = vape.Categories.Blatant:CreateModule({
+	LongJump = Opai.Categories.Blatant:CreateModule({
 		Name = 'LongJump',
 		Function = function(callback)
 			if callback then
@@ -2107,7 +2157,7 @@ run(function()
 		return returned
 	end
 	
-	MouseTP = vape.Categories.Blatant:CreateModule({
+	MouseTP = Opai.Categories.Blatant:CreateModule({
 		Name = 'MouseTP',
 		Function = function(callback)
 			if callback then
@@ -2290,7 +2340,7 @@ run(function()
 	}
 	Functions.Motor = Functions.CFrame
 	
-	Phase = vape.Categories.Blatant:CreateModule({
+	Phase = Opai.Categories.Blatant:CreateModule({
 		Name = 'Phase',
 		Function = function(callback)
 			if callback then
@@ -2357,7 +2407,7 @@ run(function()
 	local AutoJumpValue
 	local w, s, a, d = 0, 0, 0, 0
 	
-	Speed = vape.Categories.Blatant:CreateModule({
+	Speed = Opai.Categories.Blatant:CreateModule({
 		Name = 'Speed',
 		Function = function(callback)
 			frictionTable.Speed = callback and CustomProperties.Enabled or nil
@@ -2525,7 +2575,7 @@ run(function()
 	rayCheck.RespectCanCollide = true
 	local Active, Truss
 	
-	Spider = vape.Categories.Blatant:CreateModule({
+	Spider = Opai.Categories.Blatant:CreateModule({
 		Name = 'Spider',
 		Function = function(callback)
 			if callback then
@@ -2620,107 +2670,8 @@ run(function()
 	})
 end)
 	
-run(function()
-	local SpinBot
-	local Mode
-	local XToggle
-	local YToggle
-	local ZToggle
-	local Value
-	local AngularVelocity
+
 	
-	SpinBot = vape.Categories.Blatant:CreateModule({
-		Name = 'SpinBot',
-		Function = function(callback)
-			if callback then
-				SpinBot:Clean(runService.PreSimulation:Connect(function()
-					if entitylib.isAlive then
-						if Mode.Value == 'RotVelocity' then
-							local originalRotVelocity = entitylib.character.RootPart.RotVelocity
-							entitylib.character.Humanoid.AutoRotate = false
-							entitylib.character.RootPart.RotVelocity = Vector3.new(XToggle.Enabled and Value.Value or originalRotVelocity.X, YToggle.Enabled and Value.Value or originalRotVelocity.Y, ZToggle.Enabled and Value.Value or originalRotVelocity.Z)
-						elseif Mode.Value == 'CFrame' then
-							local val = math.rad((tick() * (20 * Value.Value)) % 360)
-							local x, y, z = entitylib.character.RootPart.CFrame:ToOrientation()
-							entitylib.character.RootPart.CFrame = CFrame.new(entitylib.character.RootPart.Position) * CFrame.Angles(XToggle.Enabled and val or x, YToggle.Enabled and val or y, ZToggle.Enabled and val or z)
-						elseif AngularVelocity then
-							AngularVelocity.Parent = entitylib.isAlive and entitylib.character.RootPart
-							AngularVelocity.MaxTorque = Vector3.new(XToggle.Enabled and math.huge or 0, YToggle.Enabled and math.huge or 0, ZToggle.Enabled and math.huge or 0)
-							AngularVelocity.AngularVelocity = Vector3.new(Value.Value, Value.Value, Value.Value)
-						end
-					end
-				end))
-			else
-				if entitylib.isAlive and Mode.Value == 'RotVelocity' then
-					entitylib.character.Humanoid.AutoRotate = true
-				end
-				if AngularVelocity then
-					AngularVelocity.Parent = nil
-				end
-			end
-		end,
-		Tooltip = 'Makes your character spin around in circles (does not work in first person)'
-	})
-	Mode = SpinBot:CreateDropdown({
-		Name = 'Mode',
-		List = {'CFrame', 'RotVelocity', 'BodyMover'},
-		Function = function(val)
-			if AngularVelocity then
-				AngularVelocity:Destroy()
-				AngularVelocity = nil
-			end
-			AngularVelocity = val == 'BodyMover' and Instance.new('BodyAngularVelocity') or nil
-		end
-	})
-	Value = SpinBot:CreateSlider({
-		Name = 'Speed',
-		Min = 1,
-		Max = 100,
-		Default = 40
-	})
-	XToggle = SpinBot:CreateToggle({Name = 'Spin X'})
-	YToggle = SpinBot:CreateToggle({
-		Name = 'Spin Y',
-		Default = true
-	})
-	ZToggle = SpinBot:CreateToggle({Name = 'Spin Z'})
-end)
-	
-run(function()
-	local Swim
-	local terrain = cloneref(workspace:FindFirstChildWhichIsA('Terrain'))
-	local lastpos = Region3.new(Vector3.zero, Vector3.zero)
-	
-	Swim = vape.Categories.Blatant:CreateModule({
-		Name = 'Swim',
-		Function = function(callback)
-			if callback then
-				Swim:Clean(runService.PreSimulation:Connect(function(dt)
-					if entitylib.isAlive then
-						local root = entitylib.character.RootPart
-						local moving = entitylib.character.Humanoid.MoveDirection ~= Vector3.zero
-						local rootvelo = root.Velocity
-						local space = inputService:IsKeyDown(Enum.KeyCode.Space)
-	
-						if terrain then
-							local factor = (moving or space) and Vector3.new(6, 6, 6) or Vector3.new(2, 1, 2)
-							local pos = root.Position - Vector3.new(0, 1, 0)
-							local newpos = Region3.new(pos - factor, pos + factor):ExpandToGrid(4)
-							terrain:ReplaceMaterial(lastpos, 4, Enum.Material.Water, Enum.Material.Air)
-							terrain:FillRegion(newpos, 4, Enum.Material.Water)
-							lastpos = newpos
-						end
-					end
-				end))
-			else
-				if terrain and lastpos then
-					terrain:ReplaceMaterial(lastpos, 4, Enum.Material.Water, Enum.Material.Air)
-				end
-			end
-		end,
-		Tooltip = 'Lets you swim midair'
-	})
-end)
 	
 run(function()
 	local TargetStrafe
@@ -2732,7 +2683,7 @@ run(function()
 	rayCheck.RespectCanCollide = true
 	local module, old
 	
-	TargetStrafe = vape.Categories.Blatant:CreateModule({
+	TargetStrafe = Opai.Categories.Blatant:CreateModule({
 		Name = 'TargetStrafe',
 		Function = function(callback)
 			if callback then
@@ -2744,7 +2695,7 @@ run(function()
 				end
 				
 				old = module.moveFunction
-				local flymod, ang, oldent = vape.Modules.Fly or {Enabled = false}
+				local flymod, ang, oldent = Opai.Modules.Fly or {Enabled = false}
 				module.moveFunction = function(self, vec, face)
 					local wallcheck = Targets.Walls.Enabled
 					local ent = not inputService:IsKeyDown(Enum.KeyCode.S) and entitylib.EntityPosition({
@@ -2845,7 +2796,7 @@ run(function()
 	local Timer
 	local Value
 	
-	Timer = vape.Categories.Blatant:CreateModule({
+	Timer = Opai.Categories.Blatant:CreateModule({
 		Name = 'Timer',
 		Function = function(callback)
 			if callback then
@@ -2870,144 +2821,6 @@ run(function()
 	})
 end)
 	
-run(function()
-	local Arrows
-	local Targets
-	local Color
-	local Teammates
-	local Distance
-	local DistanceLimit
-	local Reference = {}
-	local Folder = Instance.new('Folder')
-	Folder.Parent = vape.gui
-	
-	local function Added(ent)
-		if not Targets.Players.Enabled and ent.Player then return end
-		if not Targets.NPCs.Enabled and ent.NPC then return end
-		if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) and (not ent.Friend) then return end
-		if vape.ThreadFix then
-			setthreadidentity(8)
-		end
-	
-		local arrow = Instance.new('ImageLabel')
-		arrow.Size = UDim2.fromOffset(256, 256)
-		arrow.Position = UDim2.fromScale(0.5, 0.5)
-		arrow.AnchorPoint = Vector2.new(0.5, 0.5)
-		arrow.BackgroundTransparency = 1
-		arrow.BorderSizePixel = 0
-		arrow.Visible = false
-		arrow.Image = getcustomasset('myau/assets/new/arrowmodule.png')
-		arrow.ImageColor3 = entitylib.getEntityColor(ent) or Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-		arrow.Parent = Folder
-		Reference[ent] = arrow
-	end
-	
-	local function Removed(ent)
-		local v = Reference[ent]
-		if v then
-			if vape.ThreadFix then
-				setthreadidentity(8)
-			end
-			Reference[ent] = nil
-			v:Destroy()
-		end
-	end
-	
-	local function ColorFunc(hue, sat, val)
-		local color = Color3.fromHSV(hue, sat, val)
-		for ent, EntityArrow in Reference do
-			EntityArrow.ImageColor3 = entitylib.getEntityColor(ent) or color
-		end
-	end
-	
-	local function Loop()
-		for ent, arrow in Reference do
-			if Distance.Enabled then
-				local distance = entitylib.isAlive and (entitylib.character.RootPart.Position - ent.RootPart.Position).Magnitude or math.huge
-				if distance < DistanceLimit.ValueMin or distance > DistanceLimit.ValueMax then
-					arrow.Visible = false
-					continue
-				end
-			end
-	
-			local _, rootVis = gameCamera:WorldToScreenPoint(ent.RootPart.Position)
-			arrow.Visible = not rootVis
-			if rootVis then continue end
-	
-			local dir = CFrame.lookAlong(gameCamera.CFrame.Position, gameCamera.CFrame.LookVector * Vector3.new(1, 0, 1)):PointToObjectSpace(ent.RootPart.Position)
-			arrow.Rotation = math.deg(math.atan2(dir.Z, dir.X))
-		end
-	end
-	
-	Arrows = vape.Categories.Render:CreateModule({
-		Name = 'Arrows',
-		Function = function(callback)
-			if callback then
-				Arrows:Clean(entitylib.Events.EntityRemoved:Connect(Removed))
-				for _, v in entitylib.List do
-					if Reference[v] then Removed(v) end
-					Added(v)
-				end
-				Arrows:Clean(entitylib.Events.EntityAdded:Connect(function(ent)
-					if Reference[ent] then Removed(ent) end
-					Added(ent)
-				end))
-				Arrows:Clean(vape.Categories.Friends.ColorUpdate.Event:Connect(function()
-					ColorFunc(Color.Hue, Color.Sat, Color.Value)
-				end))
-				Arrows:Clean(runService.RenderStepped:Connect(Loop))
-			else
-				for i in Reference do
-					Removed(i)
-				end
-			end
-		end,
-		Tooltip = 'Draws arrows on screen when entities\nare out of your field of view.'
-	})
-	Targets = Arrows:CreateTargets({
-		Players = true,
-		Function = function()
-			if Arrows.Enabled then
-				Arrows:Toggle()
-				Arrows:Toggle()
-			end
-		end
-	})
-	Color = Arrows:CreateColorSlider({
-		Name = 'Player Color',
-		Function = function(hue, sat, val)
-			if Arrows.Enabled then
-				ColorFunc(hue, sat, val)
-			end
-		end,
-	})
-	Teammates = Arrows:CreateToggle({
-		Name = 'Priority Only',
-		Function = function()
-			if Arrows.Enabled then
-				Arrows:Toggle()
-				Arrows:Toggle()
-			end
-		end,
-		Default = true,
-		Tooltip = 'Hides teammates & non targetable entities'
-	})
-	Distance = Arrows:CreateToggle({
-		Name = 'Distance Check',
-		Function = function(callback)
-			DistanceLimit.Object.Visible = callback
-		end
-	})
-	DistanceLimit = Arrows:CreateTwoSlider({
-		Name = 'Player Distance',
-		Min = 0,
-		Max = 256,
-		DefaultMin = 0,
-		DefaultMax = 64,
-		Darker = true,
-		Visible = false
-	})
-end)
 	
 run(function()
 	local Chams
@@ -3021,13 +2834,13 @@ run(function()
 	local Walls
 	local Reference = {}
 	local Folder = Instance.new('Folder')
-	Folder.Parent = vape.gui
+	Folder.Parent = Opai.gui
 	
 	local function Added(ent)
 		if not Targets.Players.Enabled and ent.Player then return end
 		if not Targets.NPCs.Enabled and ent.NPC then return end
 		if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-		if vape.ThreadFix then
+		if Opai.ThreadFix then
 			setthreadidentity(8)
 		end
 	
@@ -3066,7 +2879,7 @@ run(function()
 	
 	local function Removed(ent)
 		if Reference[ent] then
-			if vape.ThreadFix then
+			if Opai.ThreadFix then
 				setthreadidentity(8)
 			end
 			if type(Reference[ent]) == 'table' then
@@ -3081,7 +2894,7 @@ run(function()
 		end
 	end
 	
-	Chams = vape.Categories.Render:CreateModule({
+	Chams = Opai.Categories.Render:CreateModule({
 		Name = 'Chams',
 		Function = function(callback)
 			if callback then
@@ -3092,7 +2905,7 @@ run(function()
 					end
 					Added(ent)
 				end))
-				Chams:Clean(vape.Categories.Friends.ColorUpdate.Event:Connect(function()
+				Chams:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
 					for i, v in Reference do
 						local color = entitylib.getEntityColor(i) or Color3.fromHSV(FillColor.Hue, FillColor.Sat, FillColor.Value)
 						if type(v) == 'table' then
@@ -3248,7 +3061,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if vape.ThreadFix then
+			if Opai.ThreadFix then
 				setthreadidentity(8)
 			end
 			local EntityESP = {}
@@ -3314,7 +3127,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if vape.ThreadFix then
+			if Opai.ThreadFix then
 				setthreadidentity(8)
 			end
 			local EntityESP = {}
@@ -3343,7 +3156,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if vape.ThreadFix then
+			if Opai.ThreadFix then
 				setthreadidentity(8)
 			end
 			local EntityESP = {}
@@ -3371,7 +3184,7 @@ run(function()
 		Drawing2D = function(ent)
 			local EntityESP = Reference[ent]
 			if EntityESP then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				Reference[ent] = nil
@@ -3391,7 +3204,7 @@ run(function()
 		Drawing2D = function(ent)
 			local EntityESP = Reference[ent]
 			if EntityESP then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				
@@ -3588,7 +3401,7 @@ run(function()
 		end
 	}
 	
-	ESP = vape.Categories.Render:CreateModule({
+	ESP = Opai.Categories.Render:CreateModule({
 		Name = 'ESP',
 		Function = function(callback)
 			if callback then
@@ -3617,7 +3430,7 @@ run(function()
 					end
 				end
 				if ColorFunc[methodused] then
-					ESP:Clean(vape.Categories.Friends.ColorUpdate.Event:Connect(function()
+					ESP:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
 						ColorFunc[methodused](Color.Hue, Color.Sat, Color.Value)
 					end))
 				end
@@ -3760,260 +3573,6 @@ run(function()
 end)
 	
 run(function()
-	local GamingChair = {Enabled = false}
-	local Color
-	local wheelpositions = {
-		Vector3.new(-0.8, -0.6, -0.18),
-		Vector3.new(0.1, -0.6, -0.88),
-		Vector3.new(0, -0.6, 0.7)
-	}
-	local chairhighlight
-	local currenttween
-	local movingsound
-	local flyingsound
-	local chairanim
-	local chair
-	
-	GamingChair = vape.Categories.Render:CreateModule({
-		Name = 'GamingChair',
-		Function = function(callback)
-			if callback then
-				if vape.ThreadFix then
-					setthreadidentity(8)
-				end
-				chair = Instance.new('MeshPart')
-				chair.Color = Color3.fromRGB(21, 21, 21)
-				chair.Size = Vector3.new(2.16, 3.6, 2.3) / Vector3.new(12.37, 20.636, 13.071)
-				chair.CanCollide = false
-				chair.Massless = true
-				chair.MeshId = 'rbxassetid://12972961089'
-				chair.Material = Enum.Material.SmoothPlastic
-				chair.Parent = workspace
-				movingsound = Instance.new('Sound')
-				--movingsound.SoundId = downloadVapeAsset('vape/assets/ChairRolling.mp3')
-				movingsound.Volume = 0.4
-				movingsound.Looped = true
-				movingsound.Parent = workspace
-				flyingsound = Instance.new('Sound')
-				--flyingsound.SoundId = downloadVapeAsset('vape/assets/ChairFlying.mp3')
-				flyingsound.Volume = 0.4
-				flyingsound.Looped = true
-				flyingsound.Parent = workspace
-				local chairweld = Instance.new('WeldConstraint')
-				chairweld.Part0 = chair
-				chairweld.Parent = chair
-				if entitylib.isAlive then
-					chair.CFrame = entitylib.character.RootPart.CFrame * CFrame.Angles(0, math.rad(-90), 0)
-					chairweld.Part1 = entitylib.character.RootPart
-				end
-				chairhighlight = Instance.new('Highlight')
-				chairhighlight.FillTransparency = 1
-				chairhighlight.OutlineColor = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-				chairhighlight.DepthMode = Enum.HighlightDepthMode.Occluded
-				chairhighlight.OutlineTransparency = 0.2
-				chairhighlight.Parent = chair
-				local chairarms = Instance.new('MeshPart')
-				chairarms.Color = chair.Color
-				chairarms.Size = Vector3.new(1.39, 1.345, 2.75) / Vector3.new(97.13, 136.216, 234.031)
-				chairarms.CFrame = chair.CFrame * CFrame.new(-0.169, -1.129, -0.013)
-				chairarms.MeshId = 'rbxassetid://12972673898'
-				chairarms.CanCollide = false
-				chairarms.Parent = chair
-				local chairarmsweld = Instance.new('WeldConstraint')
-				chairarmsweld.Part0 = chairarms
-				chairarmsweld.Part1 = chair
-				chairarmsweld.Parent = chair
-				local chairlegs = Instance.new('MeshPart')
-				chairlegs.Color = chair.Color
-				chairlegs.Name = 'Legs'
-				chairlegs.Size = Vector3.new(1.8, 1.2, 1.8) / Vector3.new(10.432, 8.105, 9.488)
-				chairlegs.CFrame = chair.CFrame * CFrame.new(0.047, -2.324, 0)
-				chairlegs.MeshId = 'rbxassetid://13003181606'
-				chairlegs.CanCollide = false
-				chairlegs.Parent = chair
-				local chairfan = Instance.new('MeshPart')
-				chairfan.Color = chair.Color
-				chairfan.Name = 'Fan'
-				chairfan.Size = Vector3.zero
-				chairfan.CFrame = chair.CFrame * CFrame.new(0, -1.873, 0)
-				chairfan.MeshId = 'rbxassetid://13004977292'
-				chairfan.CanCollide = false
-				chairfan.Parent = chair
-				local trails = {}
-				for _, v in wheelpositions do
-					local attachment = Instance.new('Attachment')
-					attachment.Position = v
-					attachment.Parent = chairlegs
-					local attachment2 = Instance.new('Attachment')
-					attachment2.Position = v + Vector3.new(0, 0, 0.18)
-					attachment2.Parent = chairlegs
-					local trail = Instance.new('Trail')
-					trail.Texture = 'http://www.roblox.com/asset/?id=13005168530'
-					trail.TextureMode = Enum.TextureMode.Static
-					trail.Transparency = NumberSequence.new(0.5)
-					trail.Color = ColorSequence.new(Color3.new(0.5, 0.5, 0.5))
-					trail.Attachment0 = attachment
-					trail.Attachment1 = attachment2
-					trail.Lifetime = 20
-					trail.MaxLength = 60
-					trail.MinLength = 0.1
-					trail.Parent = chairlegs
-					table.insert(trails, trail)
-				end
-				GamingChair:Clean(chair)
-				GamingChair:Clean(movingsound)
-				GamingChair:Clean(flyingsound)
-				chairanim = {Stop = function() end}
-				local oldmoving = false
-				local oldflying = false
-				repeat
-					if entitylib.isAlive and entitylib.character.Humanoid.Health > 0 then
-						if not chairanim.IsPlaying then
-							local temp2 = Instance.new('Animation')
-							temp2.AnimationId = entitylib.character.Humanoid.RigType == Enum.HumanoidRigType.R15 and 'http://www.roblox.com/asset/?id=2506281703' or 'http://www.roblox.com/asset/?id=178130996'
-							chairanim = entitylib.character.Humanoid:LoadAnimation(temp2)
-							chairanim.Priority = Enum.AnimationPriority.Movement
-							chairanim.Looped = true
-							chairanim:Play()
-						end
-						chair.CFrame = entitylib.character.RootPart.CFrame * CFrame.Angles(0, math.rad(-90), 0)
-						chairweld.Part1 = entitylib.character.RootPart
-						chairlegs.Velocity = Vector3.zero
-						chairlegs.CFrame = chair.CFrame * CFrame.new(0.047, -2.324, 0)
-						chairfan.Velocity = Vector3.zero
-						chairfan.CFrame = chair.CFrame * CFrame.new(0.047, -1.873, 0) * CFrame.Angles(0, math.rad(tick() * 180 % 360), math.rad(180))
-						local moving = entitylib.character.Humanoid:GetState() == Enum.HumanoidStateType.Running and entitylib.character.Humanoid.MoveDirection ~= Vector3.zero
-						local flying = vape.Modules.Fly and vape.Modules.Fly.Enabled or vape.Modules.LongJump and vape.Modules.LongJump.Enabled or vape.Modules.InfiniteFly and vape.Modules.InfiniteFly.Enabled
-						if movingsound.TimePosition > 1.9 then
-							movingsound.TimePosition = 0.2
-						end
-						movingsound.PlaybackSpeed = (entitylib.character.RootPart.Velocity * Vector3.new(1, 0, 1)).Magnitude / 16
-						for _, v in trails do
-							v.Enabled = not flying and moving
-							v.Color = ColorSequence.new(movingsound.PlaybackSpeed > 1.5 and Color3.new(1, 0.5, 0) or Color3.new())
-						end
-						if moving ~= oldmoving then
-							if movingsound.IsPlaying then
-								if not moving then
-									movingsound:Stop()
-								end
-							else
-								if not flying and moving then
-									movingsound:Play()
-								end
-							end
-							oldmoving = moving
-						end
-						if flying ~= oldflying then
-							if flying then
-								if movingsound.IsPlaying then
-									movingsound:Stop()
-								end
-								if not flyingsound.IsPlaying then
-									flyingsound:Play()
-								end
-								if currenttween then
-									currenttween:Cancel()
-								end
-								tween = tweenService:Create(chairlegs, TweenInfo.new(0.15), {
-									Size = Vector3.zero
-								})
-								tween.Completed:Connect(function(state)
-									if state == Enum.PlaybackState.Completed then
-										chairfan.Transparency = 0
-										chairlegs.Transparency = 1
-										tween = tweenService:Create(chairfan, TweenInfo.new(0.15), {
-											Size = Vector3.new(1.534, 0.328, 1.537) / Vector3.new(791.138, 168.824, 792.027)
-										})
-										tween:Play()
-									end
-								end)
-								tween:Play()
-							else
-								if flyingsound.IsPlaying then
-									flyingsound:Stop()
-								end
-								if not movingsound.IsPlaying and moving then
-									movingsound:Play()
-								end
-								if currenttween then currenttween:Cancel() end
-								tween = tweenService:Create(chairfan, TweenInfo.new(0.15), {
-									Size = Vector3.zero
-								})
-								tween.Completed:Connect(function(state)
-									if state == Enum.PlaybackState.Completed then
-										chairfan.Transparency = 1
-										chairlegs.Transparency = 0
-										tween = tweenService:Create(chairlegs, TweenInfo.new(0.15), {
-											Size = Vector3.new(1.8, 1.2, 1.8) / Vector3.new(10.432, 8.105, 9.488)
-										})
-										tween:Play()
-									end
-								end)
-								tween:Play()
-							end
-							oldflying = flying
-						end
-					else
-						chair.Anchored = true
-						chairlegs.Anchored = true
-						chairfan.Anchored = true
-						repeat task.wait() until entitylib.isAlive and entitylib.character.Humanoid.Health > 0
-						chair.Anchored = false
-						chairlegs.Anchored = false
-						chairfan.Anchored = false
-						chairanim:Stop()
-					end
-					task.wait()
-				until not GamingChair.Enabled
-			else
-				if chairanim then
-					chairanim:Stop()
-				end
-			end
-		end,
-		Tooltip = 'Sit in the best gaming chair known to mankind.'
-	})
-	Color = GamingChair:CreateColorSlider({
-		Name = 'Color',
-		Function = function(h, s, v)
-			if chairhighlight then
-				chairhighlight.OutlineColor = Color3.fromHSV(h, s, v)
-			end
-		end
-	})
-end)
-	
-run(function()
-	local Health
-	
-	Health = vape.Categories.Render:CreateModule({
-		Name = 'Health',
-		Function = function(callback)
-			if callback then
-				local label = Instance.new('TextLabel')
-				label.Size = UDim2.fromOffset(100, 20)
-				label.Position = UDim2.new(0.5, 6, 0.5, 30)
-				label.AnchorPoint = Vector2.new(0.5, 0)
-				label.BackgroundTransparency = 1
-				label.Text = '100 ❤️'
-				label.TextSize = 18
-				label.Font = Enum.Font.Arial
-				label.Parent = vape.gui
-				Health:Clean(label)
-				
-				repeat
-					label.Text = entitylib.isAlive and math.round(entitylib.character.Humanoid.Health)..' ❤️' or ''
-					label.TextColor3 = entitylib.isAlive and Color3.fromHSV((entitylib.character.Humanoid.Health / entitylib.character.Humanoid.MaxHealth) / 2.8, 0.86, 1) or Color3.new()
-					task.wait()
-				until not Health.Enabled
-			end
-		end,
-		Tooltip = 'Displays your health in the center of your screen.'
-	})
-end)
-	
-run(function()
 	local NameTags
 	local Targets
 	local Color
@@ -4029,7 +3588,7 @@ run(function()
 	local DistanceLimit
 	local Strings, Sizes, Reference = {}, {}, {}
 	local Folder = Instance.new('Folder')
-	Folder.Parent = vape.gui
+	Folder.Parent = Opai.gui
 	local methodused
 	
 	local Added = {
@@ -4037,7 +3596,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if vape.ThreadFix then
+			if Opai.ThreadFix then
 				setthreadidentity(8)
 			end
 	
@@ -4105,7 +3664,7 @@ run(function()
 		Normal = function(ent)
 			local v = Reference[ent]
 			if v then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				Reference[ent] = nil
@@ -4117,7 +3676,7 @@ run(function()
 		Drawing = function(ent)
 			local v = Reference[ent]
 			if v then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				Reference[ent] = nil
@@ -4137,7 +3696,7 @@ run(function()
 		Normal = function(ent)
 			local nametag = Reference[ent]
 			if nametag then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				Sizes[ent] = nil
@@ -4160,7 +3719,7 @@ run(function()
 		Drawing = function(ent)
 			local nametag = Reference[ent]
 			if nametag then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				Sizes[ent] = nil
@@ -4259,7 +3818,7 @@ run(function()
 		end
 	}
 	
-	NameTags = vape.Categories.Render:CreateModule({
+	NameTags = Opai.Categories.Render:CreateModule({
 		Name = 'NameTags',
 		Function = function(callback)
 			if callback then
@@ -4288,7 +3847,7 @@ run(function()
 					end
 				end
 				if ColorFunc[methodused] then
-					NameTags:Clean(vape.Categories.Friends.ColorUpdate.Event:Connect(function()
+					NameTags:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
 						ColorFunc[methodused](Color.Hue, Color.Sat, Color.Value)
 					end))
 				end
@@ -4423,126 +3982,6 @@ run(function()
 	})
 end)
 	
-run(function()
-	local PlayerModel
-	local Scale
-	local Local
-	local Mesh
-	local Texture
-	local Rots = {}
-	local models = {}
-	
-	local function addMesh(ent)
-		if vape.ThreadFix then 
-			setthreadidentity(8)
-		end
-		local root = ent.RootPart
-		local part = Instance.new('Part')
-		part.Size = Vector3.new(3, 3, 3)
-		part.CFrame = root.CFrame * CFrame.Angles(math.rad(Rots[1].Value), math.rad(Rots[2].Value), math.rad(Rots[3].Value))
-		part.CanCollide = false
-		part.CanQuery = false
-		part.Massless = true
-		part.Parent = workspace
-		local meshd = Instance.new('SpecialMesh')
-		meshd.MeshId = Mesh.Value
-		meshd.TextureId = Texture.Value
-		meshd.Scale = Vector3.one * Scale.Value
-		meshd.Parent = part
-		local weld = Instance.new('WeldConstraint')
-		weld.Part0 = part
-		weld.Part1 = root
-		weld.Parent = part
-		models[root] = part
-	end
-	
-	local function removeMesh(ent)
-		if models[ent.RootPart] then 
-			models[ent.RootPart]:Destroy()
-			models[ent.RootPart] = nil
-		end
-	end
-	
-	PlayerModel = vape.Categories.Render:CreateModule({
-		Name = 'PlayerModel',
-		Function = function(callback)
-			if callback then 
-				if Local.Enabled then 
-					PlayerModel:Clean(entitylib.Events.LocalAdded:Connect(addMesh))
-					PlayerModel:Clean(entitylib.Events.LocalRemoved:Connect(removeMesh))
-					if entitylib.isAlive then 
-						task.spawn(addMesh, entitylib.character)
-					end
-				end
-				PlayerModel:Clean(entitylib.Events.EntityAdded:Connect(addMesh))
-				PlayerModel:Clean(entitylib.Events.EntityRemoved:Connect(removeMesh))
-				for _, ent in entitylib.List do 
-					task.spawn(addMesh, ent)
-				end
-			else
-				for _, part in models do 
-					part:Destroy()
-				end
-				table.clear(models)
-			end
-		end,
-		Tooltip = 'Change the player models to a Mesh'
-	})
-	Scale = PlayerModel:CreateSlider({
-		Name = 'Scale',
-		Min = 0,
-		Max = 2,
-		Default = 1,
-		Decimal = 100,
-		Function = function(val)
-			for _, part in models do 
-				part.Mesh.Scale = Vector3.one * val
-			end
-		end
-	})
-	for _, name in {'Rotation X', 'Rotation Y', 'Rotation Z'} do 
-		table.insert(Rots, PlayerModel:CreateSlider({
-			Name = name,
-			Min = 0,
-			Max = 360,
-			Function = function(val)
-				for root, part in models do 
-					part.WeldConstraint.Enabled = false
-					part.CFrame = root.CFrame * CFrame.Angles(math.rad(Rots[1].Value), math.rad(Rots[2].Value), math.rad(Rots[3].Value))
-					part.WeldConstraint.Enabled = true
-				end
-			end
-		}))
-	end
-	Local = PlayerModel:CreateToggle({
-		Name = 'Local',
-		Function = function()
-			if PlayerModel.Enabled then 
-				PlayerModel:Toggle()
-				PlayerModel:Toggle()
-			end
-		end
-	})
-	Mesh = PlayerModel:CreateTextBox({
-		Name = 'Mesh',
-		Placeholder = 'mesh id',
-		Function = function()
-			for _, part in models do 
-				part.Mesh.MeshId = Mesh.Value
-			end
-		end
-	})
-	Texture = PlayerModel:CreateTextBox({
-		Name = 'Texture',
-		Placeholder = 'texture id',
-		Function = function()
-			for _, part in models do 
-				part.Mesh.TextureId = Texture.Value
-			end
-		end
-	})
-	
-end)
 	
 run(function()
 	local Radar
@@ -4557,7 +3996,7 @@ run(function()
 		if not Targets.Players.Enabled and ent.Player then return end
 		if not Targets.NPCs.Enabled and ent.NPC then return end
 		if (not ent.Targetable) and (not ent.Friend) then return end
-		if vape.ThreadFix then
+		if Opai.ThreadFix then
 			setthreadidentity(8)
 		end
 	
@@ -4580,7 +4019,7 @@ run(function()
 	local function Removed(ent)
 		local v = Reference[ent]
 		if v then
-			if vape.ThreadFix then
+			if Opai.ThreadFix then
 				setthreadidentity(8)
 			end
 			Reference[ent] = nil
@@ -4588,9 +4027,9 @@ run(function()
 		end
 	end
 	
-	Radar = vape:CreateOverlay({
+	Radar = Opai:CreateOverlay({
 		Name = 'Radar',
-		Icon = getcustomasset('myau/assets/new/radaricon.png'),
+		Icon = getcustomasset('Opai/assets/new/radaricon.png'),
 		Size = UDim2.fromOffset(14, 14),
 		Position = UDim2.fromOffset(12, 13),
 		Function = function(callback)
@@ -4608,7 +4047,7 @@ run(function()
 					end
 					Added(ent)
 				end))
-				Radar:Clean(vape.Categories.Friends.ColorUpdate.Event:Connect(function()
+				Radar:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
 					for ent, dot in Reference do
 						dot.BackgroundColor3 = entitylib.getEntityColor(ent) or Color3.fromHSV(PlayerColor.Hue, PlayerColor.Sat, PlayerColor.Value)
 					end
@@ -4718,81 +4157,6 @@ run(function()
 	})
 end)
 	
-run(function()
-	local Search
-	local List
-	local Color
-	local FillTransparency
-	local Reference = {}
-	local Folder = Instance.new('Folder')
-	Folder.Parent = vape.gui
-	
-	local function Add(v)
-		if not table.find(List.ListEnabled, v.Name) then return end
-		if v:IsA('BasePart') or v:IsA('Model') then
-			local box = Instance.new('BoxHandleAdornment')
-			box.AlwaysOnTop = true
-			box.Adornee = v
-			box.Size = v:IsA('Model') and v:GetExtentsSize() or v.Size
-			box.ZIndex = 0
-			box.Transparency = FillTransparency.Value
-			box.Color3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-			box.Parent = Folder
-			Reference[v] = box
-		end
-	end
-	
-	Search = vape.Categories.Render:CreateModule({
-		Name = 'Search',
-		Function = function(callback)
-			if callback then
-				Search:Clean(workspace.DescendantAdded:Connect(Add))
-				Search:Clean(workspace.DescendantRemoving:Connect(function(v)
-					if Reference[v] then
-						Reference[v]:Destroy()
-						Reference[v] = nil
-					end
-				end))
-				
-				for _, v in workspace:GetDescendants() do
-					Add(v)
-				end
-			else
-				Folder:ClearAllChildren()
-				table.clear(Reference)
-			end
-		end,
-		Tooltip = 'Draws box around selected parts\nAdd parts in Search frame'
-	})
-	List = Search:CreateTextList({
-		Name = 'Parts',
-		Function = function()
-			if Search.Enabled then
-				Search:Toggle()
-				Search:Toggle()
-			end
-		end
-	})
-	Color = Search:CreateColorSlider({
-		Name = 'Color',
-		Function = function(hue, sat, val)
-			for _, v in Reference do
-				v.Color3 = Color3.fromHSV(hue, sat, val)
-			end
-		end
-	})
-	FillTransparency = Search:CreateSlider({
-		Name = 'Transparency',
-		Min = 0,
-		Max = 1,
-		Function = function(val)
-			for _, v in Reference do
-				v.Transparency = val
-			end
-		end,
-		Decimal = 10
-	})
-end)
 	
 run(function()
 	local SessionInfo
@@ -4808,9 +4172,9 @@ run(function()
 	local infolabel
 	local infostroke
 	
-	SessionInfo = vape:CreateOverlay({
+	SessionInfo = Opai:CreateOverlay({
 		Name = 'Session Info',
-		Icon = getcustomasset('myau/assets/new/textguiicon.png'),
+		Icon = getcustomasset('Opai/assets/new/textguiicon.png'),
 		Size = UDim2.fromOffset(16, 12),
 		Position = UDim2.fromOffset(12, 14),
 		Function = function(callback)
@@ -4819,26 +4183,26 @@ run(function()
 				SessionInfo:Clean(playersService.LocalPlayer.OnTeleport:Connect(function()
 					if not teleportedServers then
 						teleportedServers = true
-						queue_on_teleport("shared.vapesessioninfo = '"..httpService:JSONEncode(vape.Libraries.sessioninfo.Objects).."'")
+						queue_on_teleport("shared.Opaisessioninfo = '"..httpService:JSONEncode(Opai.Libraries.sessioninfo.Objects).."'")
 					end
 				end))
 	
-				if shared.vapesessioninfo then
-					for i, v in httpService:JSONDecode(shared.vapesessioninfo) do
-						if vape.Libraries.sessioninfo.Objects[i] and v.Saved then
-							vape.Libraries.sessioninfo.Objects[i].Value = v.Value
+				if shared.Opaisessioninfo then
+					for i, v in httpService:JSONDecode(shared.Opaisessioninfo) do
+						if Opai.Libraries.sessioninfo.Objects[i] and v.Saved then
+							Opai.Libraries.sessioninfo.Objects[i].Value = v.Value
 						end
 					end
 				end
 	
 				repeat
-					if vape.Libraries.sessioninfo then
+					if Opai.Libraries.sessioninfo then
 						local stuff = {''}
 						if Title.Enabled then
 							stuff[1] = TitleOffset.Enabled and '<b>Session Info</b>\n<font size="4"> </font>' or '<b>Session Info</b>'
 						end
 	
-						for i, v in vape.Libraries.sessioninfo.Objects do
+						for i, v in Opai.Libraries.sessioninfo.Objects do
 							stuff[v.Index] = not table.find(Hide.ListEnabled, i) and i..': '..v.Function(v.Value) or false
 						end
 	
@@ -4879,8 +4243,8 @@ run(function()
 	Hide = SessionInfo:CreateTextList({
 		Name = 'Blacklist',
 		Tooltip = 'Name of entry to hide.',
-		Icon = getcustomasset('myau/assets/new/blockedicon.png'),
-		Tab = getcustomasset('myau/assets/new/blockedtab.png'),
+		Icon = getcustomasset('Opai/assets/new/blockedicon.png'),
+		Tab = getcustomasset('Opai/assets/new/blockedtab.png'),
 		TabSize = UDim2.fromOffset(21, 16),
 		Color = Color3.fromRGB(250, 50, 56)
 	})
@@ -4944,11 +4308,11 @@ run(function()
 	infoholder.BackgroundColor3 = Color3.new()
 	infoholder.BackgroundTransparency = 0.5
 	infoholder.Parent = SessionInfo.Children
-	vape:Clean(SessionInfo.Children:GetPropertyChangedSignal('AbsolutePosition'):Connect(function()
-		if vape.ThreadFix then
+	Opai:Clean(SessionInfo.Children:GetPropertyChangedSignal('AbsolutePosition'):Connect(function()
+		if Opai.ThreadFix then
 			setthreadidentity(8)
 		end
-		local newside = SessionInfo.Children.AbsolutePosition.X > (vape.gui.AbsoluteSize.X / 2)
+		local newside = SessionInfo.Children.AbsolutePosition.X > (Opai.gui.AbsoluteSize.X / 2)
 		infoholder.Position = UDim2.fromScale(newside and 1 or 0, 0)
 		infoholder.AnchorPoint = Vector2.new(newside and 1 or 0, 0)
 	end))
@@ -4973,7 +4337,7 @@ run(function()
 	infostroke.Color = Color3.fromHSV(0.44, 1, 1)
 	infostroke.Parent = infoholder
 	addBlur(infoholder)
-	vape.Libraries.sessioninfo = {
+	Opai.Libraries.sessioninfo = {
 		Objects = {},
 		AddItem = function(self, name, startvalue, func, saved)
 			func, saved = func or function(val) return val end, saved == nil or saved
@@ -4988,318 +4352,13 @@ run(function()
 			}
 		end
 	}
-	vape.Libraries.sessioninfo:AddItem('Time Played', os.clock(), function(value)
+	Opai.Libraries.sessioninfo:AddItem('Time Played', os.clock(), function(value)
 		return os.date('!%X', math.floor(os.clock() - value))
 	end)
 end)
 	
-run(function()
-	local Tracers
-	local Targets
-	local Color
-	local Transparency
-	local StartPosition
-	local EndPosition
-	local Teammates
-	local DistanceColor
-	local Distance
-	local DistanceLimit
-	local Behind
-	local Reference = {}
+
 	
-	local function Added(ent)
-		if not Targets.Players.Enabled and ent.Player then return end
-		if not Targets.NPCs.Enabled and ent.NPC then return end
-		if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-		if vape.ThreadFix then
-			setthreadidentity(8)
-		end
-	
-		local EntityTracer = Drawing.new('Line')
-		EntityTracer.Thickness = 1
-		EntityTracer.Transparency = 1 - Transparency.Value
-		EntityTracer.Color = entitylib.getEntityColor(ent) or Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-		Reference[ent] = EntityTracer
-	end
-	
-	local function Removed(ent)
-		local v = Reference[ent]
-		if v then
-			if vape.ThreadFix then
-				setthreadidentity(8)
-			end
-			Reference[ent] = nil
-			pcall(function()
-				v.Visible = false
-				v:Remove()
-			end)
-		end
-	end
-	
-	local function ColorFunc(hue, sat, val)
-		if DistanceColor.Enabled then return end
-		local tracerColor = Color3.fromHSV(hue, sat, val)
-		for ent, EntityTracer in Reference do
-			EntityTracer.Color = entitylib.getEntityColor(ent) or tracerColor
-		end
-	end
-	
-	local function Loop()
-		local screenSize = vape.gui.AbsoluteSize
-		local startVector = StartPosition.Value == 'Mouse' and inputService:GetMouseLocation() or Vector2.new(screenSize.X / 2, (StartPosition.Value == 'Middle' and screenSize.Y / 2 or screenSize.Y))
-	
-		for ent, EntityTracer in Reference do
-			local distance = entitylib.isAlive and (entitylib.character.RootPart.Position - ent.RootPart.Position).Magnitude
-			if Distance.Enabled and distance then
-				if distance < DistanceLimit.ValueMin or distance > DistanceLimit.ValueMax then
-					EntityTracer.Visible = false
-					continue
-				end
-			end
-	
-			local pos = ent[EndPosition.Value == 'Torso' and 'RootPart' or 'Head'].Position
-			local rootPos, rootVis = gameCamera:WorldToViewportPoint(pos)
-			if not rootVis and Behind.Enabled then
-				local tempPos = gameCamera.CFrame:PointToObjectSpace(pos)
-				tempPos = CFrame.Angles(0, 0, (math.atan2(tempPos.Y, tempPos.X) + math.pi)):VectorToWorldSpace((CFrame.Angles(0, math.rad(89.9), 0):VectorToWorldSpace(Vector3.new(0, 0, -1))))
-				rootPos = gameCamera:WorldToViewportPoint(gameCamera.CFrame:pointToWorldSpace(tempPos))
-				rootVis = true
-			end
-	
-			local endVector = Vector2.new(rootPos.X, rootPos.Y)
-			EntityTracer.Visible = rootVis
-			EntityTracer.From = startVector
-			EntityTracer.To = endVector
-			if DistanceColor.Enabled and distance then
-				EntityTracer.Color = Color3.fromHSV(math.min((distance / 128) / 2.8, 0.4), 0.89, 0.75)
-			end
-		end
-	end
-	
-	Tracers = vape.Categories.Render:CreateModule({
-		Name = 'Tracers',
-		Function = function(callback)
-			if callback then
-				Tracers:Clean(entitylib.Events.EntityRemoved:Connect(Removed))
-				for _, v in entitylib.List do
-					if Reference[v] then
-						Removed(v)
-					end
-					Added(v)
-				end
-				Tracers:Clean(entitylib.Events.EntityAdded:Connect(function(ent)
-					if Reference[ent] then
-						Removed(ent)
-					end
-					Added(ent)
-				end))
-				Tracers:Clean(vape.Categories.Friends.ColorUpdate.Event:Connect(function()
-					ColorFunc(Color.Hue, Color.Sat, Color.Value)
-				end))
-				Tracers:Clean(runService.RenderStepped:Connect(Loop))
-			else
-				for i in Reference do
-					Removed(i)
-				end
-			end
-		end,
-		Tooltip = 'Renders tracers on players.'
-	})
-	Targets = Tracers:CreateTargets({
-		Players = true,
-		Function = function()
-			if Tracers.Enabled then
-				Tracers:Toggle()
-				Tracers:Toggle()
-			end
-		end
-	})
-	StartPosition = Tracers:CreateDropdown({
-		Name = 'Start Position',
-		List = {'Middle', 'Bottom', 'Mouse'},
-		Function = function()
-			if Tracers.Enabled then
-				Tracers:Toggle()
-				Tracers:Toggle()
-			end
-		end
-	})
-	EndPosition = Tracers:CreateDropdown({
-		Name = 'End Position',
-		List = {'Head', 'Torso'},
-		Function = function()
-			if Tracers.Enabled then
-				Tracers:Toggle()
-				Tracers:Toggle()
-			end
-		end
-	})
-	Color = Tracers:CreateColorSlider({
-		Name = 'Player Color',
-		Function = function(hue, sat, val)
-			if Tracers.Enabled then
-				ColorFunc(hue, sat, val)
-			end
-		end
-	})
-	Transparency = Tracers:CreateSlider({
-		Name = 'Transparency',
-		Min = 0,
-		Max = 1,
-		Function = function(val)
-			for _, tracer in Reference do
-				tracer.Transparency = 1 - val
-			end
-		end,
-		Decimal = 10
-	})
-	DistanceColor = Tracers:CreateToggle({
-		Name = 'Color by distance',
-		Function = function()
-			if Tracers.Enabled then
-				Tracers:Toggle()
-				Tracers:Toggle()
-			end
-		end
-	})
-	Distance = Tracers:CreateToggle({
-		Name = 'Distance Check',
-		Function = function(callback)
-			DistanceLimit.Object.Visible = callback
-		end
-	})
-	DistanceLimit = Tracers:CreateTwoSlider({
-		Name = 'Player Distance',
-		Min = 0,
-		Max = 256,
-		DefaultMin = 0,
-		DefaultMax = 64,
-		Darker = true,
-		Visible = false
-	})
-	Behind = Tracers:CreateToggle({
-		Name = 'Behind',
-		Default = true
-	})
-	Teammates = Tracers:CreateToggle({
-		Name = 'Priority Only',
-		Function = function()
-			if Tracers.Enabled then
-				Tracers:Toggle()
-				Tracers:Toggle()
-			end
-		end,
-		Default = true,
-		Tooltip = 'Hides teammates & non targetable entities'
-	})
-end)
-	
-run(function()
-	local Waypoints
-	local FontOption
-	local List
-	local Color
-	local Scale
-	local Background
-	WaypointFolder = Instance.new('Folder')
-	WaypointFolder.Parent = vape.gui
-	
-	Waypoints = vape.Categories.Render:CreateModule({
-		Name = 'Waypoints',
-		Function = function(callback)
-			if callback then
-				for _, v in List.ListEnabled do
-					local split = v:split('/')
-					local tagSize = getfontsize(removeTags(split[2]), 14 * Scale.Value, FontOption.Value, Vector2.new(100000, 100000))
-					local billboard = Instance.new('BillboardGui')
-					billboard.Size = UDim2.fromOffset(tagSize.X + 8, tagSize.Y + 7)
-					billboard.StudsOffsetWorldSpace = Vector3.new(unpack(split[1]:split(',')))
-					billboard.AlwaysOnTop = true
-					billboard.Parent = WaypointFolder
-					local tag = Instance.new('TextLabel')
-					tag.BackgroundColor3 = Color3.new()
-					tag.BorderSizePixel = 0
-					tag.Visible = true
-					tag.RichText = true
-					tag.FontFace = FontOption.Value
-					tag.TextSize = 14 * Scale.Value
-					tag.BackgroundTransparency = Background.Value
-					tag.Size = billboard.Size
-					tag.Text = split[2]
-					tag.TextColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-					tag.Parent = billboard
-				end
-			else
-				WaypointFolder:ClearAllChildren()
-			end
-		end,
-		Tooltip = 'Mark certain spots with a visual indicator'
-	})
-	FontOption = Waypoints:CreateFont({
-		Name = 'Font',
-		Blacklist = 'Arial',
-		Function = function()
-			if Waypoints.Enabled then
-				Waypoints:Toggle()
-				Waypoints:Toggle()
-			end
-		end,
-	})
-	List = Waypoints:CreateTextList({
-		Name = 'Points',
-		Placeholder = 'x, y, z/name',
-		Function = function()
-			if Waypoints.Enabled then
-				Waypoints:Toggle()
-				Waypoints:Toggle()
-			end
-		end
-	})
-	Waypoints:CreateButton({
-		Name = 'Add current position',
-		Function = function()
-			if entitylib.isAlive then
-				local pos = entitylib.character.RootPart.Position // 1
-				List:ChangeValue(pos.X..','..pos.Y..','..pos.Z..'/Waypoint '..(#List.List + 1))
-			end
-		end
-	})
-	Color = Waypoints:CreateColorSlider({
-		Name = 'Color',
-		Function = function(hue, sat, val)
-			for _, v in WaypointFolder:GetChildren() do
-				v.TextLabel.TextColor3 = Color3.fromHSV(hue, sat, val)
-			end
-		end
-	})
-	Scale = Waypoints:CreateSlider({
-		Name = 'Scale',
-		Function = function()
-			if Waypoints.Enabled then
-				Waypoints:Toggle()
-				Waypoints:Toggle()
-			end
-		end,
-		Default = 1,
-		Min = 0.1,
-		Max = 1.5,
-		Decimal = 10
-	})
-	Background = Waypoints:CreateSlider({
-		Name = 'Transparency',
-		Function = function()
-			if Waypoints.Enabled then
-				Waypoints:Toggle()
-				Waypoints:Toggle()
-			end
-		end,
-		Default = 0.5,
-		Min = 0,
-		Max = 1,
-		Decimal = 10
-	})
-	
-end)
 	
 run(function()
 	local AnimationPlayer
@@ -5334,7 +4393,7 @@ run(function()
 		end
 	end
 	
-	AnimationPlayer = vape.Categories.Utility:CreateModule({
+	AnimationPlayer = Opai.Categories.Utility:CreateModule({
 		Name = 'AnimationPlayer',
 		Function = function(callback)
 			if callback then
@@ -5398,7 +4457,7 @@ end)
 run(function()
 	local AntiRagdoll
 	
-	AntiRagdoll = vape.Categories.Utility:CreateModule({
+	AntiRagdoll = Opai.Categories.Utility:CreateModule({
 		Name = 'AntiRagdoll',
 		Function = function(callback)
 			if entitylib.isAlive then
@@ -5419,7 +4478,7 @@ run(function()
 	local AutoRejoin
 	local Sort
 	
-	AutoRejoin = vape.Categories.Utility:CreateModule({
+	AutoRejoin = Opai.Categories.Utility:CreateModule({
 		Name = 'AutoRejoin',
 		Function = function(callback)
 			if callback then
@@ -5441,156 +4500,6 @@ run(function()
 	})
 end)
 	
-run(function()
-	local Blink
-	local Type
-	local AutoSend
-	local AutoSendLength
-	local oldphys, oldsend
-	
-	Blink = vape.Categories.Utility:CreateModule({
-		Name = 'Blink',
-		Function = function(callback)
-			if callback then
-				local teleported
-				Blink:Clean(lplr.OnTeleport:Connect(function()
-					setfflag('PhysicsSenderMaxBandwidthBps', '38760')
-					setfflag('DataSenderRate', '60')
-					teleported = true
-				end))
-	
-				repeat
-					local physicsrate, senderrate = '0', Type.Value == 'All' and '-1' or '60'
-					if AutoSend.Enabled and tick() % (AutoSendLength.Value + 0.1) > AutoSendLength.Value then
-						physicsrate, senderrate = '38760', '60'
-					end
-	
-					if physicsrate ~= oldphys or senderrate ~= oldsend then
-						setfflag('PhysicsSenderMaxBandwidthBps', physicsrate)
-						setfflag('DataSenderRate', senderrate)
-						oldphys, oldsend = physicsrate, senderrate
-					end
-	
-					task.wait(0.03)
-				until (not Blink.Enabled and not teleported)
-			else
-				if setfflag then
-					setfflag('PhysicsSenderMaxBandwidthBps', '38760')
-					setfflag('DataSenderRate', '60')
-				end
-				oldphys, oldsend = nil, nil
-			end
-		end,
-		Tooltip = 'Chokes packets until disabled.'
-	})
-	Type = Blink:CreateDropdown({
-		Name = 'Type',
-		List = {'Movement Only', 'All'},
-		Tooltip = 'Movement Only - Only chokes movement packets\nAll - Chokes remotes & movement'
-	})
-	AutoSend = Blink:CreateToggle({
-		Name = 'Auto send',
-		Function = function(callback)
-			AutoSendLength.Object.Visible = callback
-		end,
-		Tooltip = 'Automatically send packets in intervals'
-	})
-	AutoSendLength = Blink:CreateSlider({
-		Name = 'Send threshold',
-		Min = 0,
-		Max = 1,
-		Decimal = 100,
-		Darker = true,
-		Visible = false,
-		Suffix = function(val)
-			return val == 1 and 'second' or 'seconds'
-		end
-	})
-end)
-	
-run(function()
-	local ChatSpammer
-	local Lines
-	local Mode
-	local Delay
-	local Hide
-	local oldchat
-	
-	ChatSpammer = vape.Categories.Utility:CreateModule({
-		Name = 'ChatSpammer',
-		Function = function(callback)
-			if callback then
-				if textChatService.ChatVersion == Enum.ChatVersion.TextChatService then
-					if Hide.Enabled and coreGui:FindFirstChild('ExperienceChat') then
-						ChatSpammer:Clean(coreGui.ExperienceChat:FindFirstChild('RCTScrollContentView', true).ChildAdded:Connect(function(msg)
-							if msg.Name:sub(1, 2) == '0-' and msg.ContentText == 'You must wait before sending another message.' then
-								msg.Visible = false
-							end
-						end))
-					end
-				elseif replicatedStorage:FindFirstChild('DefaultChatSystemChatEvents') then
-					if Hide.Enabled then
-						oldchat = hookfunction(getconnections(replicatedStorage.DefaultChatSystemChatEvents.OnNewSystemMessage.OnClientEvent)[1].Function, function(data, ...)
-							if data.Message:find('ChatFloodDetector') then return end
-							return oldchat(data, ...)
-						end)
-					end
-				else
-					notif('ChatSpammer', 'unsupported chat', 5, 'warning')
-					ChatSpammer:Toggle()
-					return
-				end
-				
-				local ind = 1
-				repeat
-					local message = (#Lines.ListEnabled > 0 and Lines.ListEnabled[math.random(1, #Lines.ListEnabled)] or 'vxpe on top')
-					if Mode.Value == 'Order' and #Lines.ListEnabled > 0 then
-						message = Lines.ListEnabled[ind] or Lines.ListEnabled[1]
-						ind = (ind % #Lines.ListEnabled) + 1
-					end
-	
-					if textChatService.ChatVersion == Enum.ChatVersion.TextChatService then
-						textChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(message)
-					else
-						replicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, 'All')
-					end
-	
-					task.wait(Delay.Value)
-				until not ChatSpammer.Enabled
-			else
-				if oldchat then
-					hookfunction(getconnections(replicatedStorage.DefaultChatSystemChatEvents.OnNewSystemMessage.OnClientEvent)[1].Function, oldchat)
-				end
-			end
-		end,
-		Tooltip = 'Automatically types in chat'
-	})
-	Lines = ChatSpammer:CreateTextList({Name = 'Lines'})
-	Mode = ChatSpammer:CreateDropdown({
-		Name = 'Mode',
-		List = {'Random', 'Order'}
-	})
-	Delay = ChatSpammer:CreateSlider({
-		Name = 'Delay',
-		Min = 0.1,
-		Max = 10,
-		Default = 1,
-		Decimal = 10,
-		Suffix = function(val)
-			return val == 1 and 'second' or 'seconds'
-		end
-	})
-	Hide = ChatSpammer:CreateToggle({
-		Name = 'Hide Flood Message',
-		Default = true,
-		Function = function()
-			if ChatSpammer.Enabled then
-				ChatSpammer:Toggle()
-				ChatSpammer:Toggle()
-			end
-		end
-	})
-end)
 	
 run(function()
 	local Disabler
@@ -5604,7 +4513,7 @@ run(function()
 		end
 	end
 	
-	Disabler = vape.Categories.Utility:CreateModule({
+	Disabler = Opai.Categories.Utility:CreateModule({
 		Name = 'Disabler',
 		Function = function(callback)
 			if callback then
@@ -5619,11 +4528,11 @@ run(function()
 end)
 	
 run(function()
-	vape.Categories.Utility:CreateModule({
+	Opai.Categories.Utility:CreateModule({
 		Name = 'Panic',
 		Function = function(callback)
 			if callback then
-				for _, v in vape.Modules do
+				for _, v in Opai.Modules do
 					if v.Enabled then
 						v:Toggle()
 					end
@@ -5637,7 +4546,7 @@ end)
 run(function()
 	local Rejoin
 	
-	Rejoin = vape.Categories.Utility:CreateModule({
+	Rejoin = Opai.Categories.Utility:CreateModule({
 		Name = 'Rejoin',
 		Function = function(callback)
 			if callback then
@@ -5658,7 +4567,7 @@ run(function()
 	local ServerHop
 	local Sort
 	
-	ServerHop = vape.Categories.Utility:CreateModule({
+	ServerHop = Opai.Categories.Utility:CreateModule({
 		Name = 'ServerHop',
 		Function = function(callback)
 			if callback then
@@ -5676,9 +4585,9 @@ run(function()
 	ServerHop:CreateButton({
 		Name = 'Rejoin Previous Server',
 		Function = function()
-			notif('ServerHop', shared.vapeserverhopprevious and 'Rejoining previous server...' or 'Cannot find previous server', 5)
-			if shared.vapeserverhopprevious then
-				teleportService:TeleportToPlaceInstance(game.PlaceId, shared.vapeserverhopprevious)
+			notif('ServerHop', shared.Opaiserverhopprevious and 'Rejoining previous server...' or 'Cannot find previous server', 5)
+			if shared.Opaiserverhopprevious then
+				teleportService:TeleportToPlaceInstance(game.PlaceId, shared.Opaiserverhopprevious)
 			end
 		end
 	})
@@ -5715,8 +4624,8 @@ run(function()
 	end
 	
 	local function playerAdded(plr)
-		if not vape.Loaded then
-			repeat task.wait() until vape.Loaded
+		if not Opai.Loaded then
+			repeat task.wait() until Opai.Loaded
 		end
 	
 		local user = table.find(Users.ListEnabled, tostring(plr.UserId))
@@ -5726,7 +4635,7 @@ run(function()
 	
 			if Mode.Value == 'Uninject' then
 				task.spawn(function()
-					vape:Uninject()
+					Opai:Uninject()
 				end)
 				game:GetService('StarterGui'):SetCore('SendNotification', {
 					Title = 'StaffDetector',
@@ -5736,14 +4645,14 @@ run(function()
 			elseif Mode.Value == 'ServerHop' then
 				serverHop()
 			elseif Mode.Value == 'Profile' then
-				vape.Save = function() end
-				if vape.Profile ~= Profile.Value then
-					vape.Profile = Profile.Value
-					vape:Load(true, Profile.Value)
+				Opai.Save = function() end
+				if Opai.Profile ~= Profile.Value then
+					Opai.Profile = Profile.Value
+					Opai:Load(true, Profile.Value)
 				end
 			elseif Mode.Value == 'AutoConfig' then
-				vape.Save = function() end
-				for _, v in vape.Modules do
+				Opai.Save = function() end
+				for _, v in Opai.Modules do
 					if v.Enabled then
 						v:Toggle()
 					end
@@ -5752,7 +4661,7 @@ run(function()
 		end
 	end
 	
-	StaffDetector = vape.Categories.Utility:CreateModule({
+	StaffDetector = Opai.Categories.Utility:CreateModule({
 		Name = 'StaffDetector',
 		Function = function(callback)
 			if callback then
@@ -5829,7 +4738,7 @@ end)
 run(function()
 	local connections = {}
 	
-	vape.Categories.World:CreateModule({
+	Opai.Categories.World:CreateModule({
 		Name = 'Anti-AFK',
 		Function = function(callback)
 			if callback then
@@ -5853,7 +4762,7 @@ run(function()
 	local Value
 	local randomkey, module, old = httpService:GenerateGUID(false)
 	
-	Freecam = vape.Categories.World:CreateModule({
+	Freecam = Opai.Categories.World:CreateModule({
 		Name = 'Freecam',
 		Function = function(callback)
 			if callback then
@@ -5926,7 +4835,7 @@ run(function()
 	local Value
 	local changed, old = false
 	
-	Gravity = vape.Categories.World:CreateModule({
+	Gravity = Opai.Categories.World:CreateModule({
 		Name = 'Gravity',
 		Function = function(callback)
 			if callback then
@@ -5984,7 +4893,7 @@ end)
 run(function()
 	local Parkour
 	
-	Parkour = vape.Categories.World:CreateModule({
+	Parkour = Opai.Categories.World:CreateModule({
 		Name = 'Parkour',
 		Function = function(callback)
 			if callback then 
@@ -6004,160 +4913,7 @@ run(function()
 	})
 end)
 	
-run(function()
-	local rayCheck = RaycastParams.new()
-	rayCheck.RespectCanCollide = true
-	local module, old
 	
-	vape.Categories.World:CreateModule({
-		Name = 'SafeWalk',
-		Function = function(callback)
-			if callback then
-				if not module then
-					local suc = pcall(function() 
-						module = require(lplr.PlayerScripts.PlayerModule).controls 
-					end)
-					if not suc then module = {} end
-				end
-				
-				old = module.moveFunction
-				module.moveFunction = function(self, vec, face)
-					if entitylib.isAlive then
-						rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
-						local root = entitylib.character.RootPart
-						local movedir = root.Position + vec
-						local ray = workspace:Raycast(movedir, Vector3.new(0, -15, 0), rayCheck)
-						if not ray then
-							local check = workspace:Blockcast(root.CFrame, Vector3.new(3, 1, 3), Vector3.new(0, -(entitylib.character.HipHeight + 1), 0), rayCheck)
-							if check then
-								vec = (check.Instance:GetClosestPointOnSurface(movedir) - root.Position) * Vector3.new(1, 0, 1)
-							end
-						end
-					end
-	
-					return old(self, vec, face)
-				end
-			else
-				if module and old then
-					module.moveFunction = old
-				end
-			end
-		end,
-		Tooltip = 'Prevents you from walking off the edge of parts'
-	})
-end)
-	
-run(function()
-	local Xray
-	local List
-	local modified = {}
-	
-	local function modifyPart(v)
-		if v:IsA('BasePart') and not table.find(List.ListEnabled, v.Name) then
-			modified[v] = true
-			v.LocalTransparencyModifier = 0.5
-		end
-	end
-	
-	Xray = vape.Categories.World:CreateModule({
-		Name = 'Xray',
-		Function = function(callback)
-			if callback then
-				Xray:Clean(workspace.DescendantAdded:Connect(modifyPart))
-				for _, v in workspace:GetDescendants() do
-					modifyPart(v)
-				end
-			else
-				for i in modified do
-					i.LocalTransparencyModifier = 0
-				end
-				table.clear(modified)
-			end
-		end,
-		Tooltip = 'Renders whitelisted parts through walls.'
-	})
-	List = Xray:CreateTextList({
-		Name = 'Part',
-		Function = function()
-			if Xray.Enabled then
-				Xray:Toggle()
-				Xray:Toggle()
-			end
-		end
-	})
-end)
-	
-run(function()
-	local MurderMystery
-	local murderer, sheriff, oldtargetable, oldgetcolor
-	
-	local function itemAdded(v, plr)
-		if v:IsA('Tool') then
-			local check = v:FindFirstChild('IsGun') and 'sheriff' or v:FindFirstChild('KnifeServer') and 'murderer' or nil
-			check = check or v.Name:lower():find('knife') and 'murderer' or v.Name:lower():find('gun') and 'sheriff' or nil
-			if check == 'murderer' and plr ~= murderer then
-				murderer = plr
-				if plr.Character then
-					entitylib.refresh()
-				end
-			elseif check == 'sheriff' and plr ~= sheriff then
-				sheriff = plr
-				if plr.Character then
-					entitylib.refresh()
-				end
-			end
-		end
-	end
-	
-	local function playerAdded(plr)
-		MurderMystery:Clean(plr.DescendantAdded:Connect(function(v)
-			itemAdded(v, plr)
-		end))
-		local pack = plr:FindFirstChildWhichIsA('Backpack')
-		if pack then
-			for _, v in pack:GetChildren() do
-				itemAdded(v, plr)
-			end
-		end
-		if plr.Character then
-			for _, v in plr.Character:GetChildren() do
-				itemAdded(v, plr)
-			end
-		end
-	end
-	
-	MurderMystery = vape.Categories.Minigames:CreateModule({
-		Name = 'MurderMystery',
-		Function = function(callback)
-			if callback then
-				oldtargetable, oldgetcolor = entitylib.targetCheck, entitylib.getEntityColor
-				entitylib.getEntityColor = function(ent)
-					ent = ent.Player
-					if not (ent and vape.Categories.Main.Options['Use team color'].Enabled) then return end
-					if isFriend(ent, true) then
-						return Color3.fromHSV(vape.Categories.Friends.Options['Friends color'].Hue, vape.Categories.Friends.Options['Friends color'].Sat, vape.Categories.Friends.Options['Friends color'].Value)
-					end
-					return murderer == ent and Color3.new(1, 0.3, 0.3) or sheriff == ent and Color3.new(0, 0.5, 1) or nil
-				end
-				entitylib.targetCheck = function(ent)
-					if ent.Player and isFriend(ent.Player) then return false end
-					if murderer == lplr then return true end
-					return murderer == ent.Player or sheriff == ent.Player
-				end
-				for _, v in playersService:GetPlayers() do
-					playerAdded(v)
-				end
-				MurderMystery:Clean(playersService.PlayerAdded:Connect(playerAdded))
-				entitylib.refresh()
-			else
-				entitylib.getEntityColor = oldgetcolor
-				entitylib.targetCheck = oldtargetable
-				entitylib.refresh()
-			end
-		end,
-		Tooltip = 'Automatic murder mystery teaming based on equipped roblox tools.'
-	})
-end)
 	
 run(function()
 	local Atmosphere: table = {["Enabled"] = false};
@@ -6553,7 +5309,7 @@ run(function()
 		end;
 	end;
 
-	Atmosphere = vape.Categories.Legit:CreateModule({
+	Atmosphere = Opai.Categories.Legit:CreateModule({
 		["Name"] = 'Atmosphere',
 		["Function"] = function(callback: boolean): void
 			if callback then
@@ -6723,7 +5479,7 @@ run(function()
 	local FadeOut
 	local trail, point, point2
 	
-	Breadcrumbs = vape.Categories.Legit:CreateModule({
+	Breadcrumbs = Opai.Categories.Legit:CreateModule({
 		Name = 'Breadcrumbs',
 		Function = function(callback)
 			if callback then
@@ -6827,10 +5583,10 @@ run(function()
 	local part: any, motor: any
 	local CapeMode: table = {["Value"] = "Velocity"}
 	local capeModeMap: table = {
-		["Myau White"] = "rbxassetid://85450512905266",
-		["Myau"] = "rbxassetid://111709330746110",
-		["Myau Blue"] = "rbxassetid://90725325121390",
-		["MyauV2"] = "rbxassetid://77929690129761",
+		["Opai White"] = "rbxassetid://85450512905266",
+		["Opai"] = "rbxassetid://111709330746110",
+		["Opai Blue"] = "rbxassetid://90725325121390",
+		["OpaiV2"] = "rbxassetid://77929690129761",
 	}
 	local function createMotor(char)
 		if motor then 
@@ -6846,7 +5602,7 @@ run(function()
 		motor.Parent = part
 	end
 	
-	Cape = vape.Categories.Legit:CreateModule({
+	Cape = Opai.Categories.Legit:CreateModule({
 		["Name"] = 'Cape',
 		["Function"] = function(callback: boolean): void
 			if callback then
@@ -6908,13 +5664,13 @@ run(function()
 	CapeMode = Cape:CreateDropdown({
 		["Name"] ='Mode',
 		["List"] = {
-			'MyauV2',
-			'Myau White',
-			'Myau',
-			'Myau Blue'
+			'OpaiV2',
+			'Opai White',
+			'Opai',
+			'Opai Blue'
 		},
 		["HoverText"] = 'A cape mod.',
-		["Value"] = 'Myau',
+		["Value"] = 'Opai',
 		["Function"] = function(val) 
 			if capeModeMap[val] then
                 		Texture["Value"] = capeModeMap[val]
@@ -6929,11 +5685,11 @@ run(function()
 	local Color
 	local hat
 	
-	ChinaHat = vape.Categories.Legit:CreateModule({
+	ChinaHat = Opai.Categories.Legit:CreateModule({
 		Name = 'China Hat',
 		Function = function(callback)
 			if callback then
-				if vape.ThreadFix then
+				if Opai.ThreadFix then
 					setthreadidentity(8)
 				end
 				hat = Instance.new('MeshPart')
@@ -7004,56 +5760,55 @@ run(function()
 end)
 	
 run(function()
-	local Clock
-	local TwentyFourHour
-	local label
-	
-	Clock = vape.Categories.Legit:CreateModule({
-		Name = 'Clock',
-		Function = function(callback)
-			if callback then
-				repeat
-					label.Text = DateTime.now():FormatLocalTime('LT', TwentyFourHour.Enabled and 'zh-cn' or 'en-us')
-					task.wait(1)
-				until not Clock.Enabled
+    local InfiniteJump
+    local Velocity
+    InfiniteJump = Opai.Categories.Blatant:CreateModule({
+        Name = "InfiniteJump",
+        Function = function(callback)
+            if callback then
+				InfiniteJump:Clean(inputService.InputBegan:Connect(function(input, gameProcessed)
+					if gameProcessed then return end
+					if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Space then
+						while inputService:IsKeyDown(Enum.KeyCode.Space) do
+							local PrimaryPart = lplr.Character.PrimaryPart
+							if entitylib.isAlive and PrimaryPart then
+								PrimaryPart.Velocity = vector.create(PrimaryPart.Velocity.X, Velocity.Value, PrimaryPart.Velocity.Z)
+							end
+							wait()
+						end
+					end
+				end))
+
+				if inputService.TouchEnabled then
+					local Jumping = false
+					local JumpButton = lplr.PlayerGui:WaitForChild("TouchGui"):WaitForChild("TouchControlFrame"):WaitForChild("JumpButton")
+					
+					InfiniteJump:Clean(JumpButton.MouseButton1Down:Connect(function()
+						Jumping = true
+					end))
+
+					InfiniteJump:Clean(JumpButton.MouseButton1Up:Connect(function()
+						Jumping = false
+					end))
+
+					InfiniteJump:Clean(runService.RenderStepped:Connect(function()
+						if Jumping and entitylib.isAlive then
+							local PrimaryPart = lplr.Character.PrimaryPart
+							PrimaryPart.Velocity = vector.create(PrimaryPart.Velocity.X, Velocity.Value, PrimaryPart.Velocity.Z)
+						end
+					end))
+				end
 			end
-		end,
-		Size = UDim2.fromOffset(100, 41),
-		Tooltip = 'Shows the current local time'
-	})
-	Clock:CreateFont({
-		Name = 'Font',
-		Blacklist = 'Gotham',
-		Function = function(val)
-			label.FontFace = val
-		end
-	})
-	Clock:CreateColorSlider({
-		Name = 'Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			label.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-			label.BackgroundTransparency = 1 - opacity
-		end
-	})
-	TwentyFourHour = Clock:CreateToggle({
-		Name = '24 Hour Clock'
-	})
-	label = Instance.new('TextLabel')
-	label.Size = UDim2.new(0, 100, 0, 41)
-	label.BackgroundTransparency = 0.5
-	label.TextSize = 15
-	label.Font = Enum.Font.Gotham
-	label.Text = '0:00 PM'
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundColor3 = Color3.new()
-	label.Parent = Clock.Children
-	local corner = Instance.new('UICorner')
-	corner.CornerRadius = UDim.new(0, 4)
-	corner.Parent = label
+        end,
+        Tooltip = "Allows infinite jumping"
+    })
+    Velocity = InfiniteJump:CreateSlider({
+        Name = 'Velocity',
+        Min = 50,
+        Max = 300,
+        Default = 50
+    })
 end)
-	
 run(function()
 	local Disguise
 	local Mode
@@ -7191,7 +5946,7 @@ run(function()
 		end
 	end
 	
-	Disguise = vape.Categories.Legit:CreateModule({
+	Disguise = Opai.Categories.Legit:CreateModule({
 		Name = 'Disguise',
 		Function = function(callback)
 			if callback then
@@ -7230,7 +5985,7 @@ run(function()
 	local Value
 	local oldfov
 	
-	FOV = vape.Categories.Legit:CreateModule({
+	FOV = Opai.Categories.Legit:CreateModule({
 		Name = 'FOV',
 		Function = function(callback)
 			if callback then
@@ -7252,296 +6007,6 @@ run(function()
 	})
 end)
 	
-run(function()
-	--[[
-		Grabbing an accurate count of the current framerate
-		Source: https://devforum.roblox.com/t/get-client-FPS-trough-a-script/282631
-	]]
-	local FPS
-	local label
-	
-	FPS = vape.Categories.Legit:CreateModule({
-		Name = 'FPS',
-		Function = function(callback)
-			if callback then
-				local frames = {}
-				local startClock = os.clock()
-				local updateTick = tick()
-				FPS:Clean(runService.Heartbeat:Connect(function()
-					local updateClock = os.clock()
-					for i = #frames, 1, -1 do
-						frames[i + 1] = frames[i] >= updateClock - 1 and frames[i] or nil
-					end
-					frames[1] = updateClock
-					if updateTick < tick() then
-						updateTick = tick() + 1
-						label.Text = math.floor(os.clock() - startClock >= 1 and #frames or #frames / (os.clock() - startClock))..' FPS'
-					end
-				end))
-			end
-		end,
-		Size = UDim2.fromOffset(100, 41),
-		Tooltip = 'Shows the current framerate'
-	})
-	FPS:CreateFont({
-		Name = 'Font',
-		Blacklist = 'Gotham',
-		Function = function(val)
-			label.FontFace = val
-		end
-	})
-	FPS:CreateColorSlider({
-		Name = 'Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			label.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-			label.BackgroundTransparency = 1 - opacity
-		end
-	})
-	label = Instance.new('TextLabel')
-	label.Size = UDim2.fromScale(1, 1)
-	label.BackgroundTransparency = 0.5
-	label.TextSize = 15
-	label.Font = Enum.Font.Gotham
-	label.Text = 'inf FPS'
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundColor3 = Color3.new()
-	label.Parent = FPS.Children
-	local corner = Instance.new('UICorner')
-	corner.CornerRadius = UDim.new(0, 4)
-	corner.Parent = label
-end)
-	
-run(function()
-	local Keystrokes
-	local Style
-	local Color
-	local keys, holder = {}
-	
-	local function createKeystroke(keybutton, pos, pos2, text)
-		if keys[keybutton] then
-			keys[keybutton].Key:Destroy()
-			keys[keybutton] = nil
-		end
-		local key = Instance.new('Frame')
-		key.Size = keybutton == Enum.KeyCode.Space and UDim2.new(0, 110, 0, 24) or UDim2.new(0, 34, 0, 36)
-		key.BackgroundColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-		key.BackgroundTransparency = 1 - Color.Opacity
-		key.Position = pos
-		key.Name = keybutton.Name
-		key.Parent = holder
-		local keytext = Instance.new('TextLabel')
-		keytext.BackgroundTransparency = 1
-		keytext.Size = UDim2.fromScale(1, 1)
-		keytext.Font = Enum.Font.Gotham
-		keytext.Text = text or keybutton.Name
-		keytext.TextXAlignment = Enum.TextXAlignment.Left
-		keytext.TextYAlignment = Enum.TextYAlignment.Top
-		keytext.Position = pos2
-		keytext.TextSize = keybutton == Enum.KeyCode.Space and 18 or 15
-		keytext.TextColor3 = Color3.new(1, 1, 1)
-		keytext.Parent = key
-		local corner = Instance.new('UICorner')
-		corner.CornerRadius = UDim.new(0, 4)
-		corner.Parent = key
-		keys[keybutton] = {Key = key}
-	end
-	
-	Keystrokes = vape.Categories.Legit:CreateModule({
-		Name = 'Keystrokes',
-		Function = function(callback)
-			if callback then
-				createKeystroke(Enum.KeyCode.W, UDim2.new(0, 38, 0, 0), UDim2.new(0, 6, 0, 5), Style.Value == 'Arrow' and '↑' or nil)
-				createKeystroke(Enum.KeyCode.S, UDim2.new(0, 38, 0, 42), UDim2.new(0, 8, 0, 5), Style.Value == 'Arrow' and '↓' or nil)
-				createKeystroke(Enum.KeyCode.A, UDim2.new(0, 0, 0, 42), UDim2.new(0, 7, 0, 5), Style.Value == 'Arrow' and '←' or nil)
-				createKeystroke(Enum.KeyCode.D, UDim2.new(0, 76, 0, 42), UDim2.new(0, 8, 0, 5), Style.Value == 'Arrow' and '→' or nil)
-	
-				Keystrokes:Clean(inputService.InputBegan:Connect(function(inputType)
-					local key = keys[inputType.KeyCode]
-					if key then
-						if key.Tween then
-							key.Tween:Cancel()
-						end
-						if key.Tween2 then
-							key.Tween2:Cancel()
-						end
-	
-						key.Pressed = true
-						key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-							BackgroundColor3 = Color3.new(1, 1, 1), 
-							BackgroundTransparency = 0
-						})
-						key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-							TextColor3 = Color3.new()
-						})
-						key.Tween:Play()
-						key.Tween2:Play()
-					end
-				end))
-	
-				Keystrokes:Clean(inputService.InputEnded:Connect(function(inputType)
-					local key = keys[inputType.KeyCode]
-					if key then
-						if key.Tween then
-							key.Tween:Cancel()
-						end
-						if key.Tween2 then
-							key.Tween2:Cancel()
-						end
-	
-						key.Pressed = false
-						key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-							BackgroundColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value), 
-							BackgroundTransparency = 1 - Color.Opacity
-						})
-						key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-							TextColor3 = Color3.new(1, 1, 1)
-						})
-						key.Tween:Play()
-						key.Tween2:Play()
-					end
-				end))
-			end
-		end,
-		Size = UDim2.fromOffset(110, 176),
-		Tooltip = 'Shows movement keys onscreen'
-	})
-	holder = Instance.new('Frame')
-	holder.Size = UDim2.fromScale(1, 1)
-	holder.BackgroundTransparency = 1
-	holder.Parent = Keystrokes.Children
-	Style = Keystrokes:CreateDropdown({
-		Name = 'Key Style',
-		List = {'Keyboard', 'Arrow'},
-		Function = function()
-			if Keystrokes.Enabled then
-				Keystrokes:Toggle()
-				Keystrokes:Toggle()
-			end
-		end
-	})
-	Color = Keystrokes:CreateColorSlider({
-		Name = 'Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			for _, v in keys do
-				if not v.Pressed then
-					v.Key.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-					v.Key.BackgroundTransparency = 1 - opacity
-				end
-			end
-		end
-	})
-	Keystrokes:CreateToggle({
-		Name = 'Show Spacebar',
-		Function = function(callback)
-			Keystrokes.Children.Size = UDim2.fromOffset(110, callback and 107 or 78)
-			if callback then
-				createKeystroke(Enum.KeyCode.Space, UDim2.new(0, 0, 0, 83), UDim2.new(0, 25, 0, -10), '______')
-			else
-				keys[Enum.KeyCode.Space].Key:Destroy()
-				keys[Enum.KeyCode.Space] = nil
-			end
-		end,
-		Default = true
-	})
-end)
-	
-run(function()
-	local Memory
-	local label
-	
-	Memory = vape.Categories.Legit:CreateModule({
-		Name = 'Memory',
-		Function = function(callback)
-			if callback then
-				repeat
-					label.Text = math.floor(tonumber(game:GetService('Stats'):FindFirstChild('PerformanceStats').Memory:GetValue()))..' MB'
-					task.wait(1)
-				until not Memory.Enabled
-			end
-		end,
-		Size = UDim2.fromOffset(100, 41),
-		Tooltip = 'A label showing the memory currently used by roblox'
-	})
-	Memory:CreateFont({
-		Name = 'Font',
-		Blacklist = 'Gotham',
-		Function = function(val)
-			label.FontFace = val
-		end
-	})
-	Memory:CreateColorSlider({
-		Name = 'Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			label.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-			label.BackgroundTransparency = 1 - opacity
-		end
-	})
-	label = Instance.new('TextLabel')
-	label.Size = UDim2.new(0, 100, 0, 41)
-	label.BackgroundTransparency = 0.5
-	label.TextSize = 15
-	label.Font = Enum.Font.Gotham
-	label.Text = '0 MB'
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundColor3 = Color3.new()
-	label.Parent = Memory.Children
-	local corner = Instance.new('UICorner')
-	corner.CornerRadius = UDim.new(0, 4)
-	corner.Parent = label
-end)
-	
-run(function()
-	local Ping
-	local label
-	
-	Ping = vape.Categories.Legit:CreateModule({
-		Name = 'Ping',
-		Function = function(callback)
-			if callback then
-				repeat
-					label.Text = math.floor(tonumber(game:GetService('Stats'):FindFirstChild('PerformanceStats').Ping:GetValue()))..' ms'
-					task.wait(1)
-				until not Ping.Enabled
-			end
-		end,
-		Size = UDim2.fromOffset(100, 41),
-		Tooltip = 'Shows the current connection speed to the roblox server'
-	})
-	Ping:CreateFont({
-		Name = 'Font',
-		Blacklist = 'Gotham',
-		Function = function(val)
-			label.FontFace = val
-		end
-	})
-	Ping:CreateColorSlider({
-		Name = 'Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			label.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-			label.BackgroundTransparency = 1 - opacity
-		end
-	})
-	label = Instance.new('TextLabel')
-	label.Size = UDim2.new(0, 100, 0, 41)
-	label.BackgroundTransparency = 0.5
-	label.TextSize = 15
-	label.Font = Enum.Font.Gotham
-	label.Text = '0 ms'
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundColor3 = Color3.new()
-	label.Parent = Ping.Children
-	local corner = Instance.new('UICorner')
-	corner.CornerRadius = UDim.new(0, 4)
-	corner.Parent = label
-end)
 	
 run(function()
 	local SongBeats
@@ -7590,7 +6055,7 @@ run(function()
 		end
 	end
 	
-	SongBeats = vape.Categories.Legit:CreateModule({
+	SongBeats = Opai.Categories.Legit:CreateModule({
 		Name = 'Song Beats',
 		Function = function(callback)
 			if callback then
@@ -7667,60 +6132,11 @@ run(function()
 end)
 	
 run(function()
-	local Speedmeter
-	local label
-	
-	Speedmeter = vape.Categories.Legit:CreateModule({
-		Name = 'Speedmeter',
-		Function = function(callback)
-			if callback then
-				repeat
-					local lastpos = entitylib.isAlive and entitylib.character.HumanoidRootPart.Position * Vector3.new(1, 0, 1) or Vector3.zero
-					local dt = task.wait(0.2)
-					local newpos = entitylib.isAlive and entitylib.character.HumanoidRootPart.Position * Vector3.new(1, 0, 1) or Vector3.zero
-					label.Text = math.round(((lastpos - newpos) / dt).Magnitude)..' sps'
-				until not Speedmeter.Enabled
-			end
-		end,
-		Size = UDim2.fromOffset(100, 41),
-		Tooltip = 'A label showing the average velocity in studs'
-	})
-	Speedmeter:CreateFont({
-		Name = 'Font',
-		Blacklist = 'Gotham',
-		Function = function(val)
-			label.FontFace = val
-		end
-	})
-	Speedmeter:CreateColorSlider({
-		Name = 'Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			label.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-			label.BackgroundTransparency = 1 - opacity
-		end
-	})
-	label = Instance.new('TextLabel')
-	label.Size = UDim2.fromScale(1, 1)
-	label.BackgroundTransparency = 0.5
-	label.TextSize = 15
-	label.Font = Enum.Font.Gotham
-	label.Text = '0 sps'
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundColor3 = Color3.new()
-	label.Parent = Speedmeter.Children
-	local corner = Instance.new('UICorner')
-	corner.CornerRadius = UDim.new(0, 4)
-	corner.Parent = label
-end)
-	
-run(function()
 	local TimeChanger
 	local Value
 	local old
 	
-	TimeChanger = vape.Categories.Legit:CreateModule({
+	TimeChanger = Opai.Categories.Legit:CreateModule({
 		Name = 'Time Changer',
 		Function = function(callback)
 			if callback then
@@ -7745,59 +6161,4 @@ run(function()
 		end
 	})
 	
-end)
-run(function()
-  -- Credits to IY for this module.
-  local AnimationChanger
-  local IDBox
-
-  local function anim2track(asset_id)
-    local objs = game:GetObjects(asset_id)
-    for i = 1, #objs do
-        if objs[i]:IsA("Animation") then
-            return objs[i].AnimationId
-        end
-    end
-    return asset_id
-  end
-
-  local function setAnimation(char, animid)
-    if not tonumber(animid) then
-      return
-    end
-    if not animid:find("rbxassetid://") then
-      animid = "rbxassetid://" .. animid
-    end
-    animid = anim2track(animid)
-    local animation = Instance.new("Animation")
-    animation.AnimationId = animid
-    local anim = entitylib.character.Humanoid.Animator:LoadAnimation(animation)
-    anim.Priority = Enum.AnimationPriority.Movement
-    anim:Play()
-    return anim
-  end
-
-  AnimationChanger = vape.Categories.Utility:CreateModule {
-    Name = 'AnimationChanger',
-    HoverText = 'Credits to IY for this module.',
-    Function = function(callback)
-      if callback then
-        -- get original animation id
-        if entitylib.isAlive then
-          setAnimation(entitylib.character, IDBox.Value)
-        end
-      end
-    end,
-  }
-
-  IDBox = AnimationChanger:CreateTextBox {
-    Name = 'Animation',
-    Placeholder = 'Animation (number only)',
-    Function = function(enter)
-      if enter and AnimationChanger.Enabled then
-        AnimationChanger:Toggle()
-        AnimationChanger:Toggle()
-      end
-    end,
-  }
 end)
