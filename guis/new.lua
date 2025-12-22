@@ -1,5 +1,5 @@
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
 local mainapi = {
 	Categories = {},
 	GUIColor = {
@@ -53,9 +53,9 @@ local tween = {
 	tweenstwo = {}
 }
 local uipallet = {
-	Main = Color3.fromRGB(0, 0, 0),
+	Main = Color3.fromRGB(20, 20, 20),
 	--Color3.fromRGB(220, 220, 220),
-	Text = Color3.fromRGB(255, 255, 255),
+	Text = Color3.fromRGB(220, 220, 220),
 	--Color3.fromRGB(60, 60, 60),
 	Font = Font.fromEnum(Enum.Font.GothamBold),
 	FontSemiBold = Font.fromEnum(Enum.Font.GothamBold, Enum.FontWeight.SemiBold),
@@ -63,69 +63,69 @@ local uipallet = {
 }
 
 local getcustomassets = {
-	['myau/assets/new/add.png'] = 'rbxassetid://14368300605',
-	['myau/assets/new/alert.png'] = 'rbxassetid://14368301329',
-	['myau/assets/new/allowedicon.png'] = 'rbxassetid://14368302000',
-	['myau/assets/new/allowedtab.png'] = 'rbxassetid://14368302875',
-	['myau/assets/new/arrowmodule.png'] = 'rbxassetid://14473354880',
-	['myau/assets/new/back.png'] = 'rbxassetid://14368303894',
-	['myau/assets/new/bind.png'] = 'rbxassetid://14368304734',
-	['myau/assets/new/bindbkg.png'] = 'rbxassetid://14368305655',
-	['myau/assets/new/blatanticon.png'] = 'rbxassetid://14368306745',
-	['myau/assets/new/blockedicon.png'] = 'rbxassetid://14385669108',
-	['myau/assets/new/blockedtab.png'] = 'rbxassetid://14385672881',
-	['myau/assets/new/blur.png'] = 'rbxassetid://14898786664',
-	['myau/assets/new/blurnotif.png'] = 'rbxassetid://16738720137',
-	['myau/assets/new/close.png'] = 'rbxassetid://14368309446',
-	['myau/assets/new/closemini.png'] = 'rbxassetid://14368310467',
-	['myau/assets/new/colorpreview.png'] = 'rbxassetid://14368311578',
-	['myau/assets/new/combaticon.png'] = 'rbxassetid://14368312652',
-	['myau/assets/new/customsettings.png'] = 'rbxassetid://14403726449',
-	['myau/assets/new/discord.png'] = '',
-	['myau/assets/new/dots.png'] = 'rbxassetid://14368314459',
-	['myau/assets/new/edit.png'] = 'rbxassetid://14368315443',
-	['myau/assets/new/expandicon.png'] = 'rbxassetid://14368353032',
-	['myau/assets/new/expandright.png'] = 'rbxassetid://14368316544',
-	['myau/assets/new/expandup.png'] = 'rbxassetid://14368317595',
-	['myau/assets/new/friendstab.png'] = 'rbxassetid://14397462778',
-	['myau/assets/new/guisettings.png'] = 'rbxassetid://14368318994',
-	['myau/assets/new/guislider.png'] = 'rbxassetid://14368320020',
-	['myau/assets/new/guisliderrain.png'] = 'rbxassetid://14368321228',
-	['myau/assets/new/guiv2.png'] = 'rbxassetid://14368322199',
-	['myau/assets/new/guimyau.png'] = 'rbxassetid://14657521312',
-	['myau/assets/new/info.png'] = 'rbxassetid://14368324807',
-	['myau/assets/new/inventoryicon.png'] = 'rbxassetid://14928011633',
-	['myau/assets/new/legit.png'] = 'rbxassetid://14425650534',
-	['myau/assets/new/legittab.png'] = 'rbxassetid://14426740825',
-	['myau/assets/new/miniicon.png'] = 'rbxassetid://14368326029',
-	['myau/assets/new/notification.png'] = 'rbxassetid://16738721069',
-	['myau/assets/new/overlaysicon.png'] = 'rbxassetid://14368339581',
-	['myau/assets/new/overlaystab.png'] = 'rbxassetid://14397380433',
-	['myau/assets/new/pin.png'] = 'rbxassetid://14368342301',
-	['myau/assets/new/profilesicon.png'] = 'rbxassetid://14397465323',
-	['myau/assets/new/radaricon.png'] = 'rbxassetid://14368343291',
-	['myau/assets/new/rainbow_1.png'] = 'rbxassetid://14368344374',
-	['myau/assets/new/rainbow_2.png'] = 'rbxassetid://14368345149',
-	['myau/assets/new/rainbow_3.png'] = 'rbxassetid://14368345840',
-	['myau/assets/new/rainbow_4.png'] = 'rbxassetid://14368346696',
-	['myau/assets/new/range.png'] = 'rbxassetid://14368347435',
-	['myau/assets/new/rangearrow.png'] = 'rbxassetid://14368348640',
-	['myau/assets/new/rendericon.png'] = 'rbxassetid://14368350193',
-	['myau/assets/new/rendertab.png'] = 'rbxassetid://14397373458',
-	['myau/assets/new/search.png'] = 'rbxassetid://14425646684',
-	['myau/assets/new/targetinfoicon.png'] = 'rbxassetid://14368354234',
-	['myau/assets/new/targetnpc1.png'] = 'rbxassetid://14497400332',
-	['myau/assets/new/targetnpc2.png'] = 'rbxassetid://14497402744',
-	['myau/assets/new/targetplayers1.png'] = 'rbxassetid://14497396015',
-	['myau/assets/new/targetplayers2.png'] = 'rbxassetid://14497397862',
-	['myau/assets/new/targetstab.png'] = 'rbxassetid://14497393895',
-	['myau/assets/new/textguiicon.png'] = 'rbxassetid://14368355456',
-	['myau/assets/new/textv2.png'] = 'rbxassetid://14368357095',
-	['myau/assets/new/textmyau.png'] = 'rbxassetid://14368358200',
-	['myau/assets/new/utilityicon.png'] = 'rbxassetid://14368359107',
-	['myau/assets/new/vape.png'] = 'rbxassetid://14373395239',
-	['myau/assets/new/warning.png'] = 'rbxassetid://14368361552',
-	['myau/assets/new/worldicon.png'] = 'rbxassetid://14368362492'
+	['opai/assets/new/add.png'] = 'rbxassetid://14368300605',
+	['opai/assets/new/alert.png'] = 'rbxassetid://14368301329',
+	['opai/assets/new/allowedicon.png'] = 'rbxassetid://14368302000',
+	['opai/assets/new/allowedtab.png'] = 'rbxassetid://14368302875',
+	['opai/assets/new/arrowmodule.png'] = 'rbxassetid://14473354880',
+	['opai/assets/new/back.png'] = 'rbxassetid://14368303894',
+	['opai/assets/new/bind.png'] = 'rbxassetid://14368304734',
+	['opai/assets/new/bindbkg.png'] = 'rbxassetid://14368305655',
+	['opai/assets/new/blatanticon.png'] = 'rbxassetid://14368306745',
+	['opai/assets/new/blockedicon.png'] = 'rbxassetid://14385669108',
+	['opai/assets/new/blockedtab.png'] = 'rbxassetid://14385672881',
+	['opai/assets/new/blur.png'] = 'rbxassetid://14898786664',
+	['opai/assets/new/blurnotif.png'] = 'rbxassetid://16738720137',
+	['opai/assets/new/close.png'] = 'rbxassetid://14368309446',
+	['opai/assets/new/closemini.png'] = 'rbxassetid://14368310467',
+	['opai/assets/new/colorpreview.png'] = 'rbxassetid://14368311578',
+	['opai/assets/new/combaticon.png'] = 'rbxassetid://14368312652',
+	['opai/assets/new/customsettings.png'] = 'rbxassetid://14403726449',
+	['opai/assets/new/discord.png'] = '',
+	['opai/assets/new/dots.png'] = 'rbxassetid://14368314459',
+	['opai/assets/new/edit.png'] = 'rbxassetid://14368315443',
+	['opai/assets/new/expandicon.png'] = 'rbxassetid://14368353032',
+	['opai/assets/new/expandright.png'] = 'rbxassetid://14368316544',
+	['opai/assets/new/expandup.png'] = 'rbxassetid://14368317595',
+	['opai/assets/new/friendstab.png'] = 'rbxassetid://14397462778',
+	['opai/assets/new/guisettings.png'] = 'rbxassetid://14368318994',
+	['opai/assets/new/guislider.png'] = 'rbxassetid://14368320020',
+	['opai/assets/new/guisliderrain.png'] = 'rbxassetid://14368321228',
+	['opai/assets/new/guiv4.png'] = 'rbxassetid://14368322199',
+	['opai/assets/new/guiOpai.png'] = 'rbxassetid://14657521312',
+	['opai/assets/new/info.png'] = 'rbxassetid://14368324807',
+	['opai/assets/new/inventoryicon.png'] = 'rbxassetid://14928011633',
+	['opai/assets/new/legit.png'] = 'rbxassetid://14425650534',
+	['opai/assets/new/legittab.png'] = 'rbxassetid://14426740825',
+	['opai/assets/new/miniicon.png'] = 'rbxassetid://14368326029',
+	['opai/assets/new/notification.png'] = 'rbxassetid://16738721069',
+	['opai/assets/new/overlaysicon.png'] = 'rbxassetid://14368339581',
+	['opai/assets/new/overlaystab.png'] = 'rbxassetid://14397380433',
+	['opai/assets/new/pin.png'] = 'rbxassetid://14368342301',
+	['opai/assets/new/profilesicon.png'] = 'rbxassetid://14397465323',
+	['opai/assets/new/radaricon.png'] = 'rbxassetid://14368343291',
+	['opai/assets/new/rainbow_1.png'] = 'rbxassetid://14368344374',
+	['opai/assets/new/rainbow_2.png'] = 'rbxassetid://14368345149',
+	['opai/assets/new/rainbow_3.png'] = 'rbxassetid://14368345840',
+	['opai/assets/new/rainbow_4.png'] = 'rbxassetid://14368346696',
+	['opai/assets/new/range.png'] = 'rbxassetid://14368347435',
+	['opai/assets/new/rangearrow.png'] = 'rbxassetid://14368348640',
+	['opai/assets/new/rendericon.png'] = 'rbxassetid://14368350193',
+	['opai/assets/new/rendertab.png'] = 'rbxassetid://14397373458',
+	['opai/assets/new/search.png'] = 'rbxassetid://14425646684',
+	['opai/assets/new/targetinfoicon.png'] = 'rbxassetid://14368354234',
+	['opai/assets/new/targetnpc1.png'] = 'rbxassetid://14497400332',
+	['opai/assets/new/targetnpc2.png'] = 'rbxassetid://14497402744',
+	['opai/assets/new/targetplayers1.png'] = 'rbxassetid://14497396015',
+	['opai/assets/new/targetplayers2.png'] = 'rbxassetid://14497397862',
+	['opai/assets/new/targetstab.png'] = 'rbxassetid://14497393895',
+	['opai/assets/new/textguiicon.png'] = 'rbxassetid://14368355456',
+	['opai/assets/new/textv4.png'] = 'rbxassetid://14368357095',
+	['opai/assets/new/textOpai.png'] = 'rbxassetid://14368358200',
+	['opai/assets/new/utilityicon.png'] = 'rbxassetid://14368359107',
+	['opai/assets/new/Opai.png'] = 'rbxassetid://14373395239',
+	['opai/assets/new/warning.png'] = 'rbxassetid://14368361552',
+	['opai/assets/new/worldicon.png'] = 'rbxassetid://14368362492'
 }
 
 local isfile = isfile or function(file)
@@ -150,7 +150,7 @@ local function addBlur(parent, notif)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('myau/assets/new/'..(notif and 'blurnotif' or 'blur')..'.png')
+	blur.Image = getcustomasset('opai/assets/new/'..(notif and 'blurnotif' or 'blur')..'.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -174,7 +174,7 @@ local function addCloseButton(parent, offset)
 	close.BackgroundColor3 = Color3.new(1, 1, 1)
 	close.BackgroundTransparency = 1
 	close.AutoButtonColor = false
-	close.Image = getcustomasset('myau/assets/new/close.png')
+	close.Image = getcustomasset('opai/assets/new/close.png')
 	close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 	close.ImageTransparency = 0.5
 	close.Parent = parent
@@ -318,13 +318,13 @@ local function downloadFile(path, func)
 	if not isfile(path) then
 		createDownloader(path)
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/'..select(1, path:gsub('myau/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -411,7 +411,7 @@ local function removeTags(str)
 end
 
 do
-	local res = isfile('myau/profiles/color.txt') and loadJson('myau/profiles/color.txt')
+	local res = isfile('opai/profiles/color.txt') and loadJson('opai/profiles/color.txt')
 	if res then
 		uipallet.Main = res.Main and Color3.fromRGB(unpack(res.Main)) or uipallet.Main
 		uipallet.Text = res.Text and Color3.fromRGB(unpack(res.Text)) or uipallet.Text
@@ -698,7 +698,7 @@ components = {
 		preview.Size = UDim2.fromOffset(12, 12)
 		preview.Position = UDim2.new(1, -22, 0, 10)
 		preview.BackgroundTransparency = 1
-		preview.Image = getcustomasset('myau/assets/new/colorpreview.png')
+		preview.Image = getcustomasset('opai/assets/new/colorpreview.png')
 		preview.ImageColor3 = Color3.fromHSV(optionapi.Hue, optionapi.Sat, optionapi.Value)
 		preview.ImageTransparency = 1 - optionapi.Opacity
 		preview.Parent = slider
@@ -714,7 +714,7 @@ components = {
 		expand.Size = UDim2.fromOffset(9, 5)
 		expand.Position = UDim2.fromOffset(4, 4)
 		expand.BackgroundTransparency = 1
-		expand.Image = getcustomasset('myau/assets/new/expandicon.png')
+		expand.Image = getcustomasset('opai/assets/new/expandicon.png')
 		expand.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 		expand.Parent = expandbutton
 		local rainbow = Instance.new('TextButton')
@@ -727,17 +727,17 @@ components = {
 		local rainbow1 = Instance.new('ImageLabel')
 		rainbow1.Size = UDim2.fromOffset(12, 12)
 		rainbow1.BackgroundTransparency = 1
-		rainbow1.Image = getcustomasset('myau/assets/new/rainbow_1.png')
+		rainbow1.Image = getcustomasset('opai/assets/new/rainbow_1.png')
 		rainbow1.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		rainbow1.Parent = rainbow
 		local rainbow2 = rainbow1:Clone()
-		rainbow2.Image = getcustomasset('myau/assets/new/rainbow_2.png')
+		rainbow2.Image = getcustomasset('opai/assets/new/rainbow_2.png')
 		rainbow2.Parent = rainbow
 		local rainbow3 = rainbow1:Clone()
-		rainbow3.Image = getcustomasset('myau/assets/new/rainbow_3.png')
+		rainbow3.Image = getcustomasset('opai/assets/new/rainbow_3.png')
 		rainbow3.Parent = rainbow
 		local rainbow4 = rainbow1:Clone()
-		rainbow4.Image = getcustomasset('myau/assets/new/rainbow_4.png')
+		rainbow4.Image = getcustomasset('opai/assets/new/rainbow_4.png')
 		rainbow4.Parent = rainbow
 		local knobholder = Instance.new('Frame')
 		knobholder.Name = 'Knob'
@@ -1002,7 +1002,7 @@ components = {
 		arrow.Size = UDim2.fromOffset(4, 8)
 		arrow.Position = UDim2.new(1, -17, 0, 11)
 		arrow.BackgroundTransparency = 1
-		arrow.Image = getcustomasset('myau/assets/new/expandright.png')
+		arrow.Image = getcustomasset('opai/assets/new/expandright.png')
 		arrow.ImageColor3 = Color3.fromRGB(140, 140, 140)
 		arrow.Rotation = 90
 		arrow.Parent = button
@@ -1413,7 +1413,7 @@ components = {
 		icon.Size = UDim2.fromOffset(18, 12)
 		icon.Position = UDim2.fromOffset(10, 15)
 		icon.BackgroundTransparency = 1
-		icon.Image = getcustomasset('myau/assets/new/targetstab.png')
+		icon.Image = getcustomasset('opai/assets/new/targetstab.png')
 		icon.Parent = window
 		local title = Instance.new('TextLabel')
 		title.Name = 'Title'
@@ -1475,20 +1475,20 @@ components = {
 		
 		optionapi.Players = components.TargetsButton({
 			Position = UDim2.fromOffset(11, 45),
-			Icon = getcustomasset('myau/assets/new/targetplayers1.png'),
+			Icon = getcustomasset('opai/assets/new/targetplayers1.png'),
 			IconSize = UDim2.fromOffset(15, 16),
 			IconParent = tool,
-			ToolIcon = getcustomasset('myau/assets/new/targetplayers2.png'),
+			ToolIcon = getcustomasset('opai/assets/new/targetplayers2.png'),
 			ToolSize = UDim2.fromOffset(11, 12),
 			Tooltip = 'Players',
 			Function = optionsettings.Function
 		}, window, tool)
 		optionapi.NPCs = components.TargetsButton({
 			Position = UDim2.fromOffset(112, 45),
-			Icon = getcustomasset('myau/assets/new/targetnpc1.png'),
+			Icon = getcustomasset('opai/assets/new/targetnpc1.png'),
 			IconSize = UDim2.fromOffset(12, 16),
 			IconParent = tool,
-			ToolIcon = getcustomasset('myau/assets/new/targetnpc2.png'),
+			ToolIcon = getcustomasset('opai/assets/new/targetnpc2.png'),
 			ToolSize = UDim2.fromOffset(9, 12),
 			Tooltip = 'NPCs',
 			Function = optionsettings.Function
@@ -1772,7 +1772,7 @@ components = {
 		buttonicon.Size = UDim2.fromOffset(14, 12)
 		buttonicon.Position = UDim2.fromOffset(10, 14)
 		buttonicon.BackgroundTransparency = 1
-		buttonicon.Image = optionsettings.Icon or getcustomasset('myau/assets/new/allowedicon.png')
+		buttonicon.Image = optionsettings.Icon or getcustomasset('opai/assets/new/allowedicon.png')
 		buttonicon.Parent = button
 		local buttontitle = Instance.new('TextLabel')
 		buttontitle.Name = 'Title'
@@ -1818,7 +1818,7 @@ components = {
 		icon.Size = optionsettings.TabSize or UDim2.fromOffset(19, 16)
 		icon.Position = UDim2.fromOffset(10, 13)
 		icon.BackgroundTransparency = 1
-		icon.Image = optionsettings.Tab or getcustomasset('myau/assets/new/allowedtab.png')
+		icon.Image = optionsettings.Tab or getcustomasset('opai/assets/new/allowedtab.png')
 		icon.Parent = window
 		local title = Instance.new('TextLabel')
 		title.Name = 'Title'
@@ -1861,7 +1861,7 @@ components = {
 		addbutton.Size = UDim2.fromOffset(16, 16)
 		addbutton.Position = UDim2.new(1, -26, 0, 8)
 		addbutton.BackgroundTransparency = 1
-		addbutton.Image = getcustomasset('myau/assets/new/add.png')
+		addbutton.Image = getcustomasset('opai/assets/new/add.png')
 		addbutton.ImageColor3 = optionsettings.Color
 		addbutton.ImageTransparency = 0.3
 		addbutton.Parent = addbkg
@@ -1965,7 +1965,7 @@ components = {
 				close.BackgroundColor3 = Color3.new(1, 1, 1)
 				close.BackgroundTransparency = 1
 				close.AutoButtonColor = false
-				close.Image = getcustomasset('myau/assets/new/closemini.png')
+				close.Image = getcustomasset('opai/assets/new/closemini.png')
 				close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 				close.ImageTransparency = 0.5
 				close.Parent = object
@@ -2265,7 +2265,7 @@ components = {
 		knob.Position = UDim2.fromScale(0.5, 0.5)
 		knob.AnchorPoint = Vector2.new(0.5, 0.5)
 		knob.BackgroundTransparency = 1
-		knob.Image = getcustomasset('myau/assets/new/range.png')
+		knob.Image = getcustomasset('opai/assets/new/range.png')
 		knob.ImageColor3 = Color3.fromHSV(mainapi.GUIColor.Hue, mainapi.GUIColor.Sat, mainapi.GUIColor.Value)
 		knob.Parent = knobholder
 		local knobholdermax = knobholder:Clone()
@@ -2278,7 +2278,7 @@ components = {
 		arrow.Size = UDim2.fromOffset(12, 6)
 		arrow.Position = UDim2.new(1, -56, 0, 10)
 		arrow.BackgroundTransparency = 1
-		arrow.Image = getcustomasset('myau/assets/new/rangearrow.png')
+		arrow.Image = getcustomasset('opai/assets/new/rangearrow.png')
 		arrow.ImageColor3 = color.Light(uipallet.Main, 0.14)
 		arrow.Parent = slider
 		optionsettings.Function = optionsettings.Function or function() end
@@ -2486,11 +2486,11 @@ function mainapi:CreateGUI()
 	addCorner(window)
 	makeDraggable(window)
 	local logo = Instance.new('ImageLabel')
-	logo.Name = 'VapeLogo'
+	logo.Name = 'OpaiLogo'
 	logo.Size = UDim2.fromOffset(62, 18)
 	logo.Position = UDim2.fromOffset(11, 10)
 	logo.BackgroundTransparency = 1
-	logo.Image = getcustomasset('myau/assets/new/guimyau.png')
+	logo.Image = getcustomasset('opai/assets/new/guiopai.png')
 	logo.ImageColor3 = select(3, uipallet.Main:ToHSV()) > 0.5 and uipallet.Text or Color3.new(1, 1, 1)
 	logo.Parent = window
 	local logov4 = Instance.new('ImageLabel')
@@ -2498,7 +2498,7 @@ function mainapi:CreateGUI()
 	logov4.Size = UDim2.fromOffset(28, 16)
 	logov4.Position = UDim2.new(1, 1, 0, 1)
 	logov4.BackgroundTransparency = 1
-	logov4.Image = getcustomasset('myau/assets/new/guiv2.png')
+	logov4.Image = getcustomasset('opai/assets/new/guiv2.png')
 	logov4.Parent = logo
 	local children = Instance.new('Frame')
 	children.Name = 'Children'
@@ -2522,14 +2522,14 @@ function mainapi:CreateGUI()
 	settingsicon.Size = UDim2.fromOffset(14, 14)
 	settingsicon.Position = UDim2.fromOffset(15, 12)
 	settingsicon.BackgroundTransparency = 1
-	settingsicon.Image = getcustomasset('myau/assets/new/guisettings.png')
+	settingsicon.Image = getcustomasset('opai/assets/new/guisettings.png')
 	settingsicon.ImageColor3 = color.Light(uipallet.Main, 0.37)
 	settingsicon.Parent = settingsbutton
 	local discordbutton = Instance.new('ImageButton')
 	discordbutton.Size = UDim2.fromOffset(16, 16)
 	discordbutton.Position = UDim2.new(1, -56, 0, 11)
 	discordbutton.BackgroundTransparency = 1
-	discordbutton.Image = getcustomasset('myau/assets/new/discord.png')
+	discordbutton.Image = getcustomasset('opai/assets/new/discord.png')
 	discordbutton.Parent = window
 	addTooltip(discordbutton, 'Join discord')
 	local settingspane = Instance.new('TextButton')
@@ -2556,7 +2556,7 @@ function mainapi:CreateGUI()
 	back.Size = UDim2.fromOffset(16, 16)
 	back.Position = UDim2.fromOffset(11, 13)
 	back.BackgroundTransparency = 1
-	back.Image = getcustomasset('myau/assets/new/back.png')
+	back.Image = getcustomasset('opai/assets/new/back.png')
 	back.ImageColor3 = color.Light(uipallet.Main, 0.37)
 	back.Parent = settingspane
 	local settingsversion = Instance.new('TextLabel')
@@ -2564,8 +2564,8 @@ function mainapi:CreateGUI()
 	settingsversion.Size = UDim2.new(1, 0, 0, 16)
 	settingsversion.Position = UDim2.new(0, 0, 1, -16)
 	settingsversion.BackgroundTransparency = 1
-	settingsversion.Text = 'Vape '..mainapi.Version..' '..(
-		isfile('myau/profiles/commit.txt') and readfile('myau/profiles/commit.txt'):sub(1, 6) or ''
+	settingsversion.Text = 'Opai '..mainapi.Version..' '..(
+		isfile('opai/profiles/commit.txt') and readfile('opai/profiles/commit.txt'):sub(1, 6) or ''
 	)..' '
 	settingsversion.TextColor3 = color.Dark(uipallet.Text, 0.43)
 	settingsversion.TextXAlignment = Enum.TextXAlignment.Right
@@ -2619,7 +2619,7 @@ function mainapi:CreateGUI()
 		icon.Size = UDim2.fromOffset(12, 12)
 		icon.Position = UDim2.new(0.5, -6, 0, 5)
 		icon.BackgroundTransparency = 1
-		icon.Image = getcustomasset('myau/assets/new/bind.png')
+		icon.Image = getcustomasset('opai/assets/new/bind.png')
 		icon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 		icon.Parent = bind
 		local label = Instance.new('TextLabel')
@@ -2637,9 +2637,9 @@ function mainapi:CreateGUI()
 		function optionapi:SetBind(tab)
 			mainapi.Keybind = #tab <= 0 and mainapi.Keybind or table.clone(tab)
 			self.Bind = mainapi.Keybind
-			if mainapi.VapeButton then
-				mainapi.VapeButton:Destroy()
-				mainapi.VapeButton = nil
+			if mainapi.OpaiButton then
+				mainapi.OpaiButton:Destroy()
+				mainapi.OpaiButton = nil
 			end
 
 			bind.Visible = true
@@ -2652,13 +2652,13 @@ function mainapi:CreateGUI()
 		bind.MouseEnter:Connect(function()
 			label.Visible = false
 			icon.Visible = not label.Visible
-			icon.Image = getcustomasset('myau/assets/new/edit.png')
+			icon.Image = getcustomasset('opai/assets/new/edit.png')
 			icon.ImageColor3 = color.Dark(uipallet.Text, 0.16)
 		end)
 		bind.MouseLeave:Connect(function()
 			label.Visible = true
 			icon.Visible = not label.Visible
-			icon.Image = getcustomasset('myau/assets/new/bind.png')
+			icon.Image = getcustomasset('opai/assets/new/bind.png')
 			icon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 		end)
 		bind.MouseButton1Click:Connect(function()
@@ -2719,7 +2719,7 @@ function mainapi:CreateGUI()
 		arrow.Size = UDim2.fromOffset(4, 8)
 		arrow.Position = UDim2.new(1, -20, 0, 16)
 		arrow.BackgroundTransparency = 1
-		arrow.Image = getcustomasset('myau/assets/new/expandright.png')
+		arrow.Image = getcustomasset('opai/assets/new/expandright.png')
 		arrow.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		arrow.Parent = button
 		optionapi.Name = categorysettings.Name
@@ -2781,7 +2781,7 @@ function mainapi:CreateGUI()
 		button.Position = UDim2.new(1, -29, 0, 7)
 		button.BackgroundTransparency = 1
 		button.AutoButtonColor = false
-		button.Image = getcustomasset('myau/assets/new/overlaysicon.png')
+		button.Image = getcustomasset('opai/assets/new/overlaysicon.png')
 		button.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		button.Parent = bar
 		addCorner(button, UDim.new(1, 0))
@@ -2808,7 +2808,7 @@ function mainapi:CreateGUI()
 		icon.Size = UDim2.fromOffset(14, 12)
 		icon.Position = UDim2.fromOffset(10, 13)
 		icon.BackgroundTransparency = 1
-		icon.Image = getcustomasset('myau/assets/new/overlaystab.png')
+		icon.Image = getcustomasset('opai/assets/new/overlaystab.png')
 		icon.ImageColor3 = uipallet.Text
 		icon.Parent = window
 		local title = Instance.new('TextLabel')
@@ -3000,7 +3000,7 @@ function mainapi:CreateGUI()
 		arrow.Size = UDim2.fromOffset(4, 8)
 		arrow.Position = UDim2.new(1, -20, 0, 16)
 		arrow.BackgroundTransparency = 1
-		arrow.Image = getcustomasset('myau/assets/new/expandright.png')
+		arrow.Image = getcustomasset('opai/assets/new/expandright.png')
 		arrow.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		arrow.Parent = button
 		local settingspane = Instance.new('TextButton')
@@ -3027,7 +3027,7 @@ function mainapi:CreateGUI()
 		back.Size = UDim2.fromOffset(16, 16)
 		back.Position = UDim2.fromOffset(11, 13)
 		back.BackgroundTransparency = 1
-		back.Image = getcustomasset('myau/assets/new/back.png')
+		back.Image = getcustomasset('opai/assets/new/back.png')
 		back.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		back.Parent = settingspane
 		addCorner(settingspane)
@@ -3275,7 +3275,7 @@ function mainapi:CreateGUI()
 		preview.Size = UDim2.fromOffset(12, 12)
 		preview.Position = UDim2.new(1, -22, 0, 10)
 		preview.BackgroundTransparency = 1
-		preview.Image = getcustomasset('myau/assets/new/colorpreview.png')
+		preview.Image = getcustomasset('opai/assets/new/colorpreview.png')
 		preview.ImageColor3 = Color3.fromHSV(optionapi.Hue, 1, 1)
 		preview.Parent = slider
 		local valuebox = Instance.new('TextBox')
@@ -3303,7 +3303,7 @@ function mainapi:CreateGUI()
 		expandicon.Size = UDim2.fromOffset(9, 5)
 		expandicon.Position = UDim2.fromOffset(4, 4)
 		expandicon.BackgroundTransparency = 1
-		expandicon.Image = getcustomasset('myau/assets/new/expandicon.png')
+		expandicon.Image = getcustomasset('opai/assets/new/expandicon.png')
 		expandicon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 		expandicon.Parent = expandbutton
 		local rainbow = Instance.new('TextButton')
@@ -3316,24 +3316,24 @@ function mainapi:CreateGUI()
 		local rainbow1 = Instance.new('ImageLabel')
 		rainbow1.Size = UDim2.fromOffset(12, 12)
 		rainbow1.BackgroundTransparency = 1
-		rainbow1.Image = getcustomasset('myau/assets/new/rainbow_1.png')
+		rainbow1.Image = getcustomasset('opai/assets/new/rainbow_1.png')
 		rainbow1.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		rainbow1.Parent = rainbow
 		local rainbow2 = rainbow1:Clone()
-		rainbow2.Image = getcustomasset('myau/assets/new/rainbow_2.png')
+		rainbow2.Image = getcustomasset('opai/assets/new/rainbow_2.png')
 		rainbow2.Parent = rainbow
 		local rainbow3 = rainbow1:Clone()
-		rainbow3.Image = getcustomasset('myau/assets/new/rainbow_3.png')
+		rainbow3.Image = getcustomasset('opai/assets/new/rainbow_3.png')
 		rainbow3.Parent = rainbow
 		local rainbow4 = rainbow1:Clone()
-		rainbow4.Image = getcustomasset('myau/assets/new/rainbow_4.png')
+		rainbow4.Image = getcustomasset('opai/assets/new/rainbow_4.png')
 		rainbow4.Parent = rainbow
 		local knob = Instance.new('ImageLabel')
 		knob.Name = 'Knob'
 		knob.Size = UDim2.fromOffset(26, 12)
 		knob.Position = UDim2.fromOffset(slidercolorpos[4] - 3, -5)
 		knob.BackgroundTransparency = 1
-		knob.Image = getcustomasset('myau/assets/new/guislider.png')
+		knob.Image = getcustomasset('opai/assets/new/guislider.png')
 		knob.ImageColor3 = slidercolors[4]
 		knob.Parent = holder
 		optionsettings.Function = optionsettings.Function or function() end
@@ -3350,8 +3350,8 @@ function mainapi:CreateGUI()
 			ColorSequenceKeypoint.new(0, Color3.fromHSV(0, 0, 0)),
 			ColorSequenceKeypoint.new(1, Color3.fromHSV(optionapi.Hue, optionapi.Sat, 1))
 		}))
-		local normalknob = getcustomasset('myau/assets/new/guislider.png')
-		local rainbowknob = getcustomasset('myau/assets/new/guisliderrain.png')
+		local normalknob = getcustomasset('opai/assets/new/guislider.png')
+		local rainbowknob = getcustomasset('opai/assets/new/guisliderrain.png')
 		local rainbowthread
 
 		function optionapi:Save(tab)
@@ -3674,7 +3674,7 @@ function mainapi:CreateCategory(categorysettings)
 	arrow.Size = UDim2.fromOffset(9, 4)
 	arrow.Position = UDim2.fromOffset(20, 18)
 	arrow.BackgroundTransparency = 1
-	arrow.Image = getcustomasset('myau/assets/new/expandup.png')
+	arrow.Image = getcustomasset('opai/assets/new/expandup.png')
 	arrow.ImageColor3 = Color3.fromRGB(140, 140, 140)
 	arrow.Rotation = 180
 	arrow.Parent = arrowbutton
@@ -3752,7 +3752,7 @@ function mainapi:CreateCategory(categorysettings)
 		bindicon.Size = UDim2.fromOffset(12, 12)
 		bindicon.Position = UDim2.new(0.5, -6, 0, 5)
 		bindicon.BackgroundTransparency = 1
-		bindicon.Image = getcustomasset('myau/assets/new/bind.png')
+		bindicon.Image = getcustomasset('opai/assets/new/bind.png')
 		bindicon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 		bindicon.Parent = bind
 		local bindtext = Instance.new('TextLabel')
@@ -3770,7 +3770,7 @@ function mainapi:CreateCategory(categorysettings)
 		bindcover.Size = UDim2.fromOffset(154, 40)
 		bindcover.BackgroundTransparency = 1
 		bindcover.Visible = false
-		bindcover.Image = getcustomasset('myau/assets/new/bindbkg.png')
+		bindcover.Image = getcustomasset('opai/assets/new/bindbkg.png')
 		bindcover.ScaleType = Enum.ScaleType.Slice
 		bindcover.SliceCenter = Rect.new(0, 0, 141, 40)
 		bindcover.Parent = modulebutton
@@ -3796,7 +3796,7 @@ function mainapi:CreateCategory(categorysettings)
 		dots.Size = UDim2.fromOffset(3, 16)
 		dots.Position = UDim2.fromOffset(4, 12)
 		dots.BackgroundTransparency = 1
-		dots.Image = getcustomasset('myau/assets/new/dots.png')
+		dots.Image = getcustomasset('opai/assets/new/dots.png')
 		dots.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		dots.Parent = dotsbutton
 		modulechildren.Name = modulesettings.Name..'Children'
@@ -3883,13 +3883,13 @@ function mainapi:CreateCategory(categorysettings)
 		bind.MouseEnter:Connect(function()
 			bindtext.Visible = false
 			bindicon.Visible = not bindtext.Visible
-			bindicon.Image = getcustomasset('myau/assets/new/edit.png')
+			bindicon.Image = getcustomasset('opai/assets/new/edit.png')
 			if not moduleapi.Enabled then bindicon.ImageColor3 = color.Dark(uipallet.Text, 0.16) end
 		end)
 		bind.MouseLeave:Connect(function()
 			bindtext.Visible = #moduleapi.Bind > 0
 			bindicon.Visible = not bindtext.Visible
-			bindicon.Image = getcustomasset('myau/assets/new/bind.png')
+			bindicon.Image = getcustomasset('opai/assets/new/bind.png')
 			if not moduleapi.Enabled then
 				bindicon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 			end
@@ -4131,7 +4131,7 @@ function mainapi:CreateOverlay(categorysettings)
 	pin.Position = UDim2.new(1, -47, 0, 12)
 	pin.BackgroundTransparency = 1
 	pin.AutoButtonColor = false
-	pin.Image = getcustomasset('myau/assets/new/pin.png')
+	pin.Image = getcustomasset('opai/assets/new/pin.png')
 	pin.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 	pin.Parent = window
 	local dotsbutton = Instance.new('TextButton')
@@ -4146,7 +4146,7 @@ function mainapi:CreateOverlay(categorysettings)
 	dots.Size = UDim2.fromOffset(3, 16)
 	dots.Position = UDim2.fromOffset(4, 12)
 	dots.BackgroundTransparency = 1
-	dots.Image = getcustomasset('myau/assets/new/dots.png')
+	dots.Image = getcustomasset('opai/assets/new/dots.png')
 	dots.ImageColor3 = color.Light(uipallet.Main, 0.37)
 	dots.Parent = dotsbutton
 	local customchildren = Instance.new('Frame')
@@ -4316,7 +4316,7 @@ function mainapi:CreateCategoryList(categorysettings)
 	arrow.Size = UDim2.fromOffset(9, 4)
 	arrow.Position = UDim2.fromOffset(20, 19)
 	arrow.BackgroundTransparency = 1
-	arrow.Image = getcustomasset('myau/assets/new/expandup.png')
+	arrow.Image = getcustomasset('opai/assets/new/expandup.png')
 	arrow.ImageColor3 = Color3.fromRGB(140, 140, 140)
 	arrow.Rotation = 180
 	arrow.Parent = arrowbutton
@@ -4342,7 +4342,7 @@ function mainapi:CreateCategoryList(categorysettings)
 	settings.Position = UDim2.new(1, -52, 0, 13)
 	settings.BackgroundTransparency = 1
 	settings.AutoButtonColor = false
-	settings.Image = getcustomasset('myau/assets/new/customsettings.png')
+	settings.Image = getcustomasset('opai/assets/new/customsettings.png')
 	settings.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 	settings.Parent = window
 	local divider = Instance.new('Frame')
@@ -4392,7 +4392,7 @@ function mainapi:CreateCategoryList(categorysettings)
 	addbutton.Size = UDim2.fromOffset(16, 16)
 	addbutton.Position = UDim2.new(1, -26, 0, 8)
 	addbutton.BackgroundTransparency = 1
-	addbutton.Image = getcustomasset('myau/assets/new/add.png')
+	addbutton.Image = getcustomasset('opai/assets/new/add.png')
 	addbutton.ImageColor3 = categorysettings.Color
 	addbutton.ImageTransparency = 0.3
 	addbutton.Parent = addbkg
@@ -4409,8 +4409,8 @@ function mainapi:CreateCategoryList(categorysettings)
 				if ind then
 					if val ~= 'default' then
 						table.remove(mainapi.Profiles, ind)
-						if isfile('myau/profiles/'..val..mainapi.Place..'.txt') and delfile then
-							delfile('myau/profiles/'..val..mainapi.Place..'.txt')
+						if isfile('opai/profiles/'..val..mainapi.Place..'.txt') and delfile then
+							delfile('opai/profiles/'..val..mainapi.Place..'.txt')
 						end
 					end
 				else
@@ -4476,7 +4476,7 @@ function mainapi:CreateCategoryList(categorysettings)
 				dots.Size = UDim2.fromOffset(3, 16)
 				dots.Position = UDim2.fromOffset(10, 9)
 				dots.BackgroundTransparency = 1
-				dots.Image = getcustomasset('myau/assets/new/dots.png')
+				dots.Image = getcustomasset('opai/assets/new/dots.png')
 				dots.ImageColor3 = color.Light(uipallet.Main, 0.37)
 				dots.Parent = dotsbutton
 				local bind = Instance.new('TextButton')
@@ -4497,7 +4497,7 @@ function mainapi:CreateCategoryList(categorysettings)
 				bindicon.Size = UDim2.fromOffset(12, 12)
 				bindicon.Position = UDim2.new(0.5, -6, 0, 5)
 				bindicon.BackgroundTransparency = 1
-				bindicon.Image = getcustomasset('myau/assets/new/bind.png')
+				bindicon.Image = getcustomasset('opai/assets/new/bind.png')
 				bindicon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 				bindicon.Parent = bind
 				local bindtext = Instance.new('TextLabel')
@@ -4513,7 +4513,7 @@ function mainapi:CreateCategoryList(categorysettings)
 				bind.MouseEnter:Connect(function()
 					bindtext.Visible = false
 					bindicon.Visible = not bindtext.Visible
-					bindicon.Image = getcustomasset('myau/assets/new/edit.png')
+					bindicon.Image = getcustomasset('opai/assets/new/edit.png')
 					if v.Name ~= mainapi.Profile then
 						bindicon.ImageColor3 = color.Dark(uipallet.Text, 0.16)
 					end
@@ -4521,7 +4521,7 @@ function mainapi:CreateCategoryList(categorysettings)
 				bind.MouseLeave:Connect(function()
 					bindtext.Visible = #v.Bind > 0
 					bindicon.Visible = not bindtext.Visible
-					bindicon.Image = getcustomasset('myau/assets/new/bind.png')
+					bindicon.Image = getcustomasset('opai/assets/new/bind.png')
 					if v.Name ~= mainapi.Profile then
 						bindicon.ImageColor3 = color.Dark(uipallet.Text, 0.43)
 					end
@@ -4531,7 +4531,7 @@ function mainapi:CreateCategoryList(categorysettings)
 				bindcover.Size = UDim2.fromOffset(154, 33)
 				bindcover.BackgroundTransparency = 1
 				bindcover.Visible = false
-				bindcover.Image = getcustomasset('myau/assets/new/bindbkg.png')
+				bindcover.Image = getcustomasset('opai/assets/new/bindbkg.png')
 				bindcover.ScaleType = Enum.ScaleType.Slice
 				bindcover.SliceCenter = Rect.new(0, 0, 141, 40)
 				bindcover.Parent = object
@@ -4664,7 +4664,7 @@ function mainapi:CreateCategoryList(categorysettings)
 				close.BackgroundColor3 = Color3.new(1, 1, 1)
 				close.BackgroundTransparency = 1
 				close.AutoButtonColor = false
-				close.Image = getcustomasset('myau/assets/new/closemini.png')
+				close.Image = getcustomasset('opai/assets/new/closemini.png')
 				close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 				close.ImageTransparency = 0.5
 				close.Parent = object
@@ -4830,7 +4830,7 @@ function mainapi:CreateSearch()
 	searchicon.Size = UDim2.fromOffset(14, 14)
 	searchicon.Position = UDim2.new(1, -23, 0, 11)
 	searchicon.BackgroundTransparency = 1
-	searchicon.Image = getcustomasset('myau/assets/new/search.png')
+	searchicon.Image = getcustomasset('opai/assets/new/search.png')
 	searchicon.ImageColor3 = color.Light(uipallet.Main, 0.37)
 	searchicon.Parent = searchbkg
 	local legiticon = Instance.new('ImageButton')
@@ -4838,7 +4838,7 @@ function mainapi:CreateSearch()
 	legiticon.Size = UDim2.fromOffset(29, 16)
 	legiticon.Position = UDim2.fromOffset(8, 11)
 	legiticon.BackgroundTransparency = 1
-	legiticon.Image = getcustomasset('myau/assets/new/legit.png')
+	legiticon.Image = getcustomasset('opai/assets/new/legit.png')
 	legiticon.Parent = searchbkg
 	local legitdivider = Instance.new('Frame')
 	legitdivider.Name = 'LegitDivider'
@@ -4975,7 +4975,7 @@ function mainapi:CreateLegit()
 	icon.Size = UDim2.fromOffset(16, 16)
 	icon.Position = UDim2.fromOffset(18, 13)
 	icon.BackgroundTransparency = 1
-	icon.Image = getcustomasset('myau/assets/new/legittab.png')
+	icon.Image = getcustomasset('opai/assets/new/legittab.png')
 	icon.ImageColor3 = uipallet.Text
 	icon.Parent = window
 	local close = addCloseButton(window)
@@ -5050,7 +5050,7 @@ function mainapi:CreateLegit()
 		dots.Size = UDim2.fromOffset(2, 12)
 		dots.Position = UDim2.fromOffset(6, 6)
 		dots.BackgroundTransparency = 1
-		dots.Image = getcustomasset('myau/assets/new/dots.png')
+		dots.Image = getcustomasset('opai/assets/new/dots.png')
 		dots.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		dots.Parent = dotsbutton
 		local shadow = Instance.new('TextButton')
@@ -5087,7 +5087,7 @@ function mainapi:CreateLegit()
 		back.Size = UDim2.fromOffset(16, 16)
 		back.Position = UDim2.fromOffset(11, 13)
 		back.BackgroundTransparency = 1
-		back.Image = getcustomasset('myau/assets/new/back.png')
+		back.Image = getcustomasset('opai/assets/new/back.png')
 		back.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		back.Parent = settingspane
 		addCorner(settingspane)
@@ -5282,7 +5282,7 @@ function mainapi:CreateNotification(title, text, duration, type)
 		notification.Position = UDim2.new(1, 0, 1, -(29 + (78 * i)))
 		notification.ZIndex = 5
 		notification.BackgroundTransparency = 1
-		notification.Image = getcustomasset('myau/assets/new/notification.png')
+		notification.Image = getcustomasset('opai/assets/new/notification.png')
 		notification.ScaleType = Enum.ScaleType.Slice
 		notification.SliceCenter = Rect.new(7, 7, 9, 9)
 		notification.Parent = notifications
@@ -5293,7 +5293,7 @@ function mainapi:CreateNotification(title, text, duration, type)
 		iconshadow.Position = UDim2.fromOffset(-5, -8)
 		iconshadow.ZIndex = 5
 		iconshadow.BackgroundTransparency = 1
-		iconshadow.Image = getcustomasset('myau/assets/new/'..(type or 'info')..'.png')
+		iconshadow.Image = getcustomasset('opai/assets/new/'..(type or 'info')..'.png')
 		iconshadow.ImageColor3 = Color3.new()
 		iconshadow.ImageTransparency = 0.5
 		iconshadow.Parent = notification
@@ -5371,11 +5371,11 @@ function mainapi:Load(skipgui, profile)
 	local guidata = {}
 	local savecheck = true
 
-	if isfile('myau/profiles/'..game.GameId..'.gui.txt') then
-		guidata = loadJson('myau/profiles/'..game.GameId..'.gui.txt')
+	if isfile('opai/profiles/'..game.GameId..'.gui.txt') then
+		guidata = loadJson('opai/profiles/'..game.GameId..'.gui.txt')
 		if not guidata then
 			guidata = {Categories = {}}
-			self:CreateNotification('Vape', 'Failed to load GUI settings.', 10, 'alert')
+			self:CreateNotification('Opai', 'Failed to load GUI settings.', 10, 'alert')
 			savecheck = false
 		end
 
@@ -5418,11 +5418,11 @@ function mainapi:Load(skipgui, profile)
 		self.ProfileLabel.Size = UDim2.fromOffset(getfontsize(self.ProfileLabel.Text, self.ProfileLabel.TextSize, self.ProfileLabel.Font).X + 16, 24)
 	end
 
-	if isfile('myau/profiles/'..self.Profile..self.Place..'.txt') then
-		local savedata = loadJson('myau/profiles/'..self.Profile..self.Place..'.txt')
+	if isfile('opai/profiles/'..self.Profile..self.Place..'.txt') then
+		local savedata = loadJson('opai/profiles/'..self.Profile..self.Place..'.txt')
 		if not savedata then
 			savedata = {Categories = {}, Modules = {}, Legit = {}}
-			self:CreateNotification('Vape', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
+			self:CreateNotification('Opai', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
 			savecheck = false
 		end
 
@@ -5503,11 +5503,11 @@ function mainapi:Load(skipgui, profile)
 		image.Size = UDim2.fromOffset(26, 26)
 		image.Position = UDim2.fromOffset(3, 3)
 		image.BackgroundTransparency = 1
-		image.Image = getcustomasset('myau/assets/new/vape.png')
+		image.Image = getcustomasset('opai/assets/new/Opai.png')
 		image.Parent = button
 		local buttoncorner = Instance.new('UICorner')
 		buttoncorner.Parent = button
-		self.VapeButton = button
+		self.OpaiButton = button
 		button.MouseButton1Click:Connect(function()
 			if self.ThreadFix then
 				setthreadidentity(8)
@@ -5598,8 +5598,8 @@ function mainapi:Save(newprofile)
 		}
 	end
 
-	writefile('myau/profiles/'..game.GameId..'.gui.txt', httpService:JSONEncode(guidata))
-	writefile('myau/profiles/'..self.Profile..self.Place..'.txt', httpService:JSONEncode(savedata))
+	writefile('opai/profiles/'..game.GameId..'.gui.txt', httpService:JSONEncode(guidata))
+	writefile('opai/profiles/'..self.Profile..self.Place..'.txt', httpService:JSONEncode(savedata))
 end
 
 function mainapi:SaveOptions(object, savedoptions)
@@ -5644,9 +5644,9 @@ function mainapi:Uninject()
 	mainapi.gui:Destroy()
 	table.clear(mainapi.Libraries)
 	loopClean(mainapi)
-	shared.vape = nil
-	shared.vapereload = nil
-	shared.VapeIndependent = nil
+	shared.Opai = nil
+	shared.Opaireload = nil
+	shared.OpaiIndependent = nil
 end
 
 gui = Instance.new('ScreenGui')
@@ -5768,42 +5768,42 @@ mainapi:CreateGUI()
 mainapi.Categories.Main:CreateDivider()
 mainapi:CreateCategory({
 	Name = 'Combat',
-	Icon = getcustomasset('myau/assets/new/combaticon.png'),
+	Icon = getcustomasset('opai/assets/new/combaticon.png'),
 	Size = UDim2.fromOffset(13, 14)
 })
 mainapi:CreateCategory({
 	Name = 'Blatant',
-	Icon = getcustomasset('myau/assets/new/blatanticon.png'),
+	Icon = getcustomasset('opai/assets/new/blatanticon.png'),
 	Size = UDim2.fromOffset(14, 14)
 })
 mainapi:CreateCategory({
 	Name = 'Render',
-	Icon = getcustomasset('myau/assets/new/rendericon.png'),
+	Icon = getcustomasset('opai/assets/new/rendericon.png'),
 	Size = UDim2.fromOffset(15, 14)
 })
 mainapi:CreateCategory({
 	Name = 'Utility',
-	Icon = getcustomasset('myau/assets/new/utilityicon.png'),
+	Icon = getcustomasset('opai/assets/new/utilityicon.png'),
 	Size = UDim2.fromOffset(15, 14)
 })
 mainapi:CreateCategory({
 	Name = 'World',
-	Icon = getcustomasset('myau/assets/new/worldicon.png'),
+	Icon = getcustomasset('opai/assets/new/worldicon.png'),
 	Size = UDim2.fromOffset(14, 14)
 })
 mainapi:CreateCategory({
 	Name = 'Inventory',
-	Icon = getcustomasset('myau/assets/new/inventoryicon.png'),
+	Icon = getcustomasset('opai/assets/new/inventoryicon.png'),
 	Size = UDim2.fromOffset(15, 14)
 })
 mainapi:CreateCategory({
 	Name = 'Minigames',
-	Icon = getcustomasset('myau/assets/new/miniicon.png'),
+	Icon = getcustomasset('opai/assets/new/miniicon.png'),
 	Size = UDim2.fromOffset(19, 12)
 })
 mainapi:CreateCategory({
 	Name = 'Legit',
-	Icon = getcustomasset('myau/assets/new/legit.png'),
+	Icon = getcustomasset('opai/assets/new/legit.png'),
 	Size = UDim2.fromOffset(20, 14)
 })
 mainapi.Categories.Main:CreateDivider('misc')
@@ -5819,7 +5819,7 @@ local friendscolor = {
 }
 local friendssettings = {
 	Name = 'Friends',
-	Icon = getcustomasset('myau/assets/new/friendstab.png'),
+	Icon = getcustomasset('opai/assets/new/friendstab.png'),
 	Size = UDim2.fromOffset(17, 16),
 	Placeholder = 'Roblox username',
 	Color = Color3.fromRGB(5, 134, 105),
@@ -5872,7 +5872,7 @@ mainapi:Clean(friends.ColorUpdate)
 ]]
 mainapi:CreateCategoryList({
 	Name = 'Profiles',
-	Icon = getcustomasset('myau/assets/new/profilesicon.png'),
+	Icon = getcustomasset('opai/assets/new/profilesicon.png'),
 	Size = UDim2.fromOffset(17, 10),
 	Position = UDim2.fromOffset(12, 16),
 	Placeholder = 'Type name',
@@ -5885,7 +5885,7 @@ mainapi:CreateCategoryList({
 local targets
 targets = mainapi:CreateCategoryList({
 	Name = 'Targets',
-	Icon = getcustomasset('myau/assets/new/friendstab.png'),
+	Icon = getcustomasset('opai/assets/new/friendstab.png'),
 	Size = UDim2.fromOffset(17, 16),
 	Placeholder = 'Roblox username',
 	Function = function()
@@ -5913,36 +5913,36 @@ general:CreateButton({
 	Name = 'Reset current profile',
 	Function = function()
 	mainapi.Save = function() end
-		if isfile('myau/profiles/'..mainapi.Profile..mainapi.Place..'.txt') and delfile then
-			delfile('myau/profiles/'..mainapi.Profile..mainapi.Place..'.txt')
+		if isfile('opai/profiles/'..mainapi.Profile..mainapi.Place..'.txt') and delfile then
+			delfile('opai/profiles/'..mainapi.Profile..mainapi.Place..'.txt')
 		end
-		shared.vapereload = true
-		if shared.VapeDeveloper then
-			loadstring(readfile('myau/loader.lua'), 'loader')()
+		shared.Opaireload = true
+		if shared.OpaiDeveloper then
+			loadstring(readfile('opai/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/amrho94/myau/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end,
-	Tooltip = 'This will set your profile to the default settings of Vape'
+	Tooltip = 'This will set your profile to the default settings of Opai'
 })
 general:CreateButton({
 	Name = 'Self destruct',
 	Function = function()
 		mainapi:Uninject()
 	end,
-	Tooltip = 'Removes vape from the current game'
+	Tooltip = 'Removes Opai from the current game'
 })
 general:CreateButton({
 	Name = 'Reinject',
 	Function = function()
-		shared.vapereload = true
-		if shared.VapeDeveloper then
-			loadstring(readfile('myau/loader.lua'), 'loader')()
+		shared.Opaireload = true
+		if shared.OpaiDeveloper then
+			loadstring(readfile('opai/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/amrho94/myau/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end,
-	Tooltip = 'Reloads vape for debugging purposes'
+	Tooltip = 'Reloads Opai for debugging purposes'
 })
 
 --[[
@@ -6042,16 +6042,16 @@ guipane:CreateDropdown({
 	List = inputService.TouchEnabled and {'new', 'old'} or {'new', 'old', 'rise'},
 	Function = function(val, mouse)
 		if mouse then
-			writefile('myau/profiles/gui.txt', val)
-			shared.vapereload = true
-			if shared.VapeDeveloper then
-				loadstring(readfile('myau/loader.lua'), 'loader')()
+			writefile('opai/profiles/gui.txt', val)
+			shared.Opaireload = true
+			if shared.OpaiDeveloper then
+				loadstring(readfile('opai/loader.lua'), 'loader')()
 			else
-				loadstring(game:HttpGet('https://raw.githubusercontent.com/amrho94/myau/'..readfile('myau/profiles/commit.txt')..'/loader.lua', true))()
+				loadstring(game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/loader.lua', true))()
 			end
 		end
 	end,
-	Tooltip = 'new - The newest vape theme to since v4.05\nold - The vape theme pre v4.05\nrise - Rise 6.0'
+	Tooltip = 'new - The newest Opai theme to since v4.05\nold - The Opai theme pre v4.05\nrise - Rise 6.0'
 })
 mainapi.RainbowMode = guipane:CreateDropdown({
 	Name = 'Rainbow Mode',
@@ -6155,7 +6155,7 @@ mainapi.Categories.Main:CreateBind()
 
 local textgui = mainapi:CreateOverlay({
 	Name = 'Text GUI',
-	Icon = getcustomasset('myau/assets/new/textguiicon.png'),
+	Icon = getcustomasset('opai/assets/new/textguiicon.png'),
 	Size = UDim2.fromOffset(16, 12),
 	Position = UDim2.fromOffset(12, 14),
 	Function = function()
@@ -6193,8 +6193,8 @@ textguicolor = textgui:CreateColorSlider({
 	Darker = true,
 	Visible = false
 })
-local VapeTextScale = Instance.new('UIScale')
-VapeTextScale.Parent = textgui.Children
+local OpaiTextScale = Instance.new('UIScale')
+OpaiTextScale.Parent = textgui.Children
 local textguiscale = textgui:CreateSlider({
 	Name = 'Scale',
 	Min = 0,
@@ -6202,7 +6202,7 @@ local textguiscale = textgui:CreateSlider({
 	Decimal = 10,
 	Default = 1,
 	Function = function(val)
-		VapeTextScale.Scale = val
+		OpaiTextScale.Scale = val
 		mainapi:UpdateTextGUI()
 	end
 })
@@ -6239,7 +6239,7 @@ local textguianimations = textgui:CreateToggle({
 })
 local textguiwatermark = textgui:CreateToggle({
 	Name = 'Watermark',
-	Tooltip = 'Renders a vape watermark',
+	Tooltip = 'Renders a Opai watermark',
 	Function = function()
 		mainapi:UpdateTextGUI()
 	end
@@ -6289,8 +6289,8 @@ local textguimodules = textgui:CreateToggle({
 textguimoduleslist = textgui:CreateTextList({
 	Name = 'Blacklist',
 	Tooltip = 'Name of module to hide.',
-	Icon = getcustomasset('myau/assets/new/blockedicon.png'),
-	Tab = getcustomasset('myau/assets/new/blockedtab.png'),
+	Icon = getcustomasset('opai/assets/new/blockedicon.png'),
+	Tab = getcustomasset('opai/assets/new/blockedtab.png'),
 	TabSize = UDim2.fromOffset(21, 16),
 	Color = Color3.fromRGB(250, 50, 56),
 	Function = function()
@@ -6358,17 +6358,17 @@ textguicolorcustom = textgui:CreateColorSlider({
 	Text GUI Objects
 ]]
 
-local VapeLabels = {}
-local VapeLogo = Instance.new('ImageLabel')
-VapeLogo.Name = 'Logo'
-VapeLogo.Size = UDim2.fromOffset(80, 21)
-VapeLogo.Position = UDim2.new(1, -142, 0, 3)
-VapeLogo.BackgroundTransparency = 1
-VapeLogo.BorderSizePixel = 0
-VapeLogo.Visible = false
-VapeLogo.BackgroundColor3 = Color3.new()
-VapeLogo.Image = getcustomasset('myau/assets/new/textmyau.png')
-VapeLogo.Parent = textgui.Children
+local OpaiLabels = {}
+local OpaiLogo = Instance.new('ImageLabel')
+OpaiLogo.Name = 'Logo'
+OpaiLogo.Size = UDim2.fromOffset(80, 21)
+OpaiLogo.Position = UDim2.new(1, -142, 0, 3)
+OpaiLogo.BackgroundTransparency = 1
+OpaiLogo.BorderSizePixel = 0
+OpaiLogo.Visible = false
+OpaiLogo.BackgroundColor3 = Color3.new()
+OpaiLogo.Image = getcustomasset('opai/assets/new/textopai.png')
+OpaiLogo.Parent = textgui.Children
 
 local lastside = textgui.Children.AbsolutePosition.X > (gui.AbsoluteSize.X / 2)
 mainapi:Clean(textgui.Children:GetPropertyChangedSignal('AbsolutePosition'):Connect(function()
@@ -6382,73 +6382,73 @@ mainapi:Clean(textgui.Children:GetPropertyChangedSignal('AbsolutePosition'):Conn
 	end
 end))
 
-local VapeLogoV4 = Instance.new('ImageLabel')
-VapeLogoV4.Name = 'Logo2'
-VapeLogoV4.Size = UDim2.fromOffset(33, 18)
-VapeLogoV4.Position = UDim2.new(1, 1, 0, 1)
-VapeLogoV4.BackgroundColor3 = Color3.new()
-VapeLogoV4.BackgroundTransparency = 1
-VapeLogoV4.BorderSizePixel = 0
-VapeLogoV4.Image = getcustomasset('myau/assets/new/textv2.png')
-VapeLogoV4.Parent = VapeLogo
-local VapeLogoShadow = VapeLogo:Clone()
-VapeLogoShadow.Position = UDim2.fromOffset(1, 1)
-VapeLogoShadow.ZIndex = 0
-VapeLogoShadow.Visible = true
-VapeLogoShadow.ImageColor3 = Color3.new()
-VapeLogoShadow.ImageTransparency = 0.65
-VapeLogoShadow.Parent = VapeLogo
-VapeLogoShadow.Logo2.ZIndex = 0
-VapeLogoShadow.Logo2.ImageColor3 = Color3.new()
-VapeLogoShadow.Logo2.ImageTransparency = 0.65
-local VapeLogoGradient = Instance.new('UIGradient')
-VapeLogoGradient.Rotation = 90
-VapeLogoGradient.Parent = VapeLogo
-local VapeLogoGradient2 = Instance.new('UIGradient')
-VapeLogoGradient2.Rotation = 90
-VapeLogoGradient2.Parent = VapeLogoV4
-local VapeLabelCustom = Instance.new('TextLabel')
-VapeLabelCustom.Position = UDim2.fromOffset(5, 2)
-VapeLabelCustom.BackgroundTransparency = 1
-VapeLabelCustom.BorderSizePixel = 0
-VapeLabelCustom.Visible = false
-VapeLabelCustom.Text = ''
-VapeLabelCustom.TextSize = 25
-VapeLabelCustom.FontFace = textguifontcustom.Value
-VapeLabelCustom.RichText = true
-local VapeLabelCustomShadow = VapeLabelCustom:Clone()
-VapeLabelCustom:GetPropertyChangedSignal('Position'):Connect(function()
-	VapeLabelCustomShadow.Position = UDim2.new(
-		VapeLabelCustom.Position.X.Scale,
-		VapeLabelCustom.Position.X.Offset + 1,
+local OpaiLogoV4 = Instance.new('ImageLabel')
+OpaiLogoV4.Name = 'Logo2'
+OpaiLogoV4.Size = UDim2.fromOffset(33, 18)
+OpaiLogoV4.Position = UDim2.new(1, 1, 0, 1)
+OpaiLogoV4.BackgroundColor3 = Color3.new()
+OpaiLogoV4.BackgroundTransparency = 1
+OpaiLogoV4.BorderSizePixel = 0
+OpaiLogoV4.Image = getcustomasset('opai/assets/new/textv2.png')
+OpaiLogoV4.Parent = OpaiLogo
+local OpaiLogoShadow = OpaiLogo:Clone()
+OpaiLogoShadow.Position = UDim2.fromOffset(1, 1)
+OpaiLogoShadow.ZIndex = 0
+OpaiLogoShadow.Visible = true
+OpaiLogoShadow.ImageColor3 = Color3.new()
+OpaiLogoShadow.ImageTransparency = 0.65
+OpaiLogoShadow.Parent = OpaiLogo
+OpaiLogoShadow.Logo2.ZIndex = 0
+OpaiLogoShadow.Logo2.ImageColor3 = Color3.new()
+OpaiLogoShadow.Logo2.ImageTransparency = 0.65
+local OpaiLogoGradient = Instance.new('UIGradient')
+OpaiLogoGradient.Rotation = 90
+OpaiLogoGradient.Parent = OpaiLogo
+local OpaiLogoGradient2 = Instance.new('UIGradient')
+OpaiLogoGradient2.Rotation = 90
+OpaiLogoGradient2.Parent = OpaiLogoV4
+local OpaiLabelCustom = Instance.new('TextLabel')
+OpaiLabelCustom.Position = UDim2.fromOffset(5, 2)
+OpaiLabelCustom.BackgroundTransparency = 1
+OpaiLabelCustom.BorderSizePixel = 0
+OpaiLabelCustom.Visible = false
+OpaiLabelCustom.Text = ''
+OpaiLabelCustom.TextSize = 25
+OpaiLabelCustom.FontFace = textguifontcustom.Value
+OpaiLabelCustom.RichText = true
+local OpaiLabelCustomShadow = OpaiLabelCustom:Clone()
+OpaiLabelCustom:GetPropertyChangedSignal('Position'):Connect(function()
+	OpaiLabelCustomShadow.Position = UDim2.new(
+		OpaiLabelCustom.Position.X.Scale,
+		OpaiLabelCustom.Position.X.Offset + 1,
 		0,
-		VapeLabelCustom.Position.Y.Offset + 1
+		OpaiLabelCustom.Position.Y.Offset + 1
 	)
 end)
-VapeLabelCustom:GetPropertyChangedSignal('FontFace'):Connect(function()
-	VapeLabelCustomShadow.FontFace = VapeLabelCustom.FontFace
+OpaiLabelCustom:GetPropertyChangedSignal('FontFace'):Connect(function()
+	OpaiLabelCustomShadow.FontFace = OpaiLabelCustom.FontFace
 end)
-VapeLabelCustom:GetPropertyChangedSignal('Text'):Connect(function()
-	VapeLabelCustomShadow.Text = removeTags(VapeLabelCustom.Text)
+OpaiLabelCustom:GetPropertyChangedSignal('Text'):Connect(function()
+	OpaiLabelCustomShadow.Text = removeTags(OpaiLabelCustom.Text)
 end)
-VapeLabelCustom:GetPropertyChangedSignal('Size'):Connect(function()
-	VapeLabelCustomShadow.Size = VapeLabelCustom.Size
+OpaiLabelCustom:GetPropertyChangedSignal('Size'):Connect(function()
+	OpaiLabelCustomShadow.Size = OpaiLabelCustom.Size
 end)
-VapeLabelCustomShadow.TextColor3 = Color3.new()
-VapeLabelCustomShadow.TextTransparency = 0.65
-VapeLabelCustomShadow.Parent = textgui.Children
-VapeLabelCustom.Parent = textgui.Children
-local VapeLabelHolder = Instance.new('Frame')
-VapeLabelHolder.Name = 'Holder'
-VapeLabelHolder.Size = UDim2.fromScale(1, 1)
-VapeLabelHolder.Position = UDim2.fromOffset(5, 37)
-VapeLabelHolder.BackgroundTransparency = 1
-VapeLabelHolder.Parent = textgui.Children
-local VapeLabelSorter = Instance.new('UIListLayout')
-VapeLabelSorter.HorizontalAlignment = Enum.HorizontalAlignment.Right
-VapeLabelSorter.VerticalAlignment = Enum.VerticalAlignment.Top
-VapeLabelSorter.SortOrder = Enum.SortOrder.LayoutOrder
-VapeLabelSorter.Parent = VapeLabelHolder
+OpaiLabelCustomShadow.TextColor3 = Color3.new()
+OpaiLabelCustomShadow.TextTransparency = 0.65
+OpaiLabelCustomShadow.Parent = textgui.Children
+OpaiLabelCustom.Parent = textgui.Children
+local OpaiLabelHolder = Instance.new('Frame')
+OpaiLabelHolder.Name = 'Holder'
+OpaiLabelHolder.Size = UDim2.fromScale(1, 1)
+OpaiLabelHolder.Position = UDim2.fromOffset(5, 37)
+OpaiLabelHolder.BackgroundTransparency = 1
+OpaiLabelHolder.Parent = textgui.Children
+local OpaiLabelSorter = Instance.new('UIListLayout')
+OpaiLabelSorter.HorizontalAlignment = Enum.HorizontalAlignment.Right
+OpaiLabelSorter.VerticalAlignment = Enum.VerticalAlignment.Top
+OpaiLabelSorter.SortOrder = Enum.SortOrder.LayoutOrder
+OpaiLabelSorter.Parent = OpaiLabelHolder
 
 --[[
 	Target Info
@@ -6459,7 +6459,7 @@ local targetinfoobj
 local targetinfobcolor
 targetinfoobj = mainapi:CreateOverlay({
 	Name = 'Target Info',
-	Icon = getcustomasset('myau/assets/new/targetinfoicon.png'),
+	Icon = getcustomasset('opai/assets/new/targetinfoicon.png'),
 	Size = UDim2.fromOffset(14, 14),
 	Position = UDim2.fromOffset(12, 14),
 	CategorySize = 240,
@@ -6707,30 +6707,30 @@ function mainapi:UpdateTextGUI(afterload)
 	if not afterload and not mainapi.Loaded then return end
 	if textgui.Button.Enabled then
 		local right = textgui.Children.AbsolutePosition.X > (gui.AbsoluteSize.X / 2)
-		VapeLogo.Visible = textguiwatermark.Enabled
-		VapeLogo.Position = right and UDim2.new(1 / VapeTextScale.Scale, -113, 0, 6) or UDim2.fromOffset(0, 6)
-		VapeLogoShadow.Visible = textguishadow.Enabled
-		VapeLabelCustom.Text = textguibox.Value
-		VapeLabelCustom.FontFace = textguifontcustom.Value
-		VapeLabelCustom.Visible = VapeLabelCustom.Text ~= '' and textguitext.Enabled
-		VapeLabelCustomShadow.Visible = VapeLabelCustom.Visible and textguishadow.Enabled
-		VapeLabelSorter.HorizontalAlignment = right and Enum.HorizontalAlignment.Right or Enum.HorizontalAlignment.Left
-		VapeLabelHolder.Size = UDim2.fromScale(1 / VapeTextScale.Scale, 1)
-		VapeLabelHolder.Position = UDim2.fromOffset(right and 3 or 0, 11 + (VapeLogo.Visible and VapeLogo.Size.Y.Offset or 0) + (VapeLabelCustom.Visible and 28 or 0) + (textguibackground.Enabled and 3 or 0))
-		if VapeLabelCustom.Visible then
-			local size = getfontsize(removeTags(VapeLabelCustom.Text), VapeLabelCustom.TextSize, VapeLabelCustom.FontFace)
-			VapeLabelCustom.Size = UDim2.fromOffset(size.X, size.Y)
-			VapeLabelCustom.Position = UDim2.new(right and 1 / VapeTextScale.Scale or 0, right and -size.X or 0, 0, (VapeLogo.Visible and 32 or 8))
+		OpaiLogo.Visible = textguiwatermark.Enabled
+		OpaiLogo.Position = right and UDim2.new(1 / OpaiTextScale.Scale, -113, 0, 6) or UDim2.fromOffset(0, 6)
+		OpaiLogoShadow.Visible = textguishadow.Enabled
+		OpaiLabelCustom.Text = textguibox.Value
+		OpaiLabelCustom.FontFace = textguifontcustom.Value
+		OpaiLabelCustom.Visible = OpaiLabelCustom.Text ~= '' and textguitext.Enabled
+		OpaiLabelCustomShadow.Visible = OpaiLabelCustom.Visible and textguishadow.Enabled
+		OpaiLabelSorter.HorizontalAlignment = right and Enum.HorizontalAlignment.Right or Enum.HorizontalAlignment.Left
+		OpaiLabelHolder.Size = UDim2.fromScale(1 / OpaiTextScale.Scale, 1)
+		OpaiLabelHolder.Position = UDim2.fromOffset(right and 3 or 0, 11 + (OpaiLogo.Visible and OpaiLogo.Size.Y.Offset or 0) + (OpaiLabelCustom.Visible and 28 or 0) + (textguibackground.Enabled and 3 or 0))
+		if OpaiLabelCustom.Visible then
+			local size = getfontsize(removeTags(OpaiLabelCustom.Text), OpaiLabelCustom.TextSize, OpaiLabelCustom.FontFace)
+			OpaiLabelCustom.Size = UDim2.fromOffset(size.X, size.Y)
+			OpaiLabelCustom.Position = UDim2.new(right and 1 / OpaiTextScale.Scale or 0, right and -size.X or 0, 0, (OpaiLogo.Visible and 32 or 8))
 		end
 
 		local found = {}
-		for _, v in VapeLabels do
+		for _, v in OpaiLabels do
 			if v.Enabled then
 				table.insert(found, v.Object.Name)
 			end
 			v.Object:Destroy()
 		end
-		table.clear(VapeLabels)
+		table.clear(OpaiLabels)
 
 		local info = TweenInfo.new(0.3, Enum.EasingStyle.Exponential)
 		for i, v in mainapi.Modules do
@@ -6742,7 +6742,7 @@ function mainapi:UpdateTextGUI(afterload)
 				holder.Size = UDim2.fromOffset()
 				holder.BackgroundTransparency = 1
 				holder.ClipsDescendants = true
-				holder.Parent = VapeLabelHolder
+				holder.Parent = OpaiLabelHolder
 				local holderbackground
 				local holdercolorline
 				if textguibackground.Enabled then
@@ -6804,7 +6804,7 @@ function mainapi:UpdateTextGUI(afterload)
 				else
 					holder.Size = v.Enabled and holdersize or UDim2.fromOffset()
 				end
-				table.insert(VapeLabels, {
+				table.insert(OpaiLabels, {
 					Object = holder,
 					Text = holdertext,
 					Background = holderbackground,
@@ -6815,16 +6815,16 @@ function mainapi:UpdateTextGUI(afterload)
 		end
 
 		if textguisort.Value == 'Alphabetical' then
-			table.sort(VapeLabels, function(a, b)
+			table.sort(OpaiLabels, function(a, b)
 				return a.Text.Text < b.Text.Text
 			end)
 		else
-			table.sort(VapeLabels, function(a, b)
+			table.sort(OpaiLabels, function(a, b)
 				return a.Text.Size.X.Offset > b.Text.Size.X.Offset
 			end)
 		end
 
-		for i, v in VapeLabels do
+		for i, v in OpaiLabels do
 			if v.Color then
 				v.Color.Parent.Line.Visible = i ~= 1
 			end
@@ -6839,19 +6839,19 @@ function mainapi:UpdateGUI(hue, sat, val, default)
 	if mainapi.Loaded == nil then return end
 	if not default and mainapi.GUIColor.Rainbow then return end
 	if textgui.Button.Enabled then
-		VapeLogoGradient.Color = ColorSequence.new({
+		OpaiLogoGradient.Color = ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.fromHSV(hue, sat, val)),
 			ColorSequenceKeypoint.new(1, textguigradient.Enabled and Color3.fromHSV(mainapi:Color((hue - 0.075) % 1)) or Color3.fromHSV(hue, sat, val))
 		})
-		VapeLogoGradient2.Color = textguigradient.Enabled and textguigradientv4.Enabled and VapeLogoGradient.Color or ColorSequence.new({
+		OpaiLogoGradient2.Color = textguigradient.Enabled and textguigradientv4.Enabled and OpaiLogoGradient.Color or ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
 			ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
 		})
-		VapeLabelCustom.TextColor3 = textguicolorcustomtoggle.Enabled and Color3.fromHSV(textguicolorcustom.Hue, textguicolorcustom.Sat, textguicolorcustom.Value) or VapeLogoGradient.Color.Keypoints[2].Value
+		OpaiLabelCustom.TextColor3 = textguicolorcustomtoggle.Enabled and Color3.fromHSV(textguicolorcustom.Hue, textguicolorcustom.Sat, textguicolorcustom.Value) or OpaiLogoGradient.Color.Keypoints[2].Value
 
 		local customcolor = textguicolordrop.Value == 'Custom color' and Color3.fromHSV(textguicolor.Hue, textguicolor.Sat, textguicolor.Value) or nil
-		for i, v in VapeLabels do
-			v.Text.TextColor3 = customcolor or (mainapi.GUIColor.Rainbow and Color3.fromHSV(mainapi:Color((hue - ((textguigradient and i + 2 or i) * 0.025)) % 1)) or VapeLogoGradient.Color.Keypoints[2].Value)
+		for i, v in OpaiLabels do
+			v.Text.TextColor3 = customcolor or (mainapi.GUIColor.Rainbow and Color3.fromHSV(mainapi:Color((hue - ((textguigradient and i + 2 or i) * 0.025)) % 1)) or OpaiLogoGradient.Color.Keypoints[2].Value)
 			if v.Color then
 				v.Color.BackgroundColor3 = v.Text.TextColor3
 			end
@@ -6866,7 +6866,7 @@ function mainapi:UpdateGUI(hue, sat, val, default)
 
 	for i, v in mainapi.Categories do
 		if i == 'Main' then
-			v.Object.VapeLogo.V4Logo.ImageColor3 = Color3.fromHSV(hue, sat, val)
+			v.Object.OpaiLogo.V4Logo.ImageColor3 = Color3.fromHSV(hue, sat, val)
 			for _, button in v.Buttons do
 				if button.Enabled then
 					button.Object.TextColor3 = rainbow and Color3.fromHSV(mainapi:Color((hue - (button.Index * 0.025)) % 1)) or Color3.fromHSV(hue, sat, val)
