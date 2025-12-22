@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after Opai updates.
 local mainapi = {
@@ -92,7 +93,7 @@ local getcustomassets = {
 	['opai/assets/new/guislider.png'] = 'rbxassetid://14368320020',
 	['opai/assets/new/guisliderrain.png'] = 'rbxassetid://14368321228',
 	['opai/assets/new/guiv4.png'] = 'rbxassetid://14368322199',
-	['opai/assets/new/guivape.png'] = 'rbxassetid://14657521312',
+	['opai/assets/new/guiopai.png'] = 'rbxassetid://14657521312',
 	['opai/assets/new/info.png'] = 'rbxassetid://14368324807',
 	['opai/assets/new/inventoryicon.png'] = 'rbxassetid://14928011633',
 	['opai/assets/new/legit.png'] = 'rbxassetid://14425650534',
@@ -121,7 +122,7 @@ local getcustomassets = {
 	['opai/assets/new/targetstab.png'] = 'rbxassetid://14497393895',
 	['opai/assets/new/textguiicon.png'] = 'rbxassetid://14368355456',
 	['opai/assets/new/textv4.png'] = 'rbxassetid://14368357095',
-	['opai/assets/new/textvape.png'] = 'rbxassetid://14368358200',
+	['opai/assets/new/textopai.png'] = 'rbxassetid://14368358200',
 	['opai/assets/new/utilityicon.png'] = 'rbxassetid://14368359107',
 	['opai/assets/new/Opai.png'] = 'rbxassetid://14373395239',
 	['opai/assets/new/warning.png'] = 'rbxassetid://14368361552',
