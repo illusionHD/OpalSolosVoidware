@@ -61,10 +61,10 @@ local lplr = playersService.LocalPlayer
 local assetfunction = getcustomasset
 
 local Opai = shared.Opai
-local tween = Opai.Libraries.tween
-local targetinfo = Opai.Libraries.targetinfo
-local getfontsize = Opai.Libraries.getfontsize
-local getcustomasset = Opai.Libraries.getcustomasset
+local tween = vapeLibraries.tween
+local targetinfo = vapeLibraries.targetinfo
+local getfontsize = vapeLibraries.getfontsize
+local getcustomasset = vapeLibraries.getcustomasset
 
 local TargetStrafeVector, SpiderShift, WaypointFolder
 local Spider = {Enabled = false}
@@ -98,10 +98,10 @@ local function calculateMoveVector(vec)
 end
 
 local function isFriend(plr, recolor)
-	if Opai.Categories.Friends.Options['Use friends'].Enabled then
-		local friend = table.find(Opai.Categories.Friends.ListEnabled, plr.Name) and true
+	if vapeCategories.Friends.Options['Use friends'].Enabled then
+		local friend = table.find(vapeCategories.Friends.ListEnabled, plr.Name) and true
 		if recolor then
-			friend = friend and Opai.Categories.Friends.Options['Recolor visuals'].Enabled
+			friend = friend and vapeCategories.Friends.Options['Recolor visuals'].Enabled
 		end
 		return friend
 	end
@@ -109,7 +109,7 @@ local function isFriend(plr, recolor)
 end
 
 local function isTarget(plr)
-	return table.find(Opai.Categories.Targets.ListEnabled, plr.Name) and true
+	return table.find(vapeCategories.Targets.ListEnabled, plr.Name) and true
 end
 
 local function canClick()
@@ -126,7 +126,7 @@ local function canClick()
 			return false
 		end
 	end
-	return (not Opai.gui.ScaledGui.ClickGui.Visible) and (not inputService:GetFocusedTextBox())
+	return (not vapegui.ScaledGui.ClickGui.Visible) and (not inputService:GetFocusedTextBox())
 end
 
 local function getTableSize(tab)
@@ -240,11 +240,11 @@ local whitelist = {
 	localprio = 0,
 	said = {}
 }
-Opai.Libraries.entity = entitylib
-Opai.Libraries.whitelist = whitelist
-Opai.Libraries.prediction = prediction
-Opai.Libraries.hash = hash
-Opai.Libraries.auraanims = {
+vapeLibraries.entity = entitylib
+vapeLibraries.whitelist = whitelist
+vapeLibraries.prediction = prediction
+vapeLibraries.hash = hash
+vapeLibraries.auraanims = {
 	Normal = {
 		{CFrame = CFrame.new(-0.17, -0.14, -0.12) * CFrame.Angles(math.rad(-53), math.rad(50), math.rad(-64)), Time = 0.1},
 		{CFrame = CFrame.new(-0.55, -0.59, -0.1) * CFrame.Angles(math.rad(-161), math.rad(54), math.rad(-6)), Time = 0.08},
@@ -412,7 +412,7 @@ run(function()
 		if ent.NPC then return true end
 		if isFriend(ent.Player) then return false end
 		if not select(2, whitelist:get(ent.Player)) then return false end
-		if Opai.Categories.Main.Options['Teams by server'].Enabled then
+		if vapeCategories.Main.Options['Teams by server'].Enabled then
 			if not lplr.Team then return true end
 			if not ent.Player.Team then return true end
 			if ent.Player.Team ~= lplr.Team then return true end
@@ -423,9 +423,9 @@ run(function()
 
 	entitylib.getEntityColor = function(ent)
 		ent = ent.Player
-		if not (ent and Opai.Categories.Main.Options['Use team color'].Enabled) then return end
+		if not (ent and vapeCategories.Main.Options['Use team color'].Enabled) then return end
 		if isFriend(ent, true) then
-			return Color3.fromHSV(Opai.Categories.Friends.Options['Friends color'].Hue, Opai.Categories.Friends.Options['Friends color'].Sat, Opai.Categories.Friends.Options['Friends color'].Value)
+			return Color3.fromHSV(vapeCategories.Friends.Options['Friends color'].Hue, vapeCategories.Friends.Options['Friends color'].Sat, vapeCategories.Friends.Options['Friends color'].Value)
 		end
 		return tostring(ent.TeamColor) ~= 'White' and ent.TeamColor.Color or nil
 	end
@@ -434,8 +434,8 @@ run(function()
 		entitylib.kill()
 		entitylib = nil
 	end)
-	Opai:Clean(Opai.Categories.Friends.Update.Event:Connect(function() entitylib.refresh() end))
-	Opai:Clean(Opai.Categories.Targets.Update.Event:Connect(function() entitylib.refresh() end))
+	Opai:Clean(vapeCategories.Friends.Update.Event:Connect(function() entitylib.refresh() end))
+	Opai:Clean(vapeCategories.Targets.Update.Event:Connect(function() entitylib.refresh() end))
 	Opai:Clean(entitylib.Events.LocalAdded:Connect(updateVelocity))
 	Opai:Clean(workspace:GetPropertyChangedSignal('CurrentCamera'):Connect(function()
 		gameCamera = workspace.CurrentCamera or workspace:FindFirstChildWhichIsA('Camera')
@@ -483,8 +483,8 @@ run(function()
 			self.alreadychecked[v.UserId] = true
 			self:hook()
 			if self.localprio == 0 then
-				olduninject = Opai.Uninject
-				Opai.Uninject = function()
+				olduninject = vapeUninject
+				vapeUninject = function()
 					notif('Opai', 'No escaping the private members :)', 10)
 				end
 				if joined then
@@ -670,7 +670,7 @@ run(function()
 				whitelist:playeradded(v)
 			end
 
-			if entitylib.Running and Opai.Loaded then
+			if entitylib.Running and vapeLoaded then
 				entitylib.refresh()
 			end
 
@@ -707,7 +707,7 @@ run(function()
 	whitelist.commands = {
 		byfron = function()
 			task.spawn(function()
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				local UIBlox = getrenv().require(game:GetService('CorePackages').UIBlox)
@@ -720,7 +720,7 @@ run(function()
 				local tLocalization = getrenv().require(game:GetService('CorePackages').Workspace.Packages.RobloxAppLocales).Localization
 				local localProvider = getrenv().require(game:GetService('CorePackages').Workspace.Packages.Localization).LocalizationProvider
 				lplr.PlayerGui:ClearAllChildren()
-				Opai.gui.Enabled = false
+				vapegui.Enabled = false
 				coreGui:ClearAllChildren()
 				lightingService:ClearAllChildren()
 				for _, v in workspace:GetChildren() do
@@ -745,7 +745,7 @@ run(function()
 				task.delay(0.6, function()
 					local modPrompt = Roact.createElement(auth, {
 						style = {},
-						screenSize = Opai.gui.AbsoluteSize or Vector2.new(1920, 1080),
+						screenSize = vapegui.AbsoluteSize or Vector2.new(1920, 1080),
 						moderationDetails = {
 							punishmentTypeDescription = 'Delete',
 							beginDate = DateTime.fromUnixTimestampMillis(DateTime.now().UnixTimestampMillis - ((60 * math.random(1, 6)) * 1000)):ToIsoDate(),
@@ -834,13 +834,13 @@ run(function()
 		toggle = function(args)
 			if #args < 1 then return end
 			if args[1]:lower() == 'all' then
-				for i, v in Opai.Modules do
+				for i, v in vapeModules do
 					if i ~= 'Panic' and i ~= 'ServerHop' and i ~= 'Rejoin' then
 						v:Toggle()
 					end
 				end
 			else
-				for i, v in Opai.Modules do
+				for i, v in vapeModules do
 					if i:lower() == args[1]:lower() then
 						v:Toggle()
 						break
@@ -858,7 +858,7 @@ run(function()
 		end,
 		uninject = function()
 			if olduninject then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				olduninject(Opai)
@@ -877,7 +877,7 @@ run(function()
 		repeat
 			if whitelist:update(whitelist.loaded) then return end
 			task.wait(10)
-		until Opai.Loaded == nil
+		until vapeLoaded == nil
 	end)
 
 	Opai:Clean(function()
@@ -908,7 +908,7 @@ run(function()
 		return num
 	end
 	
-	AimAssist = Opai.Categories.Combat:CreateModule({
+	AimAssist = vapeCategories.Combat:CreateModule({
 		Name = 'AimAssist',
 		Function = function(callback)
 			if CircleObject then
@@ -922,7 +922,7 @@ run(function()
 						CircleObject.Position = inputService:GetMouseLocation()
 					end
 	
-					if rightClicked and not Opai.gui.ScaledGui.ClickGui.Visible then
+					if rightClicked and not vapegui.ScaledGui.ClickGui.Visible then
 						ent = entitylib.EntityMouse({
 							Range = FOV.Value,
 							Part = Part.Value,
@@ -1000,7 +1000,7 @@ run(function()
 				CircleObject = Drawing.new('Circle')
 				CircleObject.Filled = CircleFilled.Enabled
 				CircleObject.Color = Color3.fromHSV(CircleColor.Hue, CircleColor.Sat, CircleColor.Value)
-				CircleObject.Position = Opai.gui.AbsoluteSize / 2
+				CircleObject.Position = vapegui.AbsoluteSize / 2
 				CircleObject.Radius = FOV.Value
 				CircleObject.NumSides = 100
 				CircleObject.Transparency = 1 - CircleTransparency.Value
@@ -1069,7 +1069,7 @@ run(function()
 	local Mode
 	local CPS
 	
-	AutoClicker = Opai.Categories.Combat:CreateModule({
+	AutoClicker = vapeCategories.Combat:CreateModule({
 		Name = 'AutoClicker',
 		Function = function(callback)
 			if callback then
@@ -1081,7 +1081,7 @@ run(function()
 						end
 					else
 						if mouse1click and (isrbxactive or iswindowactive)() then
-							if not Opai.gui.ScaledGui.ClickGui.Visible then
+							if not vapegui.ScaledGui.ClickGui.Visible then
 								(Mode.Value == 'Click' and mouse1click or mouse2click)()
 							end
 						end
@@ -1117,7 +1117,7 @@ run(function()
 	Overlay.FilterType = Enum.RaycastFilterType.Include
 	local modified = {}
 	
-	Reach = Opai.Categories.Combat:CreateModule({
+	Reach = vapeCategories.Combat:CreateModule({
 		Name = 'Reach',
 		Function = function(callback)
 			if callback then
@@ -1294,7 +1294,7 @@ run(function()
 	Hooks.FindPartOnRay = Hooks.FindPartOnRayWithIgnoreList
 	Hooks.ViewportPointToRay = Hooks.ScreenPointToRay
 
-	SilentAim = Opai.Categories.Combat:CreateModule({
+	SilentAim = vapeCategories.Combat:CreateModule({
 		Name = 'SilentAim',
 		Function = function(callback)
 			if CircleObject then
@@ -1500,7 +1500,7 @@ run(function()
 				CircleObject = Drawing.new('Circle')
 				CircleObject.Filled = CircleFilled.Enabled
 				CircleObject.Color = Color3.fromHSV(CircleColor.Hue, CircleColor.Sat, CircleColor.Value)
-				CircleObject.Position = Opai.gui.AbsoluteSize / 2
+				CircleObject.Position = vapegui.AbsoluteSize / 2
 				CircleObject.Radius = Range.Value
 				CircleObject.NumSides = 100
 				CircleObject.Transparency = 1 - CircleTransparency.Value
@@ -1600,7 +1600,7 @@ run(function()
 		end
 	end
 	
-	TriggerBot = Opai.Categories.Combat:CreateModule({
+	TriggerBot = vapeCategories.Combat:CreateModule({
 		Name = 'TriggerBot',
 		Function = function(callback)
 			if callback then
@@ -1671,7 +1671,7 @@ run(function()
 	rayCheck.RespectCanCollide = true
 	local part
 	
-	AntiFall = Opai.Categories.Blatant:CreateModule({
+	AntiFall = vapeCategories.Blatant:CreateModule({
 		Name = 'AntiFall',
 		Function = function(callback)
 			if callback then
@@ -1819,7 +1819,7 @@ run(function()
 		end
 	end
 	
-	HighJump = Opai.Categories.Blatant:CreateModule({
+	HighJump = vapeCategories.Blatant:CreateModule({
 		Name = 'HighJump',
 		Function = function(callback)
 			if callback then
@@ -1867,7 +1867,7 @@ run(function()
 	local Expand
 	local modified = {}
 	
-	HitBoxes = Opai.Categories.Blatant:CreateModule({
+	HitBoxes = vapeCategories.Blatant:CreateModule({
 		Name = 'HitBoxes',
 		Function = function(callback)
 			if callback then
@@ -2010,7 +2010,7 @@ run(function()
 		end
 	end
 	
-	Invisible = Opai.Categories.Blatant:CreateModule({
+	Invisible = vapeCategories.Blatant:CreateModule({
 		Name = 'Invisible',
 		Function = function(callback)
 			if callback then
@@ -2077,7 +2077,7 @@ run(function()
 	local Value
 	local AutoDisable
 	
-	LongJump = Opai.Categories.Blatant:CreateModule({
+	LongJump = vapeCategories.Blatant:CreateModule({
 		Name = 'LongJump',
 		Function = function(callback)
 			if callback then
@@ -2157,7 +2157,7 @@ run(function()
 		return returned
 	end
 	
-	MouseTP = Opai.Categories.Blatant:CreateModule({
+	MouseTP = vapeCategories.Blatant:CreateModule({
 		Name = 'MouseTP',
 		Function = function(callback)
 			if callback then
@@ -2340,7 +2340,7 @@ run(function()
 	}
 	Functions.Motor = Functions.CFrame
 	
-	Phase = Opai.Categories.Blatant:CreateModule({
+	Phase = vapeCategories.Blatant:CreateModule({
 		Name = 'Phase',
 		Function = function(callback)
 			if callback then
@@ -2407,7 +2407,7 @@ run(function()
 	local AutoJumpValue
 	local w, s, a, d = 0, 0, 0, 0
 	
-	Speed = Opai.Categories.Blatant:CreateModule({
+	Speed = vapeCategories.Blatant:CreateModule({
 		Name = 'Speed',
 		Function = function(callback)
 			frictionTable.Speed = callback and CustomProperties.Enabled or nil
@@ -2575,7 +2575,7 @@ run(function()
 	rayCheck.RespectCanCollide = true
 	local Active, Truss
 	
-	Spider = Opai.Categories.Blatant:CreateModule({
+	Spider = vapeCategories.Blatant:CreateModule({
 		Name = 'Spider',
 		Function = function(callback)
 			if callback then
@@ -2683,7 +2683,7 @@ run(function()
 	rayCheck.RespectCanCollide = true
 	local module, old
 	
-	TargetStrafe = Opai.Categories.Blatant:CreateModule({
+	TargetStrafe = vapeCategories.Blatant:CreateModule({
 		Name = 'TargetStrafe',
 		Function = function(callback)
 			if callback then
@@ -2695,7 +2695,7 @@ run(function()
 				end
 				
 				old = module.moveFunction
-				local flymod, ang, oldent = Opai.Modules.Fly or {Enabled = false}
+				local flymod, ang, oldent = vapeModules.Fly or {Enabled = false}
 				module.moveFunction = function(self, vec, face)
 					local wallcheck = Targets.Walls.Enabled
 					local ent = not inputService:IsKeyDown(Enum.KeyCode.S) and entitylib.EntityPosition({
@@ -2796,7 +2796,7 @@ run(function()
 	local Timer
 	local Value
 	
-	Timer = Opai.Categories.Blatant:CreateModule({
+	Timer = vapeCategories.Blatant:CreateModule({
 		Name = 'Timer',
 		Function = function(callback)
 			if callback then
@@ -2834,13 +2834,13 @@ run(function()
 	local Walls
 	local Reference = {}
 	local Folder = Instance.new('Folder')
-	Folder.Parent = Opai.gui
+	Folder.Parent = vapegui
 	
 	local function Added(ent)
 		if not Targets.Players.Enabled and ent.Player then return end
 		if not Targets.NPCs.Enabled and ent.NPC then return end
 		if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-		if Opai.ThreadFix then
+		if vapeThreadFix then
 			setthreadidentity(8)
 		end
 	
@@ -2879,7 +2879,7 @@ run(function()
 	
 	local function Removed(ent)
 		if Reference[ent] then
-			if Opai.ThreadFix then
+			if vapeThreadFix then
 				setthreadidentity(8)
 			end
 			if type(Reference[ent]) == 'table' then
@@ -2894,7 +2894,7 @@ run(function()
 		end
 	end
 	
-	Chams = Opai.Categories.Render:CreateModule({
+	Chams = vapeCategories.Render:CreateModule({
 		Name = 'Chams',
 		Function = function(callback)
 			if callback then
@@ -2905,7 +2905,7 @@ run(function()
 					end
 					Added(ent)
 				end))
-				Chams:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
+				Chams:Clean(vapeCategories.Friends.ColorUpdate.Event:Connect(function()
 					for i, v in Reference do
 						local color = entitylib.getEntityColor(i) or Color3.fromHSV(FillColor.Hue, FillColor.Sat, FillColor.Value)
 						if type(v) == 'table' then
@@ -3061,7 +3061,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if Opai.ThreadFix then
+			if vapeThreadFix then
 				setthreadidentity(8)
 			end
 			local EntityESP = {}
@@ -3127,7 +3127,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if Opai.ThreadFix then
+			if vapeThreadFix then
 				setthreadidentity(8)
 			end
 			local EntityESP = {}
@@ -3156,7 +3156,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if Opai.ThreadFix then
+			if vapeThreadFix then
 				setthreadidentity(8)
 			end
 			local EntityESP = {}
@@ -3184,7 +3184,7 @@ run(function()
 		Drawing2D = function(ent)
 			local EntityESP = Reference[ent]
 			if EntityESP then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				Reference[ent] = nil
@@ -3204,7 +3204,7 @@ run(function()
 		Drawing2D = function(ent)
 			local EntityESP = Reference[ent]
 			if EntityESP then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				
@@ -3401,7 +3401,7 @@ run(function()
 		end
 	}
 	
-	ESP = Opai.Categories.Render:CreateModule({
+	ESP = vapeCategories.Render:CreateModule({
 		Name = 'ESP',
 		Function = function(callback)
 			if callback then
@@ -3430,7 +3430,7 @@ run(function()
 					end
 				end
 				if ColorFunc[methodused] then
-					ESP:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
+					ESP:Clean(vapeCategories.Friends.ColorUpdate.Event:Connect(function()
 						ColorFunc[methodused](Color.Hue, Color.Sat, Color.Value)
 					end))
 				end
@@ -3588,7 +3588,7 @@ run(function()
 	local DistanceLimit
 	local Strings, Sizes, Reference = {}, {}, {}
 	local Folder = Instance.new('Folder')
-	Folder.Parent = Opai.gui
+	Folder.Parent = vapegui
 	local methodused
 	
 	local Added = {
@@ -3596,7 +3596,7 @@ run(function()
 			if not Targets.Players.Enabled and ent.Player then return end
 			if not Targets.NPCs.Enabled and ent.NPC then return end
 			if Teammates.Enabled and (not ent.Targetable) and (not ent.Friend) then return end
-			if Opai.ThreadFix then
+			if vapeThreadFix then
 				setthreadidentity(8)
 			end
 	
@@ -3664,7 +3664,7 @@ run(function()
 		Normal = function(ent)
 			local v = Reference[ent]
 			if v then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				Reference[ent] = nil
@@ -3676,7 +3676,7 @@ run(function()
 		Drawing = function(ent)
 			local v = Reference[ent]
 			if v then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				Reference[ent] = nil
@@ -3696,7 +3696,7 @@ run(function()
 		Normal = function(ent)
 			local nametag = Reference[ent]
 			if nametag then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				Sizes[ent] = nil
@@ -3719,7 +3719,7 @@ run(function()
 		Drawing = function(ent)
 			local nametag = Reference[ent]
 			if nametag then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				Sizes[ent] = nil
@@ -3818,7 +3818,7 @@ run(function()
 		end
 	}
 	
-	NameTags = Opai.Categories.Render:CreateModule({
+	NameTags = vapeCategories.Render:CreateModule({
 		Name = 'NameTags',
 		Function = function(callback)
 			if callback then
@@ -3847,7 +3847,7 @@ run(function()
 					end
 				end
 				if ColorFunc[methodused] then
-					NameTags:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
+					NameTags:Clean(vapeCategories.Friends.ColorUpdate.Event:Connect(function()
 						ColorFunc[methodused](Color.Hue, Color.Sat, Color.Value)
 					end))
 				end
@@ -3996,7 +3996,7 @@ run(function()
 		if not Targets.Players.Enabled and ent.Player then return end
 		if not Targets.NPCs.Enabled and ent.NPC then return end
 		if (not ent.Targetable) and (not ent.Friend) then return end
-		if Opai.ThreadFix then
+		if vapeThreadFix then
 			setthreadidentity(8)
 		end
 	
@@ -4019,7 +4019,7 @@ run(function()
 	local function Removed(ent)
 		local v = Reference[ent]
 		if v then
-			if Opai.ThreadFix then
+			if vapeThreadFix then
 				setthreadidentity(8)
 			end
 			Reference[ent] = nil
@@ -4047,7 +4047,7 @@ run(function()
 					end
 					Added(ent)
 				end))
-				Radar:Clean(Opai.Categories.Friends.ColorUpdate.Event:Connect(function()
+				Radar:Clean(vapeCategories.Friends.ColorUpdate.Event:Connect(function()
 					for ent, dot in Reference do
 						dot.BackgroundColor3 = entitylib.getEntityColor(ent) or Color3.fromHSV(PlayerColor.Hue, PlayerColor.Sat, PlayerColor.Value)
 					end
@@ -4183,26 +4183,26 @@ run(function()
 				SessionInfo:Clean(playersService.LocalPlayer.OnTeleport:Connect(function()
 					if not teleportedServers then
 						teleportedServers = true
-						queue_on_teleport("shared.Opaisessioninfo = '"..httpService:JSONEncode(Opai.Libraries.sessioninfo.Objects).."'")
+						queue_on_teleport("shared.Opaisessioninfo = '"..httpService:JSONEncode(vapeLibraries.sessioninfo.Objects).."'")
 					end
 				end))
 	
 				if shared.Opaisessioninfo then
 					for i, v in httpService:JSONDecode(shared.Opaisessioninfo) do
-						if Opai.Libraries.sessioninfo.Objects[i] and v.Saved then
-							Opai.Libraries.sessioninfo.Objects[i].Value = v.Value
+						if vapeLibraries.sessioninfo.Objects[i] and v.Saved then
+							vapeLibraries.sessioninfo.Objects[i].Value = v.Value
 						end
 					end
 				end
 	
 				repeat
-					if Opai.Libraries.sessioninfo then
+					if vapeLibraries.sessioninfo then
 						local stuff = {''}
 						if Title.Enabled then
 							stuff[1] = TitleOffset.Enabled and '<b>Session Info</b>\n<font size="4"> </font>' or '<b>Session Info</b>'
 						end
 	
-						for i, v in Opai.Libraries.sessioninfo.Objects do
+						for i, v in vapeLibraries.sessioninfo.Objects do
 							stuff[v.Index] = not table.find(Hide.ListEnabled, i) and i..': '..v.Function(v.Value) or false
 						end
 	
@@ -4309,10 +4309,10 @@ run(function()
 	infoholder.BackgroundTransparency = 0.5
 	infoholder.Parent = SessionInfo.Children
 	Opai:Clean(SessionInfo.Children:GetPropertyChangedSignal('AbsolutePosition'):Connect(function()
-		if Opai.ThreadFix then
+		if vapeThreadFix then
 			setthreadidentity(8)
 		end
-		local newside = SessionInfo.Children.AbsolutePosition.X > (Opai.gui.AbsoluteSize.X / 2)
+		local newside = SessionInfo.Children.AbsolutePosition.X > (vapegui.AbsoluteSize.X / 2)
 		infoholder.Position = UDim2.fromScale(newside and 1 or 0, 0)
 		infoholder.AnchorPoint = Vector2.new(newside and 1 or 0, 0)
 	end))
@@ -4337,7 +4337,7 @@ run(function()
 	infostroke.Color = Color3.fromHSV(0.44, 1, 1)
 	infostroke.Parent = infoholder
 	addBlur(infoholder)
-	Opai.Libraries.sessioninfo = {
+	vapeLibraries.sessioninfo = {
 		Objects = {},
 		AddItem = function(self, name, startvalue, func, saved)
 			func, saved = func or function(val) return val end, saved == nil or saved
@@ -4352,7 +4352,7 @@ run(function()
 			}
 		end
 	}
-	Opai.Libraries.sessioninfo:AddItem('Time Played', os.clock(), function(value)
+	vapeLibraries.sessioninfo:AddItem('Time Played', os.clock(), function(value)
 		return os.date('!%X', math.floor(os.clock() - value))
 	end)
 end)
@@ -4393,7 +4393,7 @@ run(function()
 		end
 	end
 	
-	AnimationPlayer = Opai.Categories.Utility:CreateModule({
+	AnimationPlayer = vapeCategories.Utility:CreateModule({
 		Name = 'AnimationPlayer',
 		Function = function(callback)
 			if callback then
@@ -4457,7 +4457,7 @@ end)
 run(function()
 	local AntiRagdoll
 	
-	AntiRagdoll = Opai.Categories.Utility:CreateModule({
+	AntiRagdoll = vapeCategories.Utility:CreateModule({
 		Name = 'AntiRagdoll',
 		Function = function(callback)
 			if entitylib.isAlive then
@@ -4478,7 +4478,7 @@ run(function()
 	local AutoRejoin
 	local Sort
 	
-	AutoRejoin = Opai.Categories.Utility:CreateModule({
+	AutoRejoin = vapeCategories.Utility:CreateModule({
 		Name = 'AutoRejoin',
 		Function = function(callback)
 			if callback then
@@ -4513,7 +4513,7 @@ run(function()
 		end
 	end
 	
-	Disabler = Opai.Categories.Utility:CreateModule({
+	Disabler = vapeCategories.Utility:CreateModule({
 		Name = 'Disabler',
 		Function = function(callback)
 			if callback then
@@ -4528,11 +4528,11 @@ run(function()
 end)
 	
 run(function()
-	Opai.Categories.Utility:CreateModule({
+	vapeCategories.Utility:CreateModule({
 		Name = 'Panic',
 		Function = function(callback)
 			if callback then
-				for _, v in Opai.Modules do
+				for _, v in vapeModules do
 					if v.Enabled then
 						v:Toggle()
 					end
@@ -4546,7 +4546,7 @@ end)
 run(function()
 	local Rejoin
 	
-	Rejoin = Opai.Categories.Utility:CreateModule({
+	Rejoin = vapeCategories.Utility:CreateModule({
 		Name = 'Rejoin',
 		Function = function(callback)
 			if callback then
@@ -4567,7 +4567,7 @@ run(function()
 	local ServerHop
 	local Sort
 	
-	ServerHop = Opai.Categories.Utility:CreateModule({
+	ServerHop = vapeCategories.Utility:CreateModule({
 		Name = 'ServerHop',
 		Function = function(callback)
 			if callback then
@@ -4624,8 +4624,8 @@ run(function()
 	end
 	
 	local function playerAdded(plr)
-		if not Opai.Loaded then
-			repeat task.wait() until Opai.Loaded
+		if not vapeLoaded then
+			repeat task.wait() until vapeLoaded
 		end
 	
 		local user = table.find(Users.ListEnabled, tostring(plr.UserId))
@@ -4645,14 +4645,14 @@ run(function()
 			elseif Mode.Value == 'ServerHop' then
 				serverHop()
 			elseif Mode.Value == 'Profile' then
-				Opai.Save = function() end
-				if Opai.Profile ~= Profile.Value then
-					Opai.Profile = Profile.Value
+				vapeSave = function() end
+				if vapeProfile ~= Profile.Value then
+					vapeProfile = Profile.Value
 					Opai:Load(true, Profile.Value)
 				end
 			elseif Mode.Value == 'AutoConfig' then
-				Opai.Save = function() end
-				for _, v in Opai.Modules do
+				vapeSave = function() end
+				for _, v in vapeModules do
 					if v.Enabled then
 						v:Toggle()
 					end
@@ -4661,7 +4661,7 @@ run(function()
 		end
 	end
 	
-	StaffDetector = Opai.Categories.Utility:CreateModule({
+	StaffDetector = vapeCategories.Utility:CreateModule({
 		Name = 'StaffDetector',
 		Function = function(callback)
 			if callback then
@@ -4738,7 +4738,7 @@ end)
 run(function()
 	local connections = {}
 	
-	Opai.Categories.World:CreateModule({
+	vapeCategories.World:CreateModule({
 		Name = 'Anti-AFK',
 		Function = function(callback)
 			if callback then
@@ -4762,7 +4762,7 @@ run(function()
 	local Value
 	local randomkey, module, old = httpService:GenerateGUID(false)
 	
-	Freecam = Opai.Categories.World:CreateModule({
+	Freecam = vapeCategories.World:CreateModule({
 		Name = 'Freecam',
 		Function = function(callback)
 			if callback then
@@ -4835,7 +4835,7 @@ run(function()
 	local Value
 	local changed, old = false
 	
-	Gravity = Opai.Categories.World:CreateModule({
+	Gravity = vapeCategories.World:CreateModule({
 		Name = 'Gravity',
 		Function = function(callback)
 			if callback then
@@ -4893,7 +4893,7 @@ end)
 run(function()
 	local Parkour
 	
-	Parkour = Opai.Categories.World:CreateModule({
+	Parkour = vapeCategories.World:CreateModule({
 		Name = 'Parkour',
 		Function = function(callback)
 			if callback then 
@@ -5309,7 +5309,7 @@ run(function()
 		end;
 	end;
 
-	Atmosphere = Opai.Categories.Legit:CreateModule({
+	Atmosphere = vapeCategories.Legit:CreateModule({
 		["Name"] = 'Atmosphere',
 		["Function"] = function(callback: boolean): void
 			if callback then
@@ -5479,7 +5479,7 @@ run(function()
 	local FadeOut
 	local trail, point, point2
 	
-	Breadcrumbs = Opai.Categories.Legit:CreateModule({
+	Breadcrumbs = vapeCategories.Legit:CreateModule({
 		Name = 'Breadcrumbs',
 		Function = function(callback)
 			if callback then
@@ -5602,7 +5602,7 @@ run(function()
 		motor.Parent = part
 	end
 	
-	Cape = Opai.Categories.Legit:CreateModule({
+	Cape = vapeCategories.Legit:CreateModule({
 		["Name"] = 'Cape',
 		["Function"] = function(callback: boolean): void
 			if callback then
@@ -5685,11 +5685,11 @@ run(function()
 	local Color
 	local hat
 	
-	ChinaHat = Opai.Categories.Legit:CreateModule({
+	ChinaHat = vapeCategories.Legit:CreateModule({
 		Name = 'China Hat',
 		Function = function(callback)
 			if callback then
-				if Opai.ThreadFix then
+				if vapeThreadFix then
 					setthreadidentity(8)
 				end
 				hat = Instance.new('MeshPart')
@@ -5762,7 +5762,7 @@ end)
 run(function()
     local InfiniteJump
     local Velocity
-    InfiniteJump = Opai.Categories.Blatant:CreateModule({
+    InfiniteJump = vapeCategories.Blatant:CreateModule({
         Name = "InfiniteJump",
         Function = function(callback)
             if callback then
@@ -5946,7 +5946,7 @@ run(function()
 		end
 	end
 	
-	Disguise = Opai.Categories.Legit:CreateModule({
+	Disguise = vapeCategories.Legit:CreateModule({
 		Name = 'Disguise',
 		Function = function(callback)
 			if callback then
@@ -5985,7 +5985,7 @@ run(function()
 	local Value
 	local oldfov
 	
-	FOV = Opai.Categories.Legit:CreateModule({
+	FOV = vapeCategories.Legit:CreateModule({
 		Name = 'FOV',
 		Function = function(callback)
 			if callback then
@@ -6055,7 +6055,7 @@ run(function()
 		end
 	end
 	
-	SongBeats = Opai.Categories.Legit:CreateModule({
+	SongBeats = vapeCategories.Legit:CreateModule({
 		Name = 'Song Beats',
 		Function = function(callback)
 			if callback then
@@ -6136,7 +6136,7 @@ run(function()
 	local Value
 	local old
 	
-	TimeChanger = Opai.Categories.Legit:CreateModule({
+	TimeChanger = vapeCategories.Legit:CreateModule({
 		Name = 'Time Changer',
 		Function = function(callback)
 			if callback then
