@@ -2,7 +2,7 @@ local vape = shared.vape
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then 
-		vape:CreateNotification('Myau', 'Failed to load : '..err, 30, 'alert') 
+		vape:CreateNotification('opai', 'Failed to load : '..err, 30, 'alert') 
 	end
 	return res
 end
@@ -15,7 +15,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/'..select(1, path:gsub('myau/', '')), true) 
+			return game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true) 
 		end)
 		if not suc or res == '404: Not Found' then 
 			error(res) 
@@ -29,15 +29,15 @@ local function downloadFile(path, func)
 end
 
 vape.Place = 6872274481
-if isfile('myau/games/'..vape.Place..'.lua') then
-	loadstring(readfile('myau/games/'..vape.Place..'.lua'), 'bedwars')()
+if isfile('opai/games/'..vape.Place..'.lua') then
+	loadstring(readfile('opai/games/'..vape.Place..'.lua'), 'bedwars')()
 else
 	if not shared.VapeDeveloper then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/o1nb/MyauForRoblox/'..readfile('myau/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
+			return game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
 		end)
 		if suc and res ~= '404: Not Found' then
-			loadstring(downloadFile('myau/games/'..vape.Place..'.lua'), 'bedwars')()
+			loadstring(downloadFile('opai/games/'..vape.Place..'.lua'), 'bedwars')()
 		end
 	end
 end
