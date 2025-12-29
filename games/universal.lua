@@ -276,6 +276,48 @@ vape.Libraries.auraanims = {
 	{CFrame = CFrame.new(-0.45, -0.4, 0.05) * CFrame.Angles(math.rad(-95), math.rad(35), math.rad(5)), Time = 0.06},
 	{CFrame = CFrame.new(-0.4, -0.35, 0.15) * CFrame.Angles(math.rad(-85), math.rad(30), math.rad(15)), Time = 0.05}
 	},
+	WideAggressive = {
+	{CFrame = CFrame.new(-0.25, -0.22, -0.2) * CFrame.Angles(math.rad(-30), math.rad(75), math.rad(-85)), Time = 0.15},
+	{CFrame = CFrame.new(-0.7, -0.78, -0.18) * CFrame.Angles(math.rad(-190), math.rad(85), math.rad(-30)), Time = 0.1},
+	{CFrame = CFrame.new(-0.8, -0.95, 0.1) * CFrame.Angles(math.rad(-210), math.rad(70), math.rad(-15)), Time = 0.08},
+	{CFrame = CFrame.new(-0.75, -1.1, 0.35) * CFrame.Angles(math.rad(-195), math.rad(65), math.rad(-8)), Time = 0.07}
+	},
+	WideCircular = {
+	{CFrame = CFrame.new(-0.2, -0.15, -0.25) * CFrame.Angles(math.rad(-25), math.rad(80), math.rad(-90)), Time = 0.14},
+	{CFrame = CFrame.new(-0.65, -0.55, 0.1) * CFrame.Angles(math.rad(-180), math.rad(95), math.rad(-40)), Time = 0.09},
+	{CFrame = CFrame.new(-0.72, -0.65, 0.45) * CFrame.Angles(math.rad(-195), math.rad(85), math.rad(-25)), Time = 0.07},
+	{CFrame = CFrame.new(-0.68, -0.75, 0.65) * CFrame.Angles(math.rad(-185), math.rad(75), math.rad(-15)), Time = 0.06}
+	},
+	WideOverhead = {
+	{CFrame = CFrame.new(-0.15, 0.2, -0.3) * CFrame.Angles(math.rad(20), math.rad(70), math.rad(-95)), Time = 0.13},
+	{CFrame = CFrame.new(-0.6, -0.45, -0.2) * CFrame.Angles(math.rad(-170), math.rad(80), math.rad(-35)), Time = 0.11},
+	{CFrame = CFrame.new(-0.75, -0.7, 0.05) * CFrame.Angles(math.rad(-185), math.rad(65), math.rad(-20)), Time = 0.08},
+	{CFrame = CFrame.new(-0.7, -0.85, 0.3) * CFrame.Angles(math.rad(-175), math.rad(60), math.rad(-10)), Time = 0.07}
+	},
+	WideUnderhand = {
+	{CFrame = CFrame.new(-0.18, -0.3, -0.15) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 0.16},
+	{CFrame = CFrame.new(-0.55, -0.85, 0.05) * CFrame.Angles(math.rad(-195), math.rad(70), math.rad(-25)), Time = 0.12},
+	{CFrame = CFrame.new(-0.65, -1.0, 0.25) * CFrame.Angles(math.rad(-205), math.rad(60), math.rad(-15)), Time = 0.09},
+	{CFrame = CFrame.new(-0.6, -1.15, 0.45) * CFrame.Angles(math.rad(-190), math.rad(55), math.rad(-5)), Time = 0.08}
+	},
+	WideFigure8 = {
+	{CFrame = CFrame.new(-0.22, -0.18, -0.22) * CFrame.Angles(math.rad(-35), math.rad(85), math.rad(-100)), Time = 0.14},
+	{CFrame = CFrame.new(-0.68, -0.5, 0.15) * CFrame.Angles(math.rad(-185), math.rad(100), math.rad(-45)), Time = 0.1},
+	{CFrame = CFrame.new(-0.72, -0.65, 0.4) * CFrame.Angles(math.rad(-200), math.rad(90), math.rad(-30)), Time = 0.08},
+	{CFrame = CFrame.new(-0.65, -0.8, 0.6) * CFrame.Angles(math.rad(-180), math.rad(80), math.rad(-20)), Time = 0.07}
+	},
+	WideDoubleSweep = {
+	{CFrame = CFrame.new(-0.25, -0.2, -0.25) * CFrame.Angles(math.rad(-40), math.rad(90), math.rad(-105)), Time = 0.15},
+	{CFrame = CFrame.new(-0.75, -0.6, -0.05) * CFrame.Angles(math.rad(-195), math.rad(110), math.rad(-50)), Time = 0.11},
+	{CFrame = CFrame.new(-0.85, -0.8, 0.25) * CFrame.Angles(math.rad(-210), math.rad(85), math.rad(-35)), Time = 0.09},
+	{CFrame = CFrame.new(-0.78, -0.95, 0.5) * CFrame.Angles(math.rad(-200), math.rad(70), math.rad(-25)), Time = 0.08}
+	},
+	WideWindup = {
+	{CFrame = CFrame.new(-0.28, -0.1, -0.3) * CFrame.Angles(math.rad(-20), math.rad(100), math.rad(-110)), Time = 0.17},
+	{CFrame = CFrame.new(-0.8, -0.4, -0.15) * CFrame.Angles(math.rad(-180), math.rad(120), math.rad(-60)), Time = 0.13},
+	{CFrame = CFrame.new(-0.9, -0.7, 0.15) * CFrame.Angles(math.rad(-205), math.rad(95), math.rad(-40)), Time = 0.1},
+	{CFrame = CFrame.new(-0.82, -0.9, 0.4) * CFrame.Angles(math.rad(-195), math.rad(75), math.rad(-30)), Time = 0.09}
+	},
 	Fluid = {
 	{CFrame = CFrame.new(-0.16, -0.15, -0.13) * CFrame.Angles(math.rad(-50), math.rad(45), math.rad(-60)), Time = 0.15},
 	{CFrame = CFrame.new(-0.42, -0.52, -0.09) * CFrame.Angles(math.rad(-140), math.rad(50), math.rad(-12)), Time = 0.12},
