@@ -4,6 +4,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -3620,8 +3621,6 @@ run(function()
 	})
 end)
 
-
-	
 run(function()
 	local BedESP
 	local Reference = {}
@@ -3813,205 +3812,28 @@ run(function()
 		Darker = true
 	})
 end)
-
 run(function()
-	local Detector
+    local Disabler = {Enabled = false}
 
-	-- thresholds
-	local MAX_SPEED = 26
-	local MAX_STRAFE_SPEED = 30
-	local MAX_AIR_TIME = 1.2
-	local MAX_REACH = 20
-	local MAX_UPWARD_VELOCITY = 70
-	local DECAY = 0.95
-
-	local playerData = {}
-
-	local function initPlayer(plr)
-		playerData[plr] = {
-			SpeedVL = 0,
-			FlyVL = 0,
-			ReachVL = 0,
-			AuraVL = 0,
-			ScaffoldVL = 0,
-			StrafeVL = 0,
-			AntiHitVL = 0,
-			SpiderVL = 0,
-
-			AirTime = 0,
-			LastLook = nil,
-			LastY = nil,
-			LastAttack = 0
-		}
-	end
-
-	for _, plr in ipairs(game.Players:GetPlayers()) do
-		if plr ~= lplr then
-			initPlayer(plr)
-		end
-	end
-
-	game.Players.PlayerAdded:Connect(initPlayer)
-	game.Players.PlayerRemoving:Connect(function(plr)
-		playerData[plr] = nil
-	end)
-
-	Detector = vape.Categories.Utility:CreateModule({
-		Name = 'CheatDetector',
-		Tooltip = 'Detects Speed, Fly, Reach, Scaffold, TargetStrafe, AntiHit, Spider',
-		Function = function(callback)
-			if not callback then
-				playerData = {}
-				return
-			end
-
-			Detector:Clean(runService.Heartbeat:Connect(function(dt)
-				for plr, data in pairs(playerData) do
-					if not plr.Character then continue end
-					local hum = plr.Character:FindFirstChildOfClass('Humanoid')
-					local root = plr.Character:FindFirstChild('HumanoidRootPart')
-					if not hum or not root then continue end
-
-					----------------------------------------------------------------
-					-- SPEED
-					local horizSpeed = Vector3.new(root.Velocity.X, 0, root.Velocity.Z).Magnitude
-					if horizSpeed > MAX_SPEED then
-						data.SpeedVL += 1
-					else
-						data.SpeedVL *= DECAY
-					end
-
-					----------------------------------------------------------------
-					-- TARGETSTRAFE (speed while attacking)
-					if tick() - data.LastAttack < 0.35 then
-						if horizSpeed > MAX_STRAFE_SPEED then
-							data.StrafeVL += 1
-						else
-							data.StrafeVL *= DECAY
-						end
-					end
-
-					----------------------------------------------------------------
-					-- FLY
-					if hum.FloorMaterial == Enum.Material.Air then
-						data.AirTime += dt
-						if data.AirTime > MAX_AIR_TIME then
-							data.FlyVL += 1
-						end
-					else
-						data.AirTime = 0
-						data.FlyVL *= DECAY
-					end
-
-					----------------------------------------------------------------
-					-- ANTIHIT / VELOCITY ABUSE
-					if data.LastY then
-						local yDelta = root.Position.Y - data.LastY
-						if yDelta > 6 and root.Velocity.Y > MAX_UPWARD_VELOCITY then
-							data.AntiHitVL += 1
-						else
-							data.AntiHitVL *= DECAY
-						end
-					end
-					data.LastY = root.Position.Y
-
-					----------------------------------------------------------------
-					-- SPIDER (vertical climbing without ladders)
-					if hum.FloorMaterial == Enum.Material.Air
-						and math.abs(root.Velocity.Y) < 2
-						and root.Velocity.Magnitude > 1
-					then
-						data.SpiderVL += 0.5
-					else
-						data.SpiderVL *= DECAY
-					end
-
-					----------------------------------------------------------------
-					-- KILLAURA SNAP HEURISTIC
-					if data.LastLook then
-						local angle = math.deg(math.acos(math.clamp(
-							root.CFrame.LookVector:Dot(data.LastLook),
-							-1, 1
-						)))
-						if angle < 2 then
-							data.AuraVL += 0.5
-						else
-							data.AuraVL *= DECAY
-						end
-					end
-					data.LastLook = root.CFrame.LookVector
-
-					----------------------------------------------------------------
-					-- FLAGGING (notifications)
-					if data.SpeedVL > 6 then
-						vape:CreateNotification('Speed Detected', plr.Name .. ' suspected of Speed', 4)
-						data.SpeedVL = 0
-					end
-
-					if data.StrafeVL > 5 then
-						vape:CreateNotification('TargetStrafe Detected', plr.Name .. ' abnormal speed while attacking', 4)
-						data.StrafeVL = 0
-					end
-
-					if data.FlyVL > 5 then
-						vape:CreateNotification('Fly Detected', plr.Name .. ' suspected of Fly', 4)
-						data.FlyVL = 0
-					end
-
-					if data.AntiHitVL > 4 then
-						vape:CreateNotification('AntiHit Detected', plr.Name .. ' suspicious vertical velocity', 4)
-						data.AntiHitVL = 0
-					end
-
-					if data.SpiderVL > 5 then
-						vape:CreateNotification('Spider Detected', plr.Name .. ' climbing without support', 4)
-						data.SpiderVL = 0
-					end
-
-					if data.AuraVL > 6 then
-						vape:CreateNotification('Killaura Detected', plr.Name .. ' suspicious aim snaps', 4)
-						data.AuraVL = 0
-					end
-				end
-			end))
-		end
-	})
-
-	----------------------------------------------------------------
-	-- REACH + ATTACK TRACKING
-	if bedwars and bedwars.ClientDamageController then
-		local old
-		old = hookfunction(
-			bedwars.ClientDamageController.requestDamage,
-			function(self, victim, ...)
-				local attacker = lplr
-				if victim and victim:FindFirstChild('HumanoidRootPart')
-					and attacker.Character
-					and attacker.Character:FindFirstChild('HumanoidRootPart')
-				then
-					local dist = (attacker.Character.HumanoidRootPart.Position
-						- victim.HumanoidRootPart.Position).Magnitude
-
-					if dist > MAX_REACH then
-						vape:CreateNotification(
-							'Reach Detected',
-							attacker.Name .. ' reach ≈ ' .. math.floor(dist) .. ' studs',
-							4
-						)
-					end
-				end
-
-				-- mark attack time for targetstrafe checks
-				local data = playerData[attacker]
-				if data then
-					data.LastAttack = tick()
-				end
-
-				return old(self, victim, ...)
-			end
-		)
-	end
-end)														
+    Disabler = vape.Categories.Combat:CreateModule({
+        Name = "Zephyr Disabler",
+        Function = function(callback)
+            if callback then
+                notif('Disabler', 'Get a kill with zephyr and the speed check is gone', 3)
+                spawn(function()
+                    while Disabler.Enabled do
+                        firesignal(WindWalkerSpeedUpdate.OnClientEvent, {
+                            multiplier = 1.15,
+                            orbCount = 15
+                        })
+                        task.wait()
+                    end
+                end)
+            end
+        end,
+        Tooltip = "Disabler with zephyr"
+    })
+end)													
 run(function()
 	local NameTags
 	local Targets
