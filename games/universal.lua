@@ -1,4 +1,5 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
@@ -251,6 +252,18 @@ vape.Libraries.auraanims = {
 		{CFrame = CFrame.new(-0.62, -0.68, -0.07) * CFrame.Angles(math.rad(-167), math.rad(47), math.rad(-1)), Time = 0.06},
 		{CFrame = CFrame.new(-0.56, -0.86, 0.23) * CFrame.Angles(math.rad(-167), math.rad(49), math.rad(-1)), Time = 0.06}
 	},
+	KatanaSlash = {
+	{CFrame = CFrame.new(-0.15, -0.05, -0.25) * CFrame.Angles(math.rad(15), math.rad(-30), math.rad(-10)), Time = 0.08},
+	{CFrame = CFrame.new(-0.45, 0.25, -0.15) * CFrame.Angles(math.rad(120), math.rad(-25), math.rad(45)), Time = 0.06},
+	{CFrame = CFrame.new(-0.65, 0.45, 0.35) * CFrame.Angles(math.rad(185), math.rad(15), math.rad(75)), Time = 0.05},
+	{CFrame = CFrame.new(-0.85, 0.15, 0.75) * CFrame.Angles(math.rad(220), math.rad(-45), math.rad(110)), Time = 0.07}
+	},
+	GreatswordSmash = {
+	{CFrame = CFrame.new(-0.25, 0.35, -0.3) * CFrame.Angles(math.rad(75), math.rad(25), math.rad(-25)), Time = 0.12},
+	{CFrame = CFrame.new(-0.4, 0.75, -0.2) * CFrame.Angles(math.rad(135), math.rad(15), math.rad(-15)), Time = 0.08},
+	{CFrame = CFrame.new(-0.6, 0.25, 0.1) * CFrame.Angles(math.rad(-15), math.rad(-30), math.rad(85)), Time = 0.04},
+	{CFrame = CFrame.new(-0.75, -0.35, 0.45) * CFrame.Angles(math.rad(-75), math.rad(-45), math.rad(125)), Time = 0.06}
+	},
 	OpaiBlockHit = {
     {CFrame = CFrame.new(-0.15, -0.12, -0.1) * CFrame.Angles(math.rad(-45), math.rad(40), math.rad(-50)), Time = 0.12},
     {CFrame = CFrame.new(-0.35, -0.32, -0.05) * CFrame.Angles(math.rad(-90), math.rad(60), math.rad(-20)), Time = 0.08},
@@ -258,23 +271,11 @@ vape.Libraries.auraanims = {
     {CFrame = CFrame.new(-0.42, -0.38, -0.02) * CFrame.Angles(math.rad(-100), math.rad(52), math.rad(-15)), Time = 0.05},
     {CFrame = CFrame.new(-0.25, -0.2, -0.08) * CFrame.Angles(math.rad(-60), math.rad(45), math.rad(-40)), Time = 0.07}
 	},
-	OpaiBlockHit2 = {
-    {CFrame = CFrame.new(-0.4, -0.2, -0.1) * CFrame.Angles(math.rad(-60), math.rad(10), math.rad(-10)), Time = 0.1},
-    {CFrame = CFrame.new(-0.7, -0.4, 0) * CFrame.Angles(math.rad(-120), math.rad(20), math.rad(0)), Time = 0.08},
-    {CFrame = CFrame.new(-0.5, -0.3, -0.05) * CFrame.Angles(math.rad(-90), math.rad(15), math.rad(-5)), Time = 0.06},
-    {CFrame = CFrame.new(-0.3, -0.15, -0.08) * CFrame.Angles(math.rad(-45), math.rad(5), math.rad(-10)), Time = 0.08}
-	},
-	OpaiBlockHit3 = {
-    {CFrame = CFrame.new(-0.2, -0.15, -0.1) * CFrame.Angles(math.rad(-50), math.rad(35), math.rad(-45)), Time = 0.08},
-    {CFrame = CFrame.new(-0.45, -0.35, 0) * CFrame.Angles(math.rad(-110), math.rad(55), math.rad(-15)), Time = 0.06},
-    {CFrame = CFrame.new(-0.6, -0.5, 0.05) * CFrame.Angles(math.rad(-150), math.rad(50), math.rad(-5)), Time = 0.05},
-    {CFrame = CFrame.new(-0.4, -0.3, -0.02) * CFrame.Angles(math.rad(-100), math.rad(52), math.rad(-12)), Time = 0.05}
-	},
-	OpaiBlockHit4 = {
-    {CFrame = CFrame.new(-0.1, -0.05, -0.05) * CFrame.Angles(math.rad(-30), math.rad(25), math.rad(-20)), Time = 0.15},
-    {CFrame = CFrame.new(-0.3, -0.2, 0) * CFrame.Angles(math.rad(-70), math.rad(35), math.rad(-10)), Time = 0.12},
-    {CFrame = CFrame.new(-0.55, -0.4, 0.05) * CFrame.Angles(math.rad(-120), math.rad(30), math.rad(0)), Time = 0.1},
-    {CFrame = CFrame.new(-0.35, -0.25, -0.03) * CFrame.Angles(math.rad(-80), math.rad(28), math.rad(-5)), Time = 0.1}
+	ScytheSweep = {
+	{CFrame = CFrame.new(-0.2, -0.25, -0.15) * CFrame.Angles(math.rad(-35), math.rad(65), math.rad(-85)), Time = 0.1},
+	{CFrame = CFrame.new(-0.5, -0.1, 0.25) * CFrame.Angles(math.rad(-75), math.rad(95), math.rad(-125)), Time = 0.07},
+	{CFrame = CFrame.new(-0.7, 0.35, 0.65) * CFrame.Angles(math.rad(-125), math.rad(135), math.rad(-165)), Time = 0.06},
+	{CFrame = CFrame.new(-0.45, 0.15, 0.95) * CFrame.Angles(math.rad(-95), math.rad(175), math.rad(-145)), Time = 0.08}
 	},
 	Opai = {
     {CFrame = CFrame.new(-0.2, -0.1, -0.1) * CFrame.Angles(math.rad(-45), math.rad(45), math.rad(-60)), Time = 0.09},
@@ -1176,7 +1177,239 @@ run(function()
 		Suffix = '%'
 	})
 end)
+run(function()
+	local PulseSpeed
+	local SpeedValue
+	local PulseDuration
+	local RestDuration
+	local WallCheck
+	local AutoJump
+	local AlwaysJump
+
+	-- Animation control
+	local AnimSlow
+	local AnimSpeed
+	local animConnection
+
+	-- Pulse control
+	local pulseActive = false
+	local pulseThread
+	local lastPulseTime = 0
+
+	local rayCheck = RaycastParams.new()
+	rayCheck.RespectCanCollide = true
 	
+	PulseSpeed = vape.Categories.Blatant:CreateModule({
+		Name = 'Pulse Speed',
+		Function = function(callback)
+			-- Clear any existing pulse
+			if pulseThread then
+				task.cancel(pulseThread)
+				pulseThread = nil
+			end
+
+			-- Stop when disabled
+			if not callback then
+				pulseActive = false
+				PulseSpeed:CleanAll()
+				return
+			end
+
+			-- Start pulse loop
+			pulseThread = task.spawn(function()
+				while PulseSpeed.Enabled do
+					-- PULSE PHASE: Apply speed boost
+					pulseActive = true
+					lastPulseTime = tick()
+					
+					local pulseEndTime = tick() + PulseDuration.Value
+					while tick() < pulseEndTime and PulseSpeed.Enabled do
+						PulseSpeed:Clean(runService.PreSimulation:Connect(function(dt)
+							bedwars.StatefulEntityKnockbackController.lastImpulseTime = math.huge
+
+							if entitylib.isAlive
+								and not Fly.Enabled
+								and not InfiniteFly.Enabled
+								and not LongJump.Enabled
+								and isnetworkowner(entitylib.character.RootPart)
+							then
+								local humanoid = entitylib.character.Humanoid
+								local state = humanoid:GetState()
+								if state == Enum.HumanoidStateType.Climbing then return end
+		
+								local root = entitylib.character.RootPart
+								local velo = getSpeed()
+								local moveDirection = AntiVoidDirection or humanoid.MoveDirection
+								
+								-- Calculate destination using current SpeedValue
+								local destination = moveDirection * math.max(SpeedValue.Value - velo, 0) * dt
+		
+								if WallCheck.Enabled then
+									rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
+									rayCheck.CollisionGroup = root.CollisionGroup
+									local ray = workspace:Raycast(root.Position, destination, rayCheck)
+									if ray then
+										destination = (ray.Position + ray.Normal) - root.Position
+									end
+								end
+		
+								root.CFrame += destination
+								if not kit_fix then
+									root.AssemblyLinearVelocity =
+										(moveDirection * velo)
+										+ Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+								end
+		
+								if AutoJump.Enabled
+									and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed)
+									and moveDirection ~= Vector3.zero
+									and (Attacking or AlwaysJump.Enabled)
+								then
+									humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+								end
+							end
+						end))
+						
+						task.wait()
+					end
+
+					-- REST PHASE: No speed boost
+					pulseActive = false
+					PulseSpeed:CleanAll()
+					task.wait(RestDuration.Value)
+				end
+			end)
+		end,
+		ExtraText = function()
+			if pulseActive then
+				local timeLeft = math.max(0, lastPulseTime + PulseDuration.Value - tick())
+				return string.format('ACTIVE (%.1fs)', timeLeft)
+			else
+				return 'RESTING'
+			end
+		end,
+		Tooltip = 'Applies speed in pulses. Boost for a duration, then rest.'
+	})
+
+	-- PULSE SPEED VALUE (22-44)
+	SpeedValue = PulseSpeed:CreateSlider({
+		Name = 'Speed Boost',
+		Min = 22,
+		Max = 44,
+		Default = 32,
+		Function = function(val)
+			-- Update ExtraText if module is active
+			if PulseSpeed.Enabled then
+				PulseSpeed:UpdateExtra()
+			end
+		end,
+		Suffix = function(val)
+			return val .. ' studs'
+		end
+	})
+
+	-- PULSE DURATION
+	PulseDuration = PulseSpeed:CreateSlider({
+		Name = 'Pulse Duration',
+		Min = 0.2,
+		Max = 3,
+		Default = 1,
+		Decimal = 2,
+		Function = function(val)
+			if PulseSpeed.Enabled then
+				PulseSpeed:UpdateExtra()
+			end
+		end,
+		Suffix = function(v)
+			return v .. 's'
+		end
+	})
+
+	-- REST DURATION
+	RestDuration = PulseSpeed:CreateSlider({
+		Name = 'Rest Duration',
+		Min = 0.2,
+		Max = 3,
+		Default = 0.5,
+		Decimal = 2,
+		Function = function(val)
+			if PulseSpeed.Enabled then
+				PulseSpeed:UpdateExtra()
+			end
+		end,
+		Suffix = function(v)
+			return v .. 's'
+		end
+	})
+
+	-- WALL CHECK
+	WallCheck = PulseSpeed:CreateToggle({
+		Name = 'Wall Check',
+		Default = true
+	})
+
+	-- AUTO JUMP
+	AutoJump = PulseSpeed:CreateToggle({
+		Name = 'AutoJump',
+		Function = function(callback)
+			AlwaysJump.Object.Visible = callback
+		end
+	})
+
+	AlwaysJump = PulseSpeed:CreateToggle({
+		Name = 'Always Jump',
+		Visible = false,
+		Darker = true
+	})
+
+	-- SLOW ANIMATIONS TOGGLE
+	AnimSlow = PulseSpeed:CreateToggle({
+		Name = 'Slow Animations',
+		Function = function(callback)
+			if animConnection then
+				animConnection:Disconnect()
+				animConnection = nil
+			end
+
+			if callback then
+				animConnection = runService.RenderStepped:Connect(function()
+					if entitylib.isAlive then
+						local humanoid = entitylib.character.Humanoid
+						local animator = humanoid:FindFirstChildOfClass('Animator')
+						if animator then
+							for _, track in ipairs(animator:GetPlayingAnimationTracks()) do
+								pcall(function()
+									track:AdjustSpeed(AnimSpeed.Value)
+								end)
+							end
+						end
+					end
+				end)
+			else
+				if entitylib.isAlive then
+					local humanoid = entitylib.character.Humanoid
+					local animator = humanoid:FindFirstChildOfClass('Animator')
+					if animator then
+						for _, track in ipairs(animator:GetPlayingAnimationTracks()) do
+							pcall(function()
+								track:AdjustSpeed(1)
+							end)
+						end
+					end
+				end
+			end
+		end
+	})
+
+	-- ANIMATION SPEED SLIDER
+	AnimSpeed = PulseSpeed:CreateSlider({
+		Name = 'Animation Speed',
+		Min = 0.05,
+		Max = 1,
+		Default = 0.5,
+		Decimal = 2
+	})
+end)
 local mouseClicked
 run(function()
 	local SilentAim
