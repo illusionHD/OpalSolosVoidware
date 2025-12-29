@@ -3235,66 +3235,6 @@ run(function()
 		Tooltip = 'Hides teammates & non targetable entities'
 	})
 end)
-
-run(function()
-    local LiquidCam
-    local SmoothnessSlider
-    local WobbleIntensitySlider
-    local runConnection
-
-    LiquidCam = vape.Categories.Visuals:CreateModule({
-        Name = "LiquidCamera",
-        Tooltip = "Adds smooth and subtle wobble to your camera like LiquidBounce",
-        Function = function(callback)
-            if runConnection then
-                runConnection:Disconnect()
-                runConnection = nil
-            end
-
-            if callback then
-                local cam = workspace.CurrentCamera
-                local lastCFrame = cam.CFrame
-                local t = 0
-
-                runConnection = runService.RenderStepped:Connect(function(dt)
-                    t = t + dt
-
-                    -- smooth lerp for flowy movement
-                    local targetCFrame = cam.CFrame
-                    local alpha = SmoothnessSlider.Value
-                    local smoothCFrame = lastCFrame:Lerp(targetCFrame, alpha)
-
-                    -- subtle wobble
-                    local wobbleX = math.sin(t * 1.5) * WobbleIntensitySlider.Value
-                    local wobbleY = math.cos(t * 1.2) * WobbleIntensitySlider.Value
-                    local wobbleZ = math.sin(t * 0.8) * WobbleIntensitySlider.Value
-
-                    smoothCFrame = smoothCFrame * CFrame.Angles(wobbleX, wobbleY, wobbleZ)
-                    cam.CFrame = smoothCFrame
-                    lastCFrame = smoothCFrame
-                end)
-            end
-        end
-    })
-
-    -- Slider: controls how smooth the camera lerp is
-    SmoothnessSlider = LiquidCam:CreateSlider({
-        Name = "Smoothness",
-        Min = 0.01,
-        Max = 1,
-        Default = 0.15,
-        Decimal = 2
-    })
-
-    -- Slider: controls wobble intensity
-    WobbleIntensitySlider = LiquidCam:CreateSlider({
-        Name = "Wobble Intensity",
-        Min = 0.001,
-        Max = 0.03,
-        Default = 0.008,
-        Decimal = 3
-    })
-end)
 run(function()
 	local Health
 	
@@ -6484,7 +6424,7 @@ run(function()
 					decal:Play()
 				else
 					local decal = Instance.new('ImageLabel')
-					decal.Image = Texture.Value ~= '' and (Texture.Value:find('rbxasset') and Texture.Value or assetfunction(Texture.Value)) or 'rbxassetid://14637958134'
+					decal.Image = Texture.Value ~= '' and (Texture.Value:find('rbxasset') and Texture.Value or assetfunction(Texture.Value)) or 'rbxassetid://111008512103855'
 					decal.Size = UDim2.fromScale(1, 1)
 					decal.BackgroundTransparency = 1
 					decal.Parent = capesurface
