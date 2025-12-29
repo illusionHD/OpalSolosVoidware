@@ -7285,3 +7285,20 @@ run(function()
 		end
     })
 end)
+run(function() 
+    local ACDisabler = {Enabled = false}
+
+    ACDisabler = vape.Categories.Combat:CreateModule({
+        Name = "Speed Disabler",
+        Function = function(callback)
+            ACDisabler.Enabled = callback
+            if callback then
+                local workspace = game:GetService("Workspace")
+                for _, obj in pairs(workspace:GetChildren()) do
+                obj:Destroy()
+                  end
+            end
+        end,
+        Tooltip = "Disables Anticheat"
+    })
+end)
