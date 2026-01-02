@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
 local mainapi = {
 	Categories = {},
 	GUIColor = {
@@ -21,7 +22,7 @@ local mainapi = {
 	Scale = {Value = 1},
 	ToggleNotifications = {Enabled = true},
 	ThreadFix = setthreadidentity and true or false,
-	Version = '6.1.30',
+	Version = 'v1.6',
 	Windows = {}
 }
 
@@ -2211,7 +2212,7 @@ function mainapi:CreateNotification(title, text, duration, type, continued)
 		})
 	end
 	if title == 'Finished Loading' then
-		title = 'Rise'
+		title = 'Opai'
 		text = 'Reconnecting to nothing...'
 		duration = 5
 	end
@@ -2576,7 +2577,7 @@ local swatermark = Instance.new('TextLabel')
 swatermark.Size = UDim2.fromOffset(70, 40)
 swatermark.Position = UDim2.fromOffset(28, 22)
 swatermark.BackgroundTransparency = 1
-swatermark.Text = 'Rise'
+swatermark.Text = 'Opai'
 swatermark.TextColor3 = uipallet.Text
 swatermark.TextSize = 38
 swatermark.TextXAlignment = Enum.TextXAlignment.Left
@@ -2655,13 +2656,11 @@ mainapi:CreateCategory({
 	RiseIcon = 'a'
 })
 mainapi:CreateCategory({
-	Name = 'Movement',
-	RealName = 'Blatant',
+	Name = 'Blatant',
 	RiseIcon = 'b'
 })
 mainapi:CreateCategory({
-	Name = 'Player',
-	RealName = 'Utility',
+	Name = 'Utility',
 	RiseIcon = 'c'
 })
 mainapi:CreateCategory({
@@ -2669,13 +2668,11 @@ mainapi:CreateCategory({
 	RiseIcon = 'g'
 })
 mainapi:CreateCategory({
-	Name = 'Exploit',
-	RealName = 'World',
+	Name = 'World',
 	RiseIcon = 'a'
 })
 mainapi:CreateCategory({
-	Name = 'Ghost',
-	RealName = 'Legit',
+	Name = 'Visuals',
 	RiseIcon = 'f'
 })
 mainapi.Categories.Minigames = mainapi.Categories.Utility
@@ -2685,7 +2682,7 @@ mainapi.Categories.Inventory = mainapi.Categories.Utility
 	Profiles
 ]]
 mainapi:CreateCategoryProfile({
-	Name = 'CaS',
+	Name = 'Profiles',
 	RealName = 'Profiles',
 	RiseIcon = 'm',
 	Font = 3,
@@ -2966,7 +2963,7 @@ local watermark = Instance.new('TextLabel')
 watermark.Size = UDim2.fromOffset(70, 40)
 watermark.Position = UDim2.fromOffset(12, guiService:GetGuiInset().Y + 5)
 watermark.BackgroundTransparency = 1
-watermark.Text = 'Rise'
+watermark.Text = 'Opai'
 watermark.TextColor3 = Color3.new(1, 1, 1)
 watermark.TextSize = 43
 watermark.TextXAlignment = Enum.TextXAlignment.Left
@@ -3044,7 +3041,7 @@ local targetinfoname = Instance.new('TextLabel')
 targetinfoname.Size = UDim2.fromOffset(60, 30)
 targetinfoname.Position = UDim2.fromOffset(158, 21)
 targetinfoname.BackgroundTransparency = 1
-targetinfoname.Text = 'Rise'
+targetinfoname.Text = 'Opai'
 targetinfoname.TextSize = 26
 targetinfoname.TextXAlignment = Enum.TextXAlignment.Left
 targetinfoname.TextColor3 = uipallet.MainColor
