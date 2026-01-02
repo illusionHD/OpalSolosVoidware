@@ -258,7 +258,7 @@ vape.Libraries.auraanims = {
 	{CFrame = CFrame.new(-0.35, -0.45, -0.04) * CFrame.Angles(math.rad(-135), math.rad(30), math.rad(-3)), Time = 0.05},
 	{CFrame = CFrame.new(-0.32, -0.5, 0.12) * CFrame.Angles(math.rad(-140), math.rad(25), math.rad(2)), Time = 0.05}
 	},
-	Wide = {
+	Rise = {
 	{CFrame = CFrame.new(-0.22, -0.18, -0.18) * CFrame.Angles(math.rad(-40), math.rad(65), math.rad(-75)), Time = 0.14},
 	{CFrame = CFrame.new(-0.6, -0.65, -0.15) * CFrame.Angles(math.rad(-175), math.rad(70), math.rad(-20)), Time = 0.09},
 	{CFrame = CFrame.new(-0.68, -0.82, 0.05) * CFrame.Angles(math.rad(-185), math.rad(60), math.rad(-10)), Time = 0.07},
