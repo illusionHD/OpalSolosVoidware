@@ -6,6 +6,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -7148,6 +7149,7 @@ run(function()
     local pack1
 	local packassetids = {
 		['Opai'] = 'rbxassetid://13780890894',
+		['Shad'] = 'rbxassetid://13988978091',
 		['Minecraft Swords'] = 'rbxassetid://14427750969',
 	}
     local TexturePacks 
