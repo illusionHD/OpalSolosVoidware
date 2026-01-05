@@ -12,7 +12,7 @@ local vape
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then
-		vape:CreateNotification('opai', 'Failed to load : '..err, 30, 'alert')
+		vape:CreateNotification('OSVPrivate', 'Failed to load : '..err, 30, 'alert')
 	end
 	return res
 end
@@ -31,13 +31,13 @@ local playersService = cloneref(game:GetService('Players'))
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/'..select(1, path:gsub('OSVPrivate/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -61,9 +61,9 @@ local function finishLoading()
 			local teleportScript = [[
 				shared.vapereload = true
 				if shared.VapeDeveloper then
-					loadstring(readfile('opai/loader.lua'), 'loader')()
+					loadstring(readfile('OSVPrivate/loader.lua'), 'loader')()
 				else
-					loadstring(game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/loader.lua', true), 'loader')()
+					loadstring(game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/loader.lua', true), 'loader')()
 				end
 			]]
 			if shared.VapeDeveloper then
@@ -85,28 +85,28 @@ local function finishLoading()
 	end
 end
 
-if not isfile('opai/profiles/gui.txt') then
-	writefile('opai/profiles/gui.txt', 'new')
+if not isfile('OSVPrivate/profiles/gui.txt') then
+	writefile('OSVPrivate/profiles/gui.txt', 'new')
 end
-local gui = readfile('opai/profiles/gui.txt')
+local gui = readfile('OSVPrivate/profiles/gui.txt')
 
-if not isfolder('opai/assets/'..gui) then
-	makefolder('opai/assets/'..gui)
+if not isfolder('OSVPrivate/assets/'..gui) then
+	makefolder('OSVPrivate/assets/'..gui)
 end
-vape = loadstring(downloadFile('opai/guis/'..gui..'.lua'), 'gui')()
+vape = loadstring(downloadFile('OSVPrivate/guis/'..gui..'.lua'), 'gui')()
 shared.vape = vape
 
 if not shared.VapeIndependent then
-	loadstring(downloadFile('opai/games/universal.lua'), 'universal')()
-	if isfile('opai/games/'..game.PlaceId..'.lua') then
-		loadstring(readfile('opai/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
+	loadstring(downloadFile('OSVPrivate/games/universal.lua'), 'universal')()
+	if isfile('OSVPrivate/games/'..game.PlaceId..'.lua') then
+		loadstring(readfile('OSVPrivate/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
 	else
 		if not shared.VapeDeveloper then
 			local suc, res = pcall(function()
-				return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/games/'..game.PlaceId..'.lua', true)
+				return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/games/'..game.PlaceId..'.lua', true)
 			end)
 			if suc and res ~= '404: Not Found' then
-				loadstring(downloadFile('opai/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
+				loadstring(downloadFile('OSVPrivate/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
 			end
 		end
 	end
