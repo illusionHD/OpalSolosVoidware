@@ -15,7 +15,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true) 
+			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/'..select(1, path:gsub('OSVPrivate/', '')), true) 
 		end)
 		if not suc or res == '404: Not Found' then 
 			error(res) 
@@ -29,15 +29,15 @@ local function downloadFile(path, func)
 end
 
 vape.Place = 6872274481
-if isfile('opai/games/'..vape.Place..'.lua') then
-	loadstring(readfile('opai/games/'..vape.Place..'.lua'), 'bedwars')()
+if isfile('OSVPrivate/games/'..vape.Place..'.lua') then
+	loadstring(readfile('OSVPrivate/games/'..vape.Place..'.lua'), 'bedwars')()
 else
 	if not shared.VapeDeveloper then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
+			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
 		end)
 		if suc and res ~= '404: Not Found' then
-			loadstring(downloadFile('opai/games/'..vape.Place..'.lua'), 'bedwars')()
+			loadstring(downloadFile('OSVPrivate/games/'..vape.Place..'.lua'), 'bedwars')()
 		end
 	end
 end
