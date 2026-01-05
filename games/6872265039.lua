@@ -1,4 +1,4 @@
---This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 local run = function(func) func() end
 local cloneref = cloneref or function(obj) return obj end
 
