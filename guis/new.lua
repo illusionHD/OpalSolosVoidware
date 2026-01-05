@@ -5789,16 +5789,6 @@ mainapi:CreateCategory({
 	Size = UDim2.fromOffset(14, 14)
 })
 mainapi:CreateCategory({
-	Name = 'Inventory',
-	Icon = getcustomasset('OSVPrivate/assets/new/inventoryicon.png'),
-	Size = UDim2.fromOffset(15, 14)
-})
-mainapi:CreateCategory({
-	Name = 'Minigames',
-	Icon = getcustomasset('OSVPrivate/assets/new/miniicon.png'),
-	Size = UDim2.fromOffset(19, 12)
-})
-mainapi:CreateCategory({
 	Name = 'Exploits',
 	Icon = getcustomasset('OSVPrivate/assets/new/guiv4.png'),
 	Size = UDim2.fromOffset(15, 14)
