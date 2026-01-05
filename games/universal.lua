@@ -19,7 +19,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/OpaiForRoblox/38Nsuq8krO91/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
