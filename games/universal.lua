@@ -6666,7 +6666,7 @@ run(function()
 		end;
 	end;
 
-	Atmosphere = vape.Categories.Visuals:CreateModule({
+	Atmosphere = vape.Legit:CreateModule({
 		["Name"] = 'Atmosphere',
 		["Function"] = function(callback: boolean): void
 			if callback then
@@ -6836,7 +6836,7 @@ run(function()
 	local FadeOut
 	local trail, point, point2
 	
-	Breadcrumbs = vape.Categories.Visuals:CreateModule({
+	Breadcrumbs = vape.Legit:CreateModule({
 		Name = 'Breadcrumbs',
 		Function = function(callback)
 			if callback then
@@ -6956,7 +6956,7 @@ run(function()
 		motor.Parent = part
 	end
 	
-	Cape = vape.Categories.Visuals:CreateModule({
+	Cape = vape.Legit:CreateModule({
 		["Name"] = 'Cape',
 		["Function"] = function(callback: boolean): void
 			if callback then
@@ -7036,7 +7036,7 @@ run(function()
 	local Color
 	local hat
 	
-	ChinaHat = vape.Categories.Visuals:CreateModule({
+	ChinaHat = vape.Legit:CreateModule({
 		Name = 'China Hat',
 		Function = function(callback)
 			if callback then
@@ -7247,7 +7247,7 @@ run(function()
 		end
 	end
 	
-	Disguise = vape.Categories.Visuals:CreateModule({
+	Disguise = vape.Legit:CreateModule({
 		Name = 'Disguise',
 		Function = function(callback)
 			if callback then
@@ -7463,7 +7463,7 @@ run(function()
 		end
 	end
 	
-	RandomDisguise = vape.Categories.Visuals:CreateModule({
+	RandomDisguise = vape.Legit:CreateModule({
 		Name = 'Streamer Mode',
 		Function = function(callback)
 			if not callback then
@@ -7572,7 +7572,7 @@ run(function()
 	local Value
 	local oldfov
 	
-	FOV = vape.Categories.Visuals:CreateModule({
+	FOV = vape.Legit:CreateModule({
 		Name = 'FOV',
 		Function = function(callback)
 			if callback then
@@ -7641,7 +7641,7 @@ run(function()
 		end
 	end
 	
-	SongBeats = vape.Categories.Visuals:CreateModule({
+	SongBeats = vape.Legit:CreateModule({
 		Name = 'Song Beats',
 		Function = function(callback)
 			if callback then
