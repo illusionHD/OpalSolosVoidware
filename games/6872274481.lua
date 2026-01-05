@@ -85,7 +85,7 @@ local function addBlur(parent)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('opai/assets/new/blur.png')
+	blur.Image = getcustomasset('OSVPrivate/assets/new/blur.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -6333,7 +6333,7 @@ run(function()
 end)
 
 
--- opai
+-- OSVPrivate
 
 
 run(function()
@@ -6443,7 +6443,7 @@ run(function()
 	local DamageIndicatorTextObjects = {}
     local DamageIndicatorMode1
     local DamageMessages = {
-		'opai!',
+		'OSVPrivate!',
 		'Pop!',
 		'Hit!',
 		'Smack!',
@@ -7149,7 +7149,7 @@ end)
 run(function()
     local pack1
 	local packassetids = {
-		['Opai'] = 'rbxassetid://13780890894',
+		['OSVPrivate'] = 'rbxassetid://13780890894',
 		['Shad'] = 'rbxassetid://13988978091',
 		['Minecraft Swords'] = 'rbxassetid://14427750969',
 	}
@@ -7306,7 +7306,7 @@ end)
                 end
 
                 vape:CreateNotification(
-                    "Opai",
+                    "OSVPrivate",
                     "Anti-Cheat bypasser enabled! keep speed on for this, and can u also use fly!",
                     10,
                     "success"
