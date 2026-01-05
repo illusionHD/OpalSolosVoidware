@@ -1,5 +1,5 @@
---This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
---This watermark is used to delete the file if its cached, remove it to make the file persist after opai updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
@@ -19,7 +19,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('opai/profiles/commit.txt')..'/'..select(1, path:gsub('opai/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/'..select(1, path:gsub('OSVPrivate/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
@@ -77,7 +77,7 @@ local function addBlur(parent)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('opai/assets/new/blur.png')
+	blur.Image = getcustomasset('OSVPrivate/assets/new/blur.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -224,9 +224,9 @@ local function motorMove(target, cf)
 	task.delay(0, part.Destroy, part)
 end
 
-local hash = loadstring(downloadFile('opai/libraries/hash.lua'), 'hash')()
-local prediction = loadstring(downloadFile('opai/libraries/prediction.lua'), 'prediction')()
-entitylib = loadstring(downloadFile('opai/libraries/entity.lua'), 'entitylibrary')()
+local hash = loadstring(downloadFile('OSVPrivate/libraries/hash.lua'), 'hash')()
+local prediction = loadstring(downloadFile('OSVPrivate/libraries/prediction.lua'), 'prediction')()
+entitylib = loadstring(downloadFile('OSVPrivate/libraries/entity.lua'), 'entitylibrary')()
 local whitelist = {
 	alreadychecked = {},
 	customtags = {},
@@ -288,7 +288,7 @@ vape.Libraries.auraanims = {
     {CFrame = CFrame.new(-0.72, -0.88, 0.25) * CFrame.Angles(math.rad(-185), math.rad(55), math.rad(-5)), Time = 0.08},
     {CFrame = CFrame.new(-0.68, -1.0, 0.45) * CFrame.Angles(math.rad(-175), math.rad(50), math.rad(12)), Time = 0.05}
 	},
-	Opai = {
+	OPAL = {
     {CFrame = CFrame.new(-0.2, -0.1, -0.1) * CFrame.Angles(math.rad(-45), math.rad(45), math.rad(-60)), Time = 0.09},
     {CFrame = CFrame.new(-0.5, -0.35, 0) * CFrame.Angles(math.rad(-130), math.rad(60), math.rad(-20)), Time = 0.07},
     {CFrame = CFrame.new(-0.65, -0.5, 0.1) * CFrame.Angles(math.rad(-170), math.rad(50), math.rad(-10)), Time = 0.05},
@@ -653,7 +653,7 @@ run(function()
 
 		if not first or whitelist.textdata ~= whitelist.olddata then
 			if not first then
-				whitelist.olddata = isfile('opai/profiles/whitelist.json') and readfile('opai/profiles/whitelist.json') or nil
+				whitelist.olddata = isfile('OSVPrivate/profiles/whitelist.json') and readfile('OSVPrivate/profiles/whitelist.json') or nil
 			end
 
 			local suc, res = pcall(function()
@@ -700,7 +700,7 @@ run(function()
 				end
 				whitelist.olddata = whitelist.textdata
 				pcall(function()
-					writefile('opai/profiles/whitelist.json', whitelist.textdata)
+					writefile('OSVPrivate/profiles/whitelist.json', whitelist.textdata)
 				end)
 			end
 
@@ -3105,7 +3105,7 @@ run(function()
 		arrow.BackgroundTransparency = 1
 		arrow.BorderSizePixel = 0
 		arrow.Visible = false
-		arrow.Image = getcustomasset('opai/assets/new/arrowmodule.png')
+		arrow.Image = getcustomasset('OSVPrivate/assets/new/arrowmodule.png')
 		arrow.ImageColor3 = entitylib.getEntityColor(ent) or Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
 		arrow.Parent = Folder
 		Reference[ent] = arrow
@@ -4164,7 +4164,7 @@ run(function()
 	
 	Radar = vape:CreateOverlay({
 		Name = 'Radar',
-		Icon = getcustomasset('opai/assets/new/radaricon.png'),
+		Icon = getcustomasset('OSVPrivate/assets/new/radaricon.png'),
 		Size = UDim2.fromOffset(14, 14),
 		Position = UDim2.fromOffset(12, 13),
 		Function = function(callback)
@@ -4308,7 +4308,7 @@ run(function()
 	
 	SessionInfo = vape:CreateOverlay({
 		Name = 'Session Info',
-		Icon = getcustomasset('opai/assets/new/textguiicon.png'),
+		Icon = getcustomasset('OSVPrivate/assets/new/textguiicon.png'),
 		Size = UDim2.fromOffset(16, 12),
 		Position = UDim2.fromOffset(12, 14),
 		Function = function(callback)
@@ -4377,8 +4377,8 @@ run(function()
 	Hide = SessionInfo:CreateTextList({
 		Name = 'Blacklist',
 		Tooltip = 'Name of entry to hide.',
-		Icon = getcustomasset('opai/assets/new/blockedicon.png'),
-		Tab = getcustomasset('opai/assets/new/blockedtab.png'),
+		Icon = getcustomasset('OSVPrivate/assets/new/blockedicon.png'),
+		Tab = getcustomasset('OSVPrivate/assets/new/blockedtab.png'),
 		TabSize = UDim2.fromOffset(21, 16),
 		Color = Color3.fromRGB(250, 50, 56)
 	})
@@ -4681,7 +4681,7 @@ run(function()
       GlobalShadows = true,
       ShadowSoftness = 0.6,
     },
-    ['Opai Vape Old'] = {
+    ['OSVPrivate Vape Old'] = {
       Ambient = Color3.fromRGB(93, 59, 88),
       OutdoorAmbient = Color3.fromRGB(128, 94, 100),
       ColorShift_Bottom = Color3.fromRGB(213, 173, 117),
@@ -4695,7 +4695,7 @@ run(function()
       GlobalShadows = true,
       ShadowSoftness = 0.2,
     },
-    ['Opai Vape New'] = {
+    ['OSVPrivate Vape New'] = {
       Ambient = Color3.fromRGB(101, 72, 51),
       OutdoorAmbient = Color3.fromRGB(175, 132, 119),
       ColorShift_Bottom = Color3.fromRGB(213, 161, 134),
@@ -4820,7 +4820,7 @@ run(function()
   TheMilkyWaySkyCCC.Saturation = 0.2
 
   local vapeOld = Instance.new('Sky', GameThemes)
-  vapeOld.Name = 'Opai Vape Old'
+  vapeOld.Name = 'OSVPrivate Vape Old'
   vapeOld.CelestialBodiesShown = false
   vapeOld.StarCount = 3000
   vapeOld.SkyboxUp = 'rbxassetid://2670644331'
@@ -4850,7 +4850,7 @@ run(function()
   vapeOldBloom.Size = 12
 
   local vapeNew = Instance.new('Sky', GameThemes)
-  vapeNew.Name = 'Opai Vape New'
+  vapeNew.Name = 'OSVPrivate Vape New'
   vapeNew.CelestialBodiesShown = false
   vapeNew.StarCount = 0
   vapeNew.SkyboxUp = 'http://www.roblox.com/asset/?id=458016792'
@@ -4982,8 +4982,8 @@ run(function()
       'The Milky Way A',
       'The Milky Way B',
       'The Milky Way C',
-      'Opai Vape Old',
-      'Opai Vape New',
+      'OSVPrivate Vape Old',
+      'OSVPrivate Vape New',
       'Antarctic Evening',
     },
     Default = 'Antarctic Evening',
@@ -6436,7 +6436,7 @@ run(function()
 			            SkyboxRt = "http://www.roblox.com/asset/?id=6778650519",
 			            SkyboxUp = "http://www.roblox.com/asset/?id=6778658364",
 		        },
-		        OpaiNight = {
+		        OSVPrivateNight = {
 			            SkyboxBk = 'rbxassetid://187713366',
 			            SkyboxDn = 'rbxassetid://187712428',
 			            SkyboxFt = 'rbxassetid://187712836',
