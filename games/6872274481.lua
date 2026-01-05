@@ -4207,7 +4207,7 @@ run(function()
 	local Rots = {}
 	local old, oldc1
 	
-	Viewmodel = vape.Categories.Visuals:CreateModule({
+	Viewmodel = vape.Legit:CreateModule({
 		Name = 'Viewmodel',
 		Function = function(callback)
 			local viewmodel = gameCamera:FindFirstChild('Viewmodel')
@@ -5853,7 +5853,7 @@ run(function()
 	local List
 	local NameToId = {}
 	
-	BedBreakEffect = vape.Categories.Visuals:CreateModule({
+	BedBreakEffect = vape.Legit:CreateModule({
 		Name = 'Bed Break Effect',
 		Function = function(callback)
 			if callback then
@@ -5883,7 +5883,7 @@ run(function()
 end)
 	
 run(function()
-	vape.Categories.Visuals:CreateModule({
+	vape.Legit:CreateModule({
 		Name = 'Clean Kit',
 		Function = function(callback)
 			if callback then
@@ -5903,7 +5903,7 @@ run(function()
 	local Value
 	local old, old2
 	
-	FOV = vape.Categories.Visuals:CreateModule({
+	FOV = vape.Legit:CreateModule({
 		Name = 'FOV',
 		Function = function(callback)
 			if callback then
@@ -5937,7 +5937,7 @@ run(function()
 	local Visualizer
 	local effects, util = {}, {}
 	
-	FPSBoost = vape.Categories.Visuals:CreateModule({
+	FPSBoost = vape.Legit:CreateModule({
 		Name = 'FPS Boost',
 		Function = function(callback)
 			if callback then
@@ -6014,7 +6014,7 @@ run(function()
 	local Color
 	local done = {}
 	
-	HitColor = vape.Categories.Visuals:CreateModule({
+	HitColor = vape.Legit:CreateModule({
 		Name = 'Hit Color',
 		Function = function(callback)
 			if callback then 
@@ -6048,7 +6048,7 @@ run(function()
 end)
 	
 run(function()
-	vape.Categories.Visuals:CreateModule({
+	vape.Legit:CreateModule({
 		Name = 'HitFix',
 		Function = function(callback)
 			debug.setconstant(bedwars.SwordController.swingSwordAtMouse, 23, callback and 'raycast' or 'Raycast')
@@ -6106,7 +6106,7 @@ run(function()
 		end
 	end
 	
-	SongBeats = vape.Categories.Visuals:CreateModule({
+	SongBeats = vape.Legit:CreateModule({
 		Name = 'Song Beats',
 		Function = function(callback)
 			if callback then
@@ -6221,7 +6221,7 @@ run(function()
 		end
 	end
 	
-	UICleanup = vape.Categories.Visuals:CreateModule({
+	UICleanup = vape.Legit:CreateModule({
 		Name = 'UI Cleanup',
 		Function = function(callback)
 			for i, v in (callback and new or old) do
