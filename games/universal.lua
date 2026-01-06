@@ -1,5 +1,6 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
@@ -5096,356 +5097,229 @@ end)
 	});
 end);]]
 run(function()
-    local HackerDetector
-
-    local exploitersPath = "ReVape/profiles/exploiters.txt"
-
-    if not isfile(exploitersPath) then 
-        writefile(exploitersPath, "")
-    end
-
-	
-
-    local reportschecks = {
-        Cache = true,
-        InfFly = true,
-        Fly = true,
-        Teleport = true,
-        Speed = true,
-        Nuker = false,
-        Invisible = false,
-        AntiHit = false,
-        NameDetects = true,
-    }
-	
-    local cachedExploiters = {}
-	task.spawn(function()
-	    do
-	        local content = readfile(exploitersPath)
-	        for name in string.gmatch(content, "([^\n]+)") do
-	            cachedExploiters[name] = true
-	        end
-	    end
-	end)
-
-    local badNames = {
-        "vape","voidware","catvape","catvxpe","vxpe",
-        "void","her","him","vxidwxre",'Subbico'
-    }
-	local currentplayers = {}
-	local maxreports = 6
-	
-	local function createmsg(msg, time, player, reason)
-	    time = time or 8
-	
-	    if not currentplayers[player] then
-	        currentplayers[player] = { reports = 0, ignore = false, reasons = {} }
-	    end
-	
-	    local pdata = currentplayers[player]
-	
-	    if pdata.ignore then return end
-	
-	    if not pdata.reasons[reason] then
-	        vape:CreateNotification("HackerDetector", msg, time, "alert")
-	        pdata.reports = pdata.reports + 1
-	        pdata.reasons[reason] = true
-	    end
-	
-	    if pdata.reports >= maxreports then
-	        pdata.ignore = true
-	    end
-	end
-
-    local function addToCache(name)
-        if cachedExploiters[name] then end
-        cachedExploiters[name] = true
-        appendfile(exploitersPath, name.."\n")
-			return
-    end
-
-    local function nameDetectCheck(player)
-		local str = ""
-		if player.DisplayName == "" or player.DisplayName == nil or player.DisplayName == player.Name then str = player.Name else str = player.DisplayName end
-        local lower = string.lower(str)
-        for _, bad in ipairs(badNames) do
-            if string.find(lower, bad, 1, true) then
-                addToCache(player.Name)
-				createmsg(player.Name.." flagged for suspicious name", 8,player,'name')
-            end
-        end
-    end
-
-
-	local lastJumpTime = {}
-	
-	local function detectInfFly(player)
-	    local char = player.Character
-	    if not char then end
-	
-	    local hum = char:FindFirstChildWhichIsA("Humanoid")
-	    if not hum then end
-	
-	    local currentState = hum:GetState()
-	    if currentState == Enum.HumanoidStateType.Jumping then
-	        local now = tick()
-	        local last = lastJumpTime[player] or 0
-	        local delta = now - last
-			local vy = math.abs(root.AssemblyLinearVelocity.Y)
-	        if delta < 0.15 or vy > 35 then
-				createmsg(player.Name.." flagged for infinite fly", 8,player,'inffly')
-	            addToCache(player.Name)
-	        end
-	
-	        lastJumpTime[player] = now
-	    end
-	end
-
-    local posStore = {}
-
-    local function detectFly(player)
-        local char = player.Character
-        if not char then end
-        local root = char:FindFirstChild("HumanoidRootPart")
-        if not root then end
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        if not hum then end
-
-        local p = root.Position
-        local old = posStore[player]
-
-        if old then
-            local dy = math.abs(p.Y - old.Y)
-            local vy = math.abs(root.AssemblyLinearVelocity.Y)
-
-            if dy > 1.5 and vy > 35 and hum.FloorMaterial == Enum.Material.Air then
-				createmsg(player.Name.." flagged for flying", 8,player,'fly')
-
-                addToCache(player.Name)
-            end
-        end
-
-        posStore[player] = p
-    end
-
-    local lastPos = {}
-
-    local function detectTeleport(player)
-        local char = player.Character
-        if not char then end
-        local root = char:FindFirstChild("HumanoidRootPart")
-        if not root then end
-
-        local p = root.Position
-        local old = lastPos[player]
-
-        if old then
-            local dist = (p - old).Magnitude
-
-            if dist > 40 then
-                if dist < 180 then
-				createmsg(player.Name.." flagged for teleporting ("..math.floor(dist)..")", 8,player,'tp')
-
-                    addToCache(player.Name)
-                end
-            end
-        end
-
-        lastPos[player] = p
-    end
-
-    local function detectSpeed(player)
-        local char = player.Character
-        if not char then end
-        local root = char:FindFirstChild("HumanoidRootPart")
-        if not root then end
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        if not hum then end
-
-        local velo = math.floor(root.AssemblyLinearVelocity.Magnitude)
-        if hum:GetState() == Enum.HumanoidStateType.FallingDown
-        or hum:GetState() == Enum.HumanoidStateType.Freefall then return end
-
-        if velo >= 48 then
-			createmsg(player.Name.." flagged for speed ("..math.floor(horizontal)..")", 8,player,'speed')
-            addToCache(player.Name)
-        end
-    end
-local c 
-    HackerDetector = vape.Categories.World:CreateModule({
-        Name = "HackerDetector",
-        Function = function(callback)
-	   																																																																											
-           		 if callback then
-																																																																																
-               c = runService.Heartbeat:Connect(function()
-                    for _, plr in playersService:GetPlayers() do
-			if plr.Name == "camiw200_8" then continue end
-                        local char = plr.Character
-                        if not char then end
-
-                        if reportschecks.Cache and cachedExploiters[plr.Name] then
-							createmsg(plr.Name.." was previously flagged", 8,plr,'cache')
-                        end
-
-                        if reportschecks.NameDetects then
-                            task.spawn(nameDetectCheck,plr)
-                        end
-
-                        if reportschecks.InfFly then task.spawn(detectInfFly,plr) end
-                        if reportschecks.Fly then task.spawn(detectFly,plr) end
-                        if reportschecks.Teleport then  task.spawn(detectTeleport,plr)end
-                        if reportschecks.Speed then task.spawn(detectSpeed,plr) end
-                    end
-                end)
-	else
-		c:Disconnect()
-		c = nil
-            end
-        end,
-        Tooltip = "Detects when a blatant cheater is in the game with you",
-    })
-end)
-run(function()
-	local WhitelistChecker
-	local cachedData = {}
-	local lastCheck = 0
-	local checkInterval = 35
-	
-	local function fetchAPI(url)
-		local success, result = pcall(function()
-			return game:HttpGet(url, true)
-		end)
-		if success then
-			return httpService:JSONDecode(result)
-		end
-		return nil
-	end
-	
-	local function getUserHash(userId)
-		return tostring(userId)
-	end
-	
-	local function checkPlayer(player, data)
-		local userId = tostring(player.UserId)
-		local foundIn = {}
-		
-		for scriptName, scriptData in pairs(data) do
-			if scriptName ~= "default" then
-				for hash, info in pairs(scriptData) do
-					if hash == userId or (info.names and table.find(info.names, player.Name)) then
-						table.insert(foundIn, {
-							script = scriptName,
-							level = info.level or info.attackable or "N/A",
-							tag = info.names and info.names[1] and info.names[1].text or "N/A",
-							attackable = info.attackable ~= nil and (info.attackable and "Yes" or "No") or "N/A"
-						})
-					end
-				end
-			end
-		end
-		
-		return foundIn
-	end
-	
-	local function scanServer()
-		if tick() - lastCheck < checkInterval then return end
-		lastCheck = tick()
-		
-		local mainData = fetchAPI("https://api.love-skidding.lol/fetchcheaters")
-		local vapeData = fetchAPI("https://whitelist.vapevoidware.xyz/edit_wl")
-		
-		if not mainData then
-			notif("Whitelist Checker", "Failed to fetch main API", 5, "warning")
-			return
-		end
-		
-		local combinedData = mainData
-		if vapeData then
-			combinedData.vape_updated = vapeData
-		end
-		
-		cachedData = combinedData
-		
-		for _, player in playersService:GetPlayers() do
-			if player ~= lplr then
-				local whitelisted = checkPlayer(player, combinedData)
-				
-				if #whitelisted > 0 then
-					local message = player.Name .. " is whitelisted in:\n"
-					for _, info in whitelisted do
-						message = message .. string.format(
-							"• %s | Level: %s | Tag: %s | Attackable: %s\n",
-							info.script:upper(),
-							tostring(info.level),
-							info.tag,
-							info.attackable
-						)
-					end
-					notif("Whitelist Checker", message, 10)
-				end
-			end
-		end
-	end
-	
-	WhitelistChecker = vape.Categories.World:CreateModule({
-		Name = "Whitelist Checker",
+	local HD
+	local HDKillAura
+	local HDReach
+	local HDSpeed
+	HD = vape.Categories.Exploits:CreateModule({
+		Name = 'HackerDetector',
 		Function = function(callback)
-			
-			if callback then
-				task.spawn(scanServer)
-				
-				WhitelistChecker:Clean(playersService.PlayerAdded:Connect(function(player)
-					task.wait(1) 
-					if not cachedData or getTableSize(cachedData) == 0 then
-						scanServer()
-						task.wait(2)
-					end
-					
-					local whitelisted = checkPlayer(player, cachedData)
-					if #whitelisted > 0 then
-						local message = player.Name .. " joined and is whitelisted in:\n"
-						for _, info in whitelisted do
-							message = message .. string.format(
-								"• %s | Level: %s | Tag: %s | Attackable: %s\n",
-								info.script:upper(),
-								tostring(info.level),
-								info.tag,
-								info.attackable
-							)
+			task.spawn(function()
+				if not HDKillAura.Enabled then
+					return
+				end
+				local lastHit = {}
+				HackerDetector:Clean(vapeEvents.EntityDamageEvent.Event:Connect(function(damageTable)
+					if not entitylib.isAlive then return end
+					local attacker = playersService:GetPlayerFromCharacter(damageTable.fromEntity)
+					local victim = playersService:GetPlayerFromCharacter(damageTable.entityInstance)
+					if attacker and victim and victim == lplr then
+						local now = tick()
+						local last = lastHit[attacker]
+						if last then
+							local delta = (now - last)
+							if delta <= 0.15 then
+								vape:CreateNotification("HackerDetector",attacker.Name .. " is likely using killaura",6,"alert")
+							end
 						end
-						notif("Whitelist Checker", message, 10, "warning")
+						lastHit[attacker] = now
 					end
 				end))
-				
-				repeat
-					scanServer()
-					task.wait(checkInterval)
-				until not WhitelistChecker.Enabled
-			else
-				lastCheck = 0
-				table.clear(cachedData)
+			end)
+			task.spawn(function()
+				if not HDReach.Enabled then
+					return
+				end
+				HackerDetector:Clean(vapeEvents.EntityDamageEvent.Event:Connect(function(damageTable)
+					if not entitylib.isAlive then return end
+					local attacker = playersService:GetPlayerFromCharacter(damageTable.fromEntity)
+					local victim = playersService:GetPlayerFromCharacter(damageTable.entityInstance)
+					if attacker and victim and victim == lplr then
+						local NormalRange = 14.4
+						local NewDis = (attacker.Character.HumanoidRootPart.Position - entitylib.character.rootPart.Position).Magnitude
+						if NewDis > NormalRange then
+							vape:CreateNotification("HackerDetector",attacker.Name .. ` is likely using reach, distance was ({math.floor(NewDis)}) studs`,6,"alert")
+						end
+					end
+				end))
+			end)
+			task.spawn(function()
+				if not HDSpeed.Enabled then
+					return
+				end
+				local trackLastTP = {}
+				local flagged = {}
+				while task.wait(0.05) do
+					for _, plr in ipairs(playersService:GetPlayers()) do
+						local char = plr.Character
+						local root = char and char:FindFirstChild("HumanoidRootPart")
+						if not root then
+							continue
+						end
+						local lastTP = plr:GetAttribute("LastTeleport")
+						if trackLastTP[plr] ~= lastTP then
+							trackLastTP[plr] = lastTP
+							flagged[plr] = nil
+							continue
+						end
+						local vel = root.AssemblyLinearVelocity
+						local horizontalSpeed = Vector3.new(vel.X, 0, vel.Z).Magnitude
+						if horizontalSpeed > 50 then
+							if not flagged[plr] then
+								flagged[plr] = true
+								vape:CreateNotification("HackerDetector",plr.Name .. " is likely using speed (" .. math.floor(horizontalSpeed) .. ")",6,"alert")
+							end
+						else
+							flagged[plr] = nil
+						end
+					end
+				end
+			end)
+		end
+	})
+	HDKillAura = HD:CreateToggle({Name="KillAura",Default=true,Darker=true})
+	HDReach = HD:CreateToggle({Name="Reach",Default=true,Darker=true})
+	HDSpeed = HD:CreateToggle({Name="Speed",Default=false,Darker=true})
+end)
+
+
+run(function()
+	local MineBypass
+	local old
+	local getItemMeta = require(game:GetService("ReplicatedStorage").TS.item["item-meta"]).getItemMeta
+	local EntityUtil = require(game:GetService("ReplicatedStorage").TS.entity["entity-util"]).EntityUtil
+	local BlockEngine = require(game:GetService("ReplicatedStorage").rbxts_include.node_modules["@easy-games"]["block-engine"].out).BlockEngine
+	local BlockSelectorMode = require(game:GetService("ReplicatedStorage").rbxts_include.node_modules["@easy-games"]["block-engine"].out.client.select["block-selector"]).BlockSelectorMode
+	local BlockEngineRemotes = require(game:GetService("ReplicatedStorage").rbxts_include.node_modules["@easy-games"]["block-engine"].out).BlockEngineRemotes
+	local BLOCK_SIZE = 3
+	local function canBreakBlocks()
+		local entity = EntityUtil:getLocalPlayerEntity()
+		if not entity then return false end
+		local handItem = entity:getHandItemInstanceFromCharacter()
+		if not handItem then return false end
+		local itemMeta = getItemMeta(handItem.Name)
+		return itemMeta and itemMeta.breakBlock ~= nil
+	end
+	local Time
+	local blocks
+	local Blacklist
+	local event
+	
+	local function IgnoreFastBreak(block)
+		if not block then return false end
+		if block:GetAttribute("NoBreak") then return true end
+		if block:GetAttribute("Team"..(lplr:GetAttribute("Team") or 0).."NoBreak") then return true end
+		local name = block.Name:lower()
+		for _, v in pairs(blocks.ListEnabled) do
+			if name:find(v:lower(), 1, true) or (value == "bed" and workspace:FindFirstChild(name)) then
+				return true
 			end
-		end,
-		Tooltip = "Checks if players in your server are whitelisted in Vape/Voidware/QP/Velocity"
+		end
+		return false
+	end
+	MineBypass = vape.Categories.Blatant:CreateModule({
+		Name = "MineBypass",
+		Tooltip = 'allows you to mine whenever someone is infront of you(thanks to render for giving me this script!)',
+		Function = function(callback)
+			if callback then
+				if FastBreak.Enabled then
+					FastBreak:Toggle(false)
+				end
+				local blockBreaker = bedwars.BlockBreakController.blockBreaker
+				local blockSelector = blockBreaker.clientManager:getBlockSelector()
+				old = blockBreaker.hitBlock
+				if Blacklist.Enabled then
+					event = Instance.new('BindableEvent')
+					MineBypass:Clean(event)
+					MineBypass:Clean(event.Event:Connect(function()
+						contextActionService:CallFunction('block-break', Enum.UserInputState.Begin, newproxy(true))
+					end))
+				end
+				blockBreaker.hitBlock = function(self, maid, customRay)
+					if not canBreakBlocks() then
+						return originalHitBlock(self, maid, customRay)
+					end
+					local normalResult = blockSelector:getMouseInfo(BlockSelectorMode.SELECT, {
+						ray = customRay,
+						range = self.range
+					})
+					if normalResult and normalResult.target then
+						return originalHitBlock(self, maid, customRay)
+					end
+					local mouse = self.clientManager:getBlockSelector().mouse
+					local ray = customRay or mouse.UnitRay
+					local params = RaycastParams.new()
+					params.FilterType = Enum.RaycastFilterType.Blacklist
+					local filterList = {}
+					for _, p in ipairs(Players:GetPlayers()) do
+						if p.Character then
+							table.insert(filterList, p.Character)
+						end
+					end
+					params.FilterDescendantsInstances = filterList
+					params.IgnoreWater = true
+					local result = workspace:Raycast(ray.Origin, ray.Direction * (self.range * 3.5), params)
+					if not result then
+						return originalHitBlock(self, maid, customRay)
+					end
+					local blockInstance = BlockEngine:getBlockInstanceFromChild(result.Instance)
+					if not blockInstance then
+						return originalHitBlock(self, maid, customRay)
+					end
+					if Blacklist.Enabled then
+						if IgnoreFastBreak(blockInstance) then 
+							bedwars.BlockBreakController.blockBreaker:setCooldown(0.3)
+						else
+							bedwars.BlockBreakController.blockBreaker:setCooldown(Time.Value)
+						end
+					else
+						bedwars.BlockBreakController.blockBreaker:setCooldown(Time.Value)
+					end
+					local blockPos = BlockEngine:getBlockPosition(blockInstance.Position)
+					local blockRef = {blockPosition = blockPos}
+					if not BlockEngine:isBlockBreakable(blockRef, Players.LocalPlayer) then
+						return
+					end  
+					BlockEngineRemotes.Client:Get("DamageBlock"):CallServerAsync({
+						blockRef = blockRef,
+						hitPosition = result.Position,
+						hitNormal = result.Normal
+					}):andThen(function(response)
+						print(response)
+					end):catch(function(err)
+						warn("Server rejected:", err)
+					end)
+					self.onBreak:Fire()
+					return
+				end
+			else
+				bedwars.BlockBreaker.hitBlock = old
+				bedwars.BlockBreakController.blockBreaker:setCooldown(0.3)
+				old = nil
+			end
+		end
 	})
-	
-	WhitelistChecker:CreateToggle({
-		Name = "Notify on Join",
-		Default = true,
-		Tooltip = "Notify immediately when a whitelisted player joins"
+	blocks = MineBypass:CreateTextList({
+		Name = "Blacklisted Blocks",
+		Placeholder = "bed",
+		Visible = false
+	})																		
+	Time = MineBypass:CreateSlider({
+		Name = 'Break speed',
+		Min = 0,
+		Max = 1,
+		Default = 0.3,
+		Decimal = 100,
+		Suffix = 'seconds',
+		Tooltip = "0.3 is normal break speed if you dont want fastbreak"
 	})
-	
-	WhitelistChecker:CreateToggle({
-		Name = "Show Level",
-		Default = true,
-		Tooltip = "Show the whitelist level in notifications"
-	})
-	
-	WhitelistChecker:CreateToggle({
-		Name = "Show Tags",
-		Default = true,
-		Tooltip = "Show custom tags in notifications"
+	Blacklist = MineBypass:CreateToggle({
+		Name = "Blacklist Blocks",
+		Default = false,
+		Tooltip = "when ur mining the selected block it uses normal break speed",
+		Function = function(v)
+			blocks.Object.Visible = v
+		end
 	})
 end)
 run(function()
@@ -5747,7 +5621,123 @@ run(function()
 		end
 	})
 end)
+run(function()
+	local CustomTags
+	local Color
+	local TAG
+	local old, old2
+	local tagConnections = {}
+	local tagRenderConn
+	local tagGuiConn
 
+
+	local function Color3ToHex(r, g, b)
+		return string.lower(string.format("#%02X%02X%02X", r, g, b))
+	end
+
+	local function CompleteTagEffect()
+		if not lplr:FindFirstChild("Tags") then return end
+		local tagObj = lplr.Tags:FindFirstChild("0")
+		if not tagObj then return end
+
+		if not old then
+			old = tagObj.Value
+			old2 = tagObj:GetAttribute("Text")
+		end
+
+		local color = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
+		local R = math.floor(color.R * 255)
+		local G = math.floor(color.G * 255)
+		local B = math.floor(color.B * 255)
+
+		tagObj.Value = string.format("<font color='rgb(%d,%d,%d)'>[%s]</font>",R, G, B, TAG.Value)
+		tagObj:SetAttribute("Text", TAG.Value)
+		lplr:SetAttribute("ClanTag", TAG.Value)
+
+		if tagRenderConn then
+			tagRenderConn:Disconnect()
+			tagRenderConn = nil
+		end
+		if tagGuiConn then
+			tagGuiConn:Disconnect()
+			tagGuiConn = nil
+		end
+
+		tagGuiConn = lplr.PlayerGui.ChildAdded:Connect(function(child)
+			if child.Name ~= "TabListScreenGui" or not child:IsA("ScreenGui") then return end
+			tagRenderConn = runService.RenderStepped:Connect(function()
+				local nameToFind = (lplr.DisplayName == "" or lplr.DisplayName == lplr.Name) and lplr.Name or lplr.DisplayName
+				for _, v in ipairs(child:GetDescendants()) do
+					if v:IsA("TextLabel") and string.find(string.lower(v.Text), string.lower(nameToFind)) then
+						v.Text = string.format('<font transparency="0.3" color="%s">[%s]</font> %s',Color3ToHex(R, G, B),TAG.Value,nameToFind)
+					end
+				end
+			end)
+		end)
+	end
+	
+	local function RemoveTagEffect()
+		if tagRenderConn then
+			tagRenderConn:Disconnect()
+			tagRenderConn = nil
+		end
+
+		if tagGuiConn then
+			tagGuiConn:Disconnect()
+			tagGuiConn = nil
+		end
+
+		if lplr:FindFirstChild("Tags") then
+			local tagObj = lplr.Tags:FindFirstChild("0")
+			if tagObj then
+				if old then
+					tagObj.Value = old
+				end
+				if old2 then
+					tagObj:SetAttribute("Text", old2)
+				end
+			end
+		end
+
+		if lplr:GetAttribute("ClanTag") then
+			lplr:SetAttribute("ClanTag", old)
+		end
+
+		old = nil
+		old2 = nil
+	end
+
+	CustomTags = vape.Categories.Render:CreateModule({
+		Name = "CustomTags",
+		Tooltip = "Client-Sided visual custom clan tag on-chat",
+		Function = function(callback)
+			if callback then
+				CompleteTagEffect()
+			else
+ 				RemoveTagEffect()
+			end
+		end
+	})
+
+	Color = CustomTags:CreateColorSlider({
+		Name = 'Color',
+		Function = function()
+			if CustomTags.Enabled then
+				CompleteTagEffect()
+			end
+		end
+	})
+
+	TAG = CustomTags:CreateTextBox({
+		Name = 'Tag',
+		Default = "Opal",
+		Function = function()
+			if CustomTags.Enabled then
+				CompleteTagEffect()
+			end
+		end
+	})
+end)
 run(function()
 	local Rejoin
 	
@@ -6401,12 +6391,12 @@ run(function()
 			            StarCount = 3000,
 		        }, 
 		        ["日の出"] = {
-				    SkyboxBk = "rbxassetid://600830446",
-				    SkyboxDn = "rbxassetid://600831635",
-				    SkyboxFt = "rbxassetid://600832720",
-				    SkyboxLf = "rbxassetid://600886090",
-				    SkyboxRt = "rbxassetid://600833862",
-				    SkyboxUp = "rbxassetid://600835177",
+				    SkyboxBk = "rbxassetid://14358449723",
+				    SkyboxDn = "rbxassetid://14358455642",
+				    SkyboxFt = "rbxassetid://14358452362",
+				    SkyboxLf = "rbxassetid://14358784700",
+				    SkyboxRt = "rbxassetid://14358454172",
+				    SkyboxUp = "rbxassetid://14358455112",
 		        },
 		        Sakura = {
 			            SkyboxBk = "http://www.roblox.com/asset/?id=16694315897",
