@@ -7536,6 +7536,99 @@ run(function()
 	})
 end)
 run(function()
+    local running = false
+    local threads = {}
+    local Crasher
+    local Intensity
+    local anim = Instance.new("Animation")
+    anim.AnimationId = "http"..game:GetService("HttpService"):GenerateGUID().."=108547486427358=128564458016055=111133097645102=118859282718860=116688450587693=108713182294229"
+    Crasher = vape.Legit:CreateModule({
+        Name = "Crasher",
+        Tooltip = "crashes everyone but you!",
+        Function = function(callback)
+            running = callback
+            if callback then
+                local character = lplr.Character
+                if not character then return end
+                local humanoid = character:FindFirstChild("Humanoid")
+                if not humanoid then return end
+                local animator = humanoid:FindFirstChild("Animator")
+                if not animator then return end
+                local track = animator:LoadAnimation(anim)
+                for i = 1, Intensity.Value do
+                    local thread
+                    thread = task.spawn(function()
+                        while running do
+                            track:Play(2147483647)
+                            track:AdjustSpeed(-math.huge)
+                            task.wait()
+                        end
+                    end)
+
+                    table.insert(threads, thread)
+                end
+            else
+                running = false
+                for _, thread in ipairs(threads) do
+                    task.cancel(thread)
+                end
+                table.clear(threads)
+                pcall(function()
+                    if track then
+                        track:Stop()
+                        track:Destroy()
+                    end
+                end)
+            end
+        end
+    })
+    Intensity = Crasher:CreateSlider({
+        Name = "Intensity",
+        Default = 5,
+        Min = 1,
+        Max = 250
+    })
+end)
+run(function()
+    local AntiCrasher
+    AntiCrasher = vape.Legit:CreateModule({
+        Name = "Anti Crasher",
+        Function = function(callback)
+            if callback then
+                lplr.CharacterAdded:Connect(function(char)
+                    local hum = char:WaitForChild("Humanoid", 5)
+                    local anim = hum:WaitForChild("Animator", 5)
+
+                    anim.AnimationPlayed:Connect(function(track)
+                        track:AdjustSpeed(-math.huge)
+                        track:Stop()
+                    end)
+
+                    for _, v in anim:GetPlayingAnimationTracks() do
+                        v:AdjustSpeed(-math.huge)
+                        v:Stop()
+                    end
+                end)
+                local char = lplr.Character or lplr.CharacterAdded:Wait()
+                local hum = char:WaitForChild("Humanoid", 5)
+                local anim = hum:WaitForChild("Animator", 5)
+
+                anim.AnimationPlayed:Connect(function(track)
+                    track:AdjustSpeed(-math.huge)
+                    track:Stop()
+                end)
+
+                for _, v in anim:GetPlayingAnimationTracks() do
+                    v:AdjustSpeed(-math.huge)
+                    v:Stop()
+                end
+            else
+                vape:CreateNotification("Anti Crasher","Disabled next game!",6,"warning")
+            end
+        end
+    })
+end)
+run(function()
     local Disabler = {Enabled = false}
 
     Disabler = vape.Categories.Utility:CreateModule({
