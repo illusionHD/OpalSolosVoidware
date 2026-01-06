@@ -2551,308 +2551,14 @@ run(function()
 		Tooltip = 'Lets you sprint with a speed potion.'
 	})
 end)
+local Attacking
 run(function()
-		local KeepInventory = {Enabled = false}
-		local KeepInventoryLagback = {Enabled = false}
-
-		local enderchest
-		local function getEnderchest()
-			enderchest = enderchest or replicatedStorageService.Inventories[lplr.Name.."_personal"]
-			return enderchest
-		end
-
-		--local GetItem = bedwars.ClientHandler:GetNamespace("Inventory"):Get("ChestGetItem")
-		--local GiveItem = bedwars.ClientHandler:GetNamespace("Inventory"):Get("ChestGiveItem")
-		--local ResetRemote = bedwars.ClientHandler:Get(bedwars.ResetRemote)
-		local deposited = false
-
-		local function collectEnderchest()
-			if deposited then
-				deposited = false
-				repeat task.wait() until entityLibrary.isAlive
-				lplr.Character:WaitForChild("InventoryFolder", 999999)
-				repeat task.wait() until lplr.Character.InventoryFolder.Value ~= nil
-				local enderchest = getEnderchest()
-				for _, item in next, enderchest:GetChildren() do
-					GetItem:CallServerAsync(enderchest, item)
-				end
-			end
-		end
-
-		local function depositAndWaitForRespawn(yield)
-			if not deposited then
-				deposited = true
-				local inventory = lplr.Character:FindFirstChild("InventoryFolder")
-				if inventory then 
-					inventory = inventory.Value
-					local enderchest = getEnderchest()
-					local count = 0
-					for _, item in next, inventory:GetChildren() do
-						task.spawn(function()
-							GiveItem:CallServer(enderchest, item)
-							count -= 1
-						end)
-						count += 1
-					end
-					if yield then
-						repeat task.wait() until count <= 0
-					end
-					lplr.CharacterAdded:Once(collectEnderchest)
-				end
-			end
-		end
-
-		local resetCallback = Instance.new("BindableEvent")
-		resetCallback.Event:Connect(function()
-			--warningNotification("KeepInventory", "Resetting, storing items", 5)
-			depositAndWaitForRespawn(true)
-			ResetRemote:SendToServer()
-		end)
-
-		KeepInventory = vape.Categories.Utility:CreateModule({
-			Name = "KeepInventory",
-			Function = function(callback)
-				if callback then
-					starterGui:SetCore("ResetButtonCallback", resetCallback)
-					if KeepInventoryLagback.Enabled then
-						task.spawn(function()
-							repeat
-								task.wait(0.1)
-								if entityLibrary.isAlive then
-									if not isnetworkowner(entityLibrary.character.HumanoidRootPart) and bedwarsStore.queueType:find("skywars") == nil then
-										if not deposited then
-											--warningNotification("KeepInventory", "Lagback detected, storing items", 5)
-											task.spawn(function()
-												local suc, res = pcall(function() return lplr.leaderstats.Bed.Value == "✅"  end)
-												repeat task.wait() until not KeepInventory.Enabled or (isnetworkowner(entityLibrary.character.HumanoidRootPart) and suc and res) or (suc and res == nil)
-												if entityLibrary.isAlive then
-													collectEnderchest()
-												end
-											end)
-										end
-										depositAndWaitForRespawn(true)
-									end
-								end
-							until not (KeepInventory and KeepInventoryLagback.Enabled)
-						end)
-					end
-					table.insert(KeepInventory.Connections, vapeEvents.EntityDamageEvent.Event:Connect(function(damageTable)
-						if damageTable.entityInstance == lplr.Character and damageTable.fromEntity and damageTable.damage and bedwarsStore.queueType:find("skywars") == nil then
-							local plr = playersService:GetPlayerFromCharacter(damageTable.fromEntity)
-							local health = lplr.Character:GetAttribute("Health") or 150
-							local stash = (health / damageTable.damage) <= 2
-							if plr then
-								local winning, hits, _hits = calculateHits(plr, false)
-								stash = (_hits - hits) <= 2
-							end
-							if stash then
-								if not deposited then
-									--warningNotification("KeepInventory", "Possible death imminent, storing items", 5)
-									task.delay(2, function()
-										local suc, res = pcall(function() return lplr.leaderstats.Bed.Value == "✅"  end)
-										repeat task.wait() until not KeepInventory.Enabled or (suc and res and (workspace:GetServerTimeNow() - lplr.Character:GetAttribute("LastDamageTakenTime")) > 2) or (suc and res == nil)
-										if entityLibrary.isAlive then
-											collectEnderchest()
-										end
-									end)
-								end
-								depositAndWaitForRespawn(true)
-							end
-						end
-					end))
-				else
-					oldCallback = oldCallback or bedwars.ResetController:createBindable()
-					starterGui:SetCore("ResetButtonCallback", oldCallback)
-				end
-			end
-		})
-		KeepInventoryLagback = KeepInventory:CreateToggle({
-			Name = "Lagback",
-			Function = blankFunction
-		})
-	end)
-run(function()
-	local RunService = game:GetService("RunService") --defined again idc
-	local TweenService = game:GetService("TweenService")
-
-	local AuraEnabled = false
-	local animPlaying = false
-
-	local KillauraAnimations = {
-		MC = {
-			{CFrame = CFrame.new(1.2, -0.9, 0.1) * CFrame.Angles(math.rad(-45), math.rad(100), math.rad(60)), Timer = 0.12},
-			{CFrame = CFrame.new(1.3, -0.85, 0.25) * CFrame.Angles(math.rad(-30), math.rad(80), math.rad(40)), Timer = 0.12},
-			{CFrame = CFrame.new(1.25, -0.88, 0.15) * CFrame.Angles(math.rad(-40), math.rad(90), math.rad(50)), Timer = 0.12},
-		},
-		Smooth = {
-			{CFrame = CFrame.new(1, -0.8, 0.2) * CFrame.Angles(math.rad(-30), math.rad(80), math.rad(50)), Timer = 0.15},
-			{CFrame = CFrame.new(1.1, -0.85, 0.1) * CFrame.Angles(math.rad(-35), math.rad(85), math.rad(55)), Timer = 0.15},
-		},
-		Wide = {
-			{CFrame = CFrame.new(1.5, -1, 0.3) * CFrame.Angles(math.rad(-50), math.rad(120), math.rad(70)), Timer = 0.1},
-			{CFrame = CFrame.new(1.4, -0.95, 0.25) * CFrame.Angles(math.rad(-40), math.rad(110), math.rad(65)), Timer = 0.1},
-		}
-	}
-
-	local AttackRange
-	local FaceTarget
-	local SwingTarget
-	local CustomAnimations
-	local AnimationDropdown
-	local SelectedAnimation = "MC"
-	local Aura
-
-	Aura = vape.Categories.Blatant:CreateModule({
-		Name = "CustomAura",
-		Function = function(call)
-			AuraEnabled = call
-			if call then
-				Aura:Clean(RunService.Stepped:Connect(function()
-					local Nearest = getNearestEntity(AttackRange.Value, Aura.Targets)
-					if Nearest and isAlive(lplr) and isAlive(Nearest.plr) then
-						local Sword = getBestSword()
-						if Sword then
-							if FaceTarget.Enabled then
-								local selfPos = lplr.Character.PrimaryPart.Position
-								local targetPos = Nearest.plr.Character.PrimaryPart.Position
-								lplr.Character.PrimaryPart.CFrame = CFrame.lookAt(selfPos, Vector3.new(targetPos.X, selfPos.Y, targetPos.Z))
-							end
-							if SwingTarget.Enabled and CustomAnimations.Enabled and not animPlaying then
-								animPlaying = true
-								task.spawn(function()
-									while animPlaying and Aura.Enabled do
-										Nearest = getNearestEntity(AttackRange.Value, Aura.Targets)
-										if not Nearest or not isAlive(lplr) or not isAlive(Nearest.plr) then break end
-										for _, v in next, KillauraAnimations[SelectedAnimation] do
-											Nearest = getNearestEntity(AttackRange.Value, Aura.Targets)
-											if not Nearest or not isAlive(lplr) or not isAlive(Nearest.plr) then
-												animPlaying = false
-												break
-											end
-											local wrist = viewmodel and viewmodel:FindFirstChild("RightHand") and viewmodel.RightHand:FindFirstChild("RightWrist")
-											if wrist then
-												local tween = TweenService:Create(
-													wrist,
-													TweenInfo.new(v.Timer, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
-													{C0 = C0 * v.CFrame}
-												)
-												tween:Play()
-											end
-											task.wait(v.Timer)
-										end
-									end
-									local wrist = viewmodel and viewmodel:FindFirstChild("RightHand") and viewmodel.RightHand:FindFirstChild("RightWrist")
-									if wrist then wrist.C0 = C0 end
-									animPlaying = false
-								end)
-							end
-							bedwars.SwordHit:FireServer({
-								weapon = Sword,
-								chargedAttack = {chargeRatio = 0},
-								lastSwingServerTimeDelta = 0.01,
-								entityInstance = Nearest.plr.Character,
-								validate = {
-									raycast = {
-										cameraPosition = {value = lplr.Character.PrimaryPart.Position},
-										rayDirection = {value = (Nearest.plr.Character.PrimaryPart.Position - lplr.Character.PrimaryPart.Position).Unit}
-									},
-									targetPosition = {value = Nearest.plr.Character.PrimaryPart.Position},
-									selfPosition = {value = lplr.Character.PrimaryPart.Position}
-								}
-							})
-						end
-					else
-						if animPlaying then
-							animPlaying = false
-							local wrist = viewmodel and viewmodel:FindFirstChild("RightHand") and viewmodel.RightHand:FindFirstChild("RightWrist")
-							if wrist then wrist.C0 = C0 end
-						end
-					end
-				end))
-			else
-				animPlaying = false
-				local wrist = viewmodel and viewmodel:FindFirstChild("RightHand") and viewmodel.RightHand:FindFirstChild("RightWrist")
-				if wrist then wrist.C0 = C0 end
-			end
-		end
-	})
-
-	Aura:CreateTargets({
-		Players = true,
-		NPCs = false
-	})
-
-	AttackRange = Aura:CreateSlider({
-		Name = "Attack Range",
-		Min = 1,
-		Max = 23,
-		Default = 23,
-		Suffix = function(val) return val == 1 and "stud" or "studs" end
-	})
-
-	FaceTarget = Aura:CreateToggle({
-		Name = "Face Target"
-	})
-
-	SwingTarget = Aura:CreateToggle({
-		Name = "Swing Target"
-	})
-
-	CustomAnimations = Aura:CreateToggle({
-		Name = "Custom Animations",
-		Function = function(state)
-			AnimationDropdown.Object.Visible = state
-		end
-	})
-
-	AnimationDropdown = Aura:CreateDropdown({
-		Name = "Animation Type",
-		List = {"MC", "Smooth", "Wide"},
-		Value = "MC",
-		Function = function(opt)
-			SelectedAnimation = opt
-		end
-	})
-
-	AnimationDropdown.Object.Visible = false
-end)	
-
-run(function()
-	local Timer
-	local Value
-	
-	Timer = vape.Categories.Blatant:CreateModule({
-		Name = 'Timer',
-		Function = function(callback)
-			if callback then
-				setfflag('SimEnableStepPhysics', 'True')
-				setfflag('SimEnableStepPhysicsSelective', 'True')
-				Timer:Clean(runService.RenderStepped:Connect(function(dt)
-					if Value.Value > 1 then
-						runService:Pause()
-						workspace:StepPhysics(dt * (Value.Value - 1), {entitylib.character.RootPart})
-						runService:Run()
-					end
-				end))
-			end
-		end,
-		Tooltip = 'Change the game speed.'
-	})
-	Value = Timer:CreateSlider({
-		Name = 'Value',
-		Min = 1,
-		Max = 3,
-		Decimal = 10
-	})
-end)
-run(function()
-
-	local SyncHit
+	local Killaura
 	local Targets
 	local Sort
 	local SwingRange
 	local AttackRange
-	local AfterSwing
+	local ChargeTime
 	local UpdateRate
 	local AngleSlider
 	local MaxTargets
@@ -2871,15 +2577,6 @@ run(function()
 	local AnimationSpeed
 	local AnimationTween
 	local Limit
-	local SC = {Enabled = true}
-	local RV
-	local HR
-	local FastHits
-	local HitsDelay
-	local HRTR = {
-		[1] = 0.042,
-		[2] = 0.0042,
-	}
 	local LegitAura = {}
 	local Particles, Boxes = {}, {}
 	local anims, AnimDelay, AnimTween, armC0 = vape.Libraries.auraanims, tick()
@@ -2906,14 +2603,14 @@ run(function()
 		end
 
 		if LegitAura.Enabled then
-			if (tick() - bedwars.SwordController.lastSwing) > 0.15 then return false end
+			if (tick() - bedwars.SwordController.lastSwing) > 0.2 then return false end
 		end
 
 		return sword, meta
 	end
 
 	Killaura = vape.Categories.Blatant:CreateModule({
-		Name = 'Killaura',
+		Name = 'Aura',
 		Function = function(callback)
 			if callback then
 				if inputService.TouchEnabled then
@@ -2922,7 +2619,7 @@ run(function()
 					end)
 				end
 
-				if Animation.Enabled and not (identifyexecutor and table.find({'Argon', 'Delta','Codex'}, ({identifyexecutor()})[1])) then
+				if Animation.Enabled and not (identifyexecutor and table.find({'Argon', 'Delta'}, ({identifyexecutor()})[1])) then
 					local fake = {
 						Controllers = {
 							ViewmodelController = {
@@ -2955,7 +2652,7 @@ run(function()
 								end
 
 								for _, v in anims[AnimationMode.Value] do
-									AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(first and (AnimationTween.Enabled and 0.001 or 0.1) or v.Time / AnimationSpeed.Value, Enum.EasingStyle.Linear), {
+									AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(first and (AnimationTween.Enabled and 0.08 or 0.3) or v.Time / AnimationSpeed.Value, Enum.EasingStyle.Linear), {
 										C0 = armC0 * v.CFrame
 									})
 									AnimTween:Play()
@@ -2965,7 +2662,7 @@ run(function()
 								end
 							elseif started then
 								started = false
-								AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(AnimationTween.Enabled and 0.001 or 0.3, Enum.EasingStyle.Exponential), {
+								AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(AnimationTween.Enabled and 0.5 or 0.7, Enum.EasingStyle.Exponential), {
 									C0 = armC0
 								})
 								AnimTween:Play()
@@ -2984,8 +2681,6 @@ run(function()
 					Attacking = false
 					store.KillauraTarget = nil
 					if sword then
-						if SC.Enabled and entitylib.isAlive and lplr.Character:FindFirstChild("elk") then return end
-						local isClaw = string.find(string.lower(tostring(sword and sword.itemType or "")), "summoner_claw")	
 						local plrs = entitylib.AllPosition({
 							Range = SwingRange.Value,
 							Wallcheck = Targets.Walls.Enabled or nil,
@@ -2997,9 +2692,7 @@ run(function()
 						})
 
 						if #plrs > 0 then
-							if store.equippedKit == "ember" and sword.itemType == "infernal_saber" then
-								bedwars.Client:Get('HellBladeRelease'):FireServer({chargeTime = 1, player = lplr, weapon = sword.tool})
-							end
+							switchItem(sword.tool, 0)
 							local selfpos = entitylib.character.RootPart.Position
 							local localfacing = entitylib.character.RootPart.CFrame.LookVector * Vector3.new(1, 0, 1)
 
@@ -3037,35 +2730,25 @@ run(function()
 								if actualRoot then
 									local dir = CFrame.lookAt(selfpos, actualRoot.Position).LookVector
 									local pos = selfpos + dir * math.max(delta.Magnitude - 14.399, 0)
-									swingCooldown = SyncHit.Enabled and (tick() - HRTR[1]) or tick()
+									swingCooldown = tick()
 									bedwars.SwordController.lastAttack = workspace:GetServerTimeNow()
-									store.attackReach = SyncHit.Enabled and ((delta.Magnitude * 100) // 1 / 100 - HRTR[1] - 0.055) or (delta.Magnitude * 100) // 1 / 100 - 0.055
-									store.attackReachUpdate = SyncHit.Enabled and (tick() + 1 - HRTR[2]) or tick() + 1
-
+									store.attackReach = (delta.Magnitude * 100) // 1 / 100
+									store.attackReachUpdate = tick() + 1
 
 									if delta.Magnitude < 14.4 and ChargeTime.Value > 0.11 then
-										AnimDelay =  tick()
+										AnimDelay = tick()
 									end
 
-									local Q = 0.5
-									if SyncHit.Enabled  then Q = 0.35 else Q = 0.5 end
-										if isClaw then
-											KaidaController:request(v.Character)
-										else
-													AttackRemote:FireServer({
-														weapon = sword.tool,
-														chargedAttack = {chargeRatio = 0},
-														entityInstance = v.Character,
-														validate = {
-															raycast = {},
-															targetPosition = {value = actualRoot.Position},
-															selfPosition = {value = pos}
-														}
-													})
-										if not v.Character then
-											print("player is dead")
-										end
-									end
+									AttackRemote:FireServer({
+										weapon = sword.tool,
+										chargedAttack = {chargeRatio = 0},
+										entityInstance = v.Character,
+										validate = {
+											raycast = {},
+											targetPosition = {value = actualRoot.Position},
+											selfPosition = {value = pos}
+										}
+									})
 								end
 							end
 						end
@@ -3089,6 +2772,7 @@ run(function()
 						entitylib.character.RootPart.CFrame = CFrame.lookAt(entitylib.character.RootPart.Position, Vector3.new(vec.X, entitylib.character.RootPart.Position.Y + 0.001, vec.Z))
 					end
 
+					--#attacked > 0 and #attacked * 0.02 or
 					task.wait(1 / UpdateRate.Value)
 				until not Killaura.Enabled
 			else
@@ -3108,7 +2792,7 @@ run(function()
 				debug.setupvalue(bedwars.ScytheController.playLocalAnimation, 3, bedwars.Knit)
 				Attacking = false
 				if armC0 then
-					AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(AnimationTween.Enabled and 0.001 or 0.3, Enum.EasingStyle.Exponential), {
+					AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(AnimationTween.Enabled and 0.1 or 0.2, Enum.EasingStyle.Exponential), {
 						C0 = armC0
 					})
 					AnimTween:Play()
@@ -3127,76 +2811,10 @@ run(function()
 			table.insert(methods, i)
 		end
 	end
-
-	HR = Killaura:CreateSlider({
-		Name = 'Hit Registration',
-		Min = 1,
-		Max = 36,
-		Default = 36.5,
-		Function = function(val)
-			local function RegMath(sliderValue)
-				local minValue1 = 0.042
-				local maxValue1 = 0.045
-
-				local minValue2 = 0.0042
-				local maxValue2 = 0.0045
-
-				local steps = 35 
-
-				local value1 = minValue1 + ((sliderValue - 1) * ((maxValue1 - minValue1) / steps))
-				local value2 = minValue2 + ((sliderValue - 1) * ((maxValue2 - minValue2) / steps))
-
-				return math.abs(value1), math.abs(value2)
-			end
-
-			if Killaura.Enabled then
-				local v1,v2 = RegMath(val)
-				HRTR[1] = v1
-				HRTR[2] = v2
-			end
-		end
-	})
-
-	local MaxRange = 0
-	local CE = false
-	if role ~= "owner" and role ~= "coowner" and role ~= "admin" and role ~= "friend" and role ~= "premium" and role ~= "user"  then
-		MaxRange = 32
-		CE = true
-		SyncHit = {Enabled = false}
-	elseif role == "user" then
-		MaxRange = 18
-		CE = true
-		SyncHit = Killaura:CreateToggle({
-			Name = 'Sync Hit-Time',
-			Tooltip = "Synchronize's ur hit time",
-			Default = false,
-		})
-	elseif role == "premium" then
-		MaxRange = 32
-		CE = true
-		SyncHit = Killaura:CreateToggle({
-			Name = 'Sync Hit-Time',
-			Tooltip = "Synchronize's ur hit time",
-			Default = false,
-		})
-	elseif role == "friend" or role == "admin" or role == "coowner" or role == "owner" then
-		MaxRange = 32
-		CE = true
-		SyncHit = Killaura:CreateToggle({
-			Name = 'Sync Hit-Time',
-			Tooltip = "Synchronize's ur hit time",
-			Default = false,
-		})
-	else
-		MaxRange = 32
-		SyncHit = {Enabled = false}
-	end
-
 	SwingRange = Killaura:CreateSlider({
 		Name = 'Swing range',
-		Min = 1,
-		Edit = CE,
-		Max = MaxRange,
+		Min = 16,
+		Max = 30,
 		Default = 18,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
@@ -3204,9 +2822,8 @@ run(function()
 	})
 	AttackRange = Killaura:CreateSlider({
 		Name = 'Attack range',
-		Min = 1,
-		Max = MaxRange,
-		Edit = CE,
+		Min = 15,
+		Max = 30,
 		Default = 18,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
@@ -3215,8 +2832,8 @@ run(function()
 	ChargeTime = Killaura:CreateSlider({
 		Name = 'Swing time',
 		Min = 0,
-		Max = 1,
-		Default = 0.3,
+		Max = 0.1,
+		Default = 0,
 		Decimal = 100
 	})
 	AngleSlider = Killaura:CreateSlider({
@@ -3225,18 +2842,25 @@ run(function()
 		Max = 360,
 		Default = 360
 	})
+	OneTapCooldown = Killaura:CreateSlider({
+		Name = "OneTap Cooldown",
+		Function = function() end,
+		Min = 0,
+		Max = 0.1,
+		Default = 0.1
+	})
 	UpdateRate = Killaura:CreateSlider({
 		Name = 'Update rate',
-		Min = 1,
-		Max = 360,
+		Min = 60,
+		Max = 180,
 		Default = 60,
 		Suffix = 'hz'
 	})
 	MaxTargets = Killaura:CreateSlider({
 		Name = 'Max targets',
 		Min = 1,
-		Max = 8,
-		Default = 5
+		Max = 3,
+		Default = 1
 	})
 	Sort = Killaura:CreateDropdown({
 		Name = 'Target Mode',
@@ -3400,8 +3024,8 @@ run(function()
 	})
 	AnimationSpeed = Killaura:CreateSlider({
 		Name = 'Animation Speed',
-		Min = 0,
-		Max = 2,
+		Min = 0.5,
+		Max = 2.5,
 		Default = 1,
 		Decimal = 10,
 		Darker = true,
@@ -3423,38 +3047,11 @@ run(function()
 		end,
 		Tooltip = 'Only attacks when the sword is held'
 	})
-
 	LegitAura = Killaura:CreateToggle({
-		Name = 'Legit Aura',
-		Tooltip = 'Only attacks when the mouse is clicking'
+		Name = 'Swing only',
+		Tooltip = 'Only attacks while swinging manually'
 	})
 end)
-
-run(function()
-local AutoReport = {Enabled = false}
-local Mode
-	 AutoReport = vape.Categories.Exploits:CreateModule({
-		Name = "AutoReport",
-		Function = function(callback)
-			if callback then
-
-				for _, v in ipairs(game:GetService("Players"):GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						TryToReport(v,Mode.Value)
-					end
-				end
-			end
-		end,
-		Tooltip = "Automatically reports everyone in the game",
-	})
- 	Mode = AutoReport:CreateDropdown({
-		Name = "Mode",
-		List= {"VapeNotify", "BedwarsNotify", "Hidden"}
-	})
-	AutoReport:Toggle(false)
-end)
-
-
 run(function()
 	local AutoQueue
 	
