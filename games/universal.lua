@@ -6546,3 +6546,78 @@ run(function()
         Tooltip = ""
     })
 end)
+run(function()
+	local CrabWalk
+	local XSlider, YSlider, ZSlider
+	
+	CrabWalk = vape.Categories.Exploits:CreateModule({
+		Name = 'Crab Walk',
+		Function = function(callback)
+			if callback then
+				local connection
+				connection = runService.Heartbeat:Connect(function()
+					if not entitylib.isAlive then return end
+					
+					local root = entitylib.character.HumanoidRootPart
+					if not root then return end
+					
+					-- Get rotation values from sliders (default to 0)
+					local xRot = XSlider and XSlider.Value or 0
+					local yRot = YSlider and YSlider.Value or 0
+					local zRot = ZSlider and ZSlider.Value or 0
+					
+					-- Apply combined rotation
+					root.CFrame = CFrame.new(root.Position) * 
+						CFrame.Angles(
+							math.rad(xRot),
+							math.rad(yRot),
+							math.rad(zRot)
+						)
+				end)
+				
+				CrabWalk:Clean(connection)
+				
+			else
+				-- No cleanup needed - rotation stops when disabled
+			end
+		end,
+		Tooltip = 'Rotate your character on X, Y, and Z axes'
+	})
+	
+	-- X Rotation Slider (Sideways/Tilt)
+	XSlider = CrabWalk:CreateSlider({
+		Name = 'X Rotation',
+		Min = -180,
+		Max = 180,
+		Default = 90,
+		Suffix = function(val)
+			return '°'
+		end,
+		Tooltip = 'Sideways tilt (90 = crab walk)'
+	})
+	
+	-- Y Rotation Slider (Spinning)
+	YSlider = CrabWalk:CreateSlider({
+		Name = 'Y Rotation',
+		Min = -180,
+		Max = 180,
+		Default = 0,
+		Suffix = function(val)
+			return '°'
+		end,
+		Tooltip = 'Spinning rotation'
+	})
+	
+	-- Z Rotation Slider (Forward/Backward Tilt)
+	ZSlider = CrabWalk:CreateSlider({
+		Name = 'Z Rotation',
+		Min = -180,
+		Max = 180,
+		Default = 0,
+		Suffix = function(val)
+			return '°'
+		end,
+		Tooltip = 'Forward/backward tilt'
+	})
+
+end)
