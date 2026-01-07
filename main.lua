@@ -93,6 +93,9 @@ local gui = readfile('OSVPrivate/profiles/gui.txt')
 if not isfolder('OSVPrivate/assets/'..gui) then
 	makefolder('OSVPrivate/assets/'..gui)
 end
+if not isfolder('OSVPrivate/Configs/'..gui) then
+	makefolder('OSVPrivate/Configs/'..gui)
+end
 vape = loadstring(downloadFile('OSVPrivate/guis/'..gui..'.lua'), 'gui')()
 shared.vape = vape
 
