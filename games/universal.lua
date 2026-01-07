@@ -1,6 +1,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
@@ -4073,25 +4074,127 @@ run(function()
   }
 end)
 run(function()
-	local InfiniteJump = {Enabled = false}
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
+    local UserInputService = game:GetService("UserInputService")
 
-	InfiniteJump = vape.Categories.Blatant:CreateModule({
-		Name = "Infinite Jump",
-		Function = function(callback)
-			if callback then
-				game:GetService("UserInputService").JumpRequest:Connect(function()
-					if InfiniteJump.Enabled and game.Players.LocalPlayer and game.Players.LocalPlayer.Character then
-						local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-						if humanoid then
-							humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-						end
-					end
-				end)
-			end
-		end,
-		Tooltip = "Infinite jump"
-	})
-end)	
+    local player = Players.LocalPlayer
+    local InfiniteJump
+    local jumpConn, tpConn
+
+    InfiniteJump = vape.Categories.Blatant:CreateModule({
+        Name = "Infinite Jump",
+        Tooltip = "Jump infinitely + TP down after airtime",
+        Function = function(callback)
+            if callback then
+
+                -- === INFINITE JUMP ===
+                jumpConn = UserInputService.JumpRequest:Connect(function()
+                    local char = player.Character
+                    local hum = char and char:FindFirstChild("Humanoid")
+                    if hum then
+                        hum:ChangeState(Enum.HumanoidStateType.Jumping)
+                    end
+                end)
+                InfiniteJump:Clean(jumpConn)
+
+                -- === TP DOWN LOGIC ===
+                local lastGroundTime = tick()
+                local tpUsed = false
+                local savedY
+
+                local rayParams = RaycastParams.new()
+                rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+                tpConn = RunService.Heartbeat:Connect(function()
+                    if not InfiniteJump.tpEnabled then return end
+
+                    local char = player.Character
+                    local hum = char and char:FindFirstChild("Humanoid")
+                    local root = char and char:FindFirstChild("HumanoidRootPart")
+                    if not hum or not root then return end
+
+                    rayParams.FilterDescendantsInstances = {char}
+
+                    local onGround = hum.FloorMaterial ~= Enum.Material.Air
+
+                    if onGround then
+                        lastGroundTime = tick()
+                        tpUsed = false
+                        savedY = nil
+                        return
+                    end
+
+                    local airTime = tick() - lastGroundTime
+                    if airTime < 2 or tpUsed then return end
+
+                    local ray = workspace:Raycast(
+                        root.Position,
+                        Vector3.new(0, -200, 0),
+                        rayParams
+                    )
+
+                    if not ray then return end
+
+                    -- === TP DOWN ===
+                    tpUsed = true
+                    savedY = root.Position.Y
+
+                    local vel = root.AssemblyLinearVelocity
+
+                    -- Prevent ground correction
+                    hum:ChangeState(Enum.HumanoidStateType.Physics)
+
+                    root.CFrame = CFrame.new(
+                        root.Position.X,
+                        ray.Position.Y + 2,
+                        root.Position.Z
+                    )
+
+                    root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z)
+
+                    -- === TP BACK UP AFTER 0.11s ===
+                    task.delay(0.11, function()
+                        if root and hum then
+                            root.CFrame = CFrame.new(
+                                root.Position.X,
+                                savedY + 0.35,
+                                root.Position.Z
+                            )
+
+                            root.AssemblyLinearVelocity = Vector3.new(
+                                vel.X,
+                                0,
+                                vel.Z
+                            )
+
+                            hum:ChangeState(Enum.HumanoidStateType.Freefall)
+                        end
+                    end)
+                end)
+
+                InfiniteJump:Clean(tpConn)
+
+            else
+                if jumpConn then jumpConn:Disconnect() end
+                if tpConn then tpConn:Disconnect() end
+            end
+        end
+    })
+
+    -- === TP DOWN TOGGLE ===
+    InfiniteJump.tpEnabled = false
+
+    InfiniteJump:CreateToggle({
+        Name = "TP Down",
+        Default = false,
+        Tooltip = "Teleport down after 2s in air",
+        Function = function(val)
+            InfiniteJump.tpEnabled = val
+        end
+    })
+end)
+	
 run(function()
 	local ChatSpammer
 	local Lines
@@ -4491,145 +4594,108 @@ run(function()
 	})
 end)
 run(function()
-	local StaffDetector
-	local Mode
-	local Profile
-	local Users
-	local Group
-	local Role
-	
-	local function getRole(plr, id)
-		local suc, res
-		for _ = 1, 3 do
-			suc, res = pcall(function()
-				return plr:GetRankInGroup(id)
-			end)
-			if suc then break end
-		end
-		return suc and res or 0
-	end
-	
-	local function getLowestStaffRole(roles)
-		local highest = math.huge
-		for _, v in roles do
-			local low = v.Name:lower()
-			if (low:find('admin') or low:find('mod') or low:find('dev')) and v.Rank < highest then
-				highest = v.Rank
-			end
-		end
-		return highest
-	end
-	
-	local function playerAdded(plr)
-		if not vape.Loaded then
-			repeat task.wait() until vape.Loaded
-		end
-	
-		local user = table.find(Users.ListEnabled, tostring(plr.UserId))
-		if user or getRole(plr, tonumber(Group.Value) or 0) >= (tonumber(Role.Value) or 1) then
-			notif('StaffDetector', 'Staff Detected ('..(user and 'blacklisted_user' or 'staff_role')..'): '..plr.Name, 60, 'alert')
-			whitelist.customtags[plr.Name] = {{text = 'GAME STAFF', color = Color3.new(1, 0, 0)}}
-	
-			if Mode.Value == 'Uninject' then
-				task.spawn(function()
-					vape:Uninject()
-				end)
-				game:GetService('StarterGui'):SetCore('SendNotification', {
-					Title = 'StaffDetector',
-					Text = 'Staff Detected\n'..plr.Name,
-					Duration = 60,
-				})
-			elseif Mode.Value == 'ServerHop' then
-				serverHop()
-			elseif Mode.Value == 'Profile' then
-				vape.Save = function() end
-				if vape.Profile ~= Profile.Value then
-					vape.Profile = Profile.Value
-					vape:Load(true, Profile.Value)
-				end
-			elseif Mode.Value == 'AutoConfig' then
-				vape.Save = function() end
-				for _, v in vape.Modules do
-					if v.Enabled then
-						v:Toggle()
-					end
-				end
-			end
-		end
-	end
-	
-	StaffDetector = vape.Categories.Utility:CreateModule({
-		Name = 'StaffDetector',
-		Function = function(callback)
-			if callback then
-				if Group.Value == '' or Role.Value == '' then
-					local placeinfo = {Creator = {CreatorTargetId = tonumber(Group.Value)}}
-					if Group.Value == '' then
-						placeinfo = marketplaceService:GetProductInfo(game.PlaceId)
-						if placeinfo.Creator.CreatorType ~= 'Group' then
-							local desc = placeinfo.Description:split('\n')
-							for _, str in desc do
-								local _, begin = str:find('roblox.com/groups/')
-								if begin then
-									local endof = str:find('/', begin + 1)
-									placeinfo = {Creator = {
-										CreatorType = 'Group',
-										CreatorTargetId = str:sub(begin + 1, endof - 1)
-									}}
-								end
-							end
-						end
-	
-						if placeinfo.Creator.CreatorType ~= 'Group' then
-							notif('StaffDetector', 'Automatic Setup Failed (no group detected)', 60, 'warning')
-							return
-						end
-					end
-	
-					local groupinfo = groupService:GetGroupInfoAsync(placeinfo.Creator.CreatorTargetId)
-					Group:SetValue(placeinfo.Creator.CreatorTargetId)
-					Role:SetValue(getLowestStaffRole(groupinfo.Roles))
-				end
-	
-				if Group.Value == '' or Role.Value == '' then
-					return
-				end
-	
-				StaffDetector:Clean(playersService.PlayerAdded:Connect(playerAdded))
-				for _, v in playersService:GetPlayers() do
-					task.spawn(playerAdded, v)
-				end
-			end
-		end,
-		Tooltip = 'Detects people with a staff rank ingame'
-	})
-	Mode = StaffDetector:CreateDropdown({
-		Name = 'Mode',
-		List = {'Uninject', 'ServerHop', 'Profile', 'AutoConfig', 'Notify'},
-		Function = function(val)
-			if Profile.Object then
-				Profile.Object.Visible = val == 'Profile'
-			end
-		end
-	})
-	Profile = StaffDetector:CreateTextBox({
-		Name = 'Profile',
-		Default = 'default',
-		Darker = true,
-		Visible = false
-	})
-	Users = StaffDetector:CreateTextList({
-		Name = 'Users',
-		Placeholder = 'player (userid)'
-	})
-	Group = StaffDetector:CreateTextBox({
-		Name = 'Group',
-		Placeholder = 'Group Id'
-	})
-	Role = StaffDetector:CreateTextBox({
-		Name = 'Role',
-		Placeholder = 'Role Rank'
-	})
+    local AntiBan
+    local Action
+    local Detection
+
+    AntiBan = vape.Categories.Utility:CreateModule({
+        Name = 'AntiBan',
+        Function = function(callback)
+            if callback then
+                local staffDetectionConnection
+                
+                if Detection.Value == 'Impossible Join' then
+                    local function checkStaffRank(player)
+                        local success, result = pcall(function()
+                            -- Check if player is in staff group (Voxella staff group ID: 5774246)
+                            return player:IsInGroup(5774246) and player:GetRankInGroup(5774246) >= 2
+                        end)
+                        
+                        if success and result then
+                            notif('AntiBan', player.Name .. ' (Rank ' .. player:GetRankInGroup(5774246) .. ') joined', 5, 'alert')
+                            
+                            if Action.Value == 'Crash' then 
+                                -- Freeze the game
+                                local crashThread = task.spawn(function()
+                                    while true do
+                                        -- Create memory pressure
+                                        local table = {}
+                                        for i = 1, 1000000 do
+                                            table[i] = math.random()
+                                        end
+                                    end
+                                end)
+                                
+                                -- Wait and then cancel to avoid infinite loop
+                                task.wait(1)
+                                if crashThread then
+                                    task.cancel(crashThread)
+                                end
+                                
+                            elseif Action.Value == 'Uninject' then 
+                                -- Attempt to uninject vape
+                                notif('AntiBan', 'Uninjecting...', 3, 'warning')
+                                task.wait(1)
+                                -- This would normally call vape's self-destruct
+                                if vape and vape.SelfDestruct then
+                                    vape:SelfDestruct()
+                                end
+                                
+                            elseif Action.Value == 'Leave' then 
+                                -- Leave the game
+                                notif('AntiBan', 'Leaving game...', 3, 'warning')
+                                task.wait(1)
+                                lplr:Kick('Staff detected')
+                            end
+                        end
+                    end
+                    
+                    -- Check existing players
+                    for _, player in pairs(playersService:GetPlayers()) do
+                        if player ~= lplr then
+                            task.spawn(checkStaffRank, player)
+                        end
+                    end
+                    
+                    -- Connect to new players
+                    staffDetectionConnection = playersService.PlayerAdded:Connect(checkStaffRank)
+                    
+                    -- Store connection for cleanup
+                    AntiBan:Clean(staffDetectionConnection)
+                    
+                    notif('AntiBan', 'Staff detection active', 3)
+                end
+                
+                -- Cleanup function
+                AntiBan:Clean(function()
+                    if staffDetectionConnection then
+                        staffDetectionConnection:Disconnect()
+                        staffDetectionConnection = nil
+                    end
+                end)
+                
+            else
+                notif('AntiBan', 'Staff detection disabled', 3)
+            end
+        end,
+        Tooltip = 'Detects staff joins and takes action'
+    })
+    
+    Action = AntiBan:CreateDropdown({
+        Name = 'Action',
+        List = {'Uninject', 'Leave', 'Crash'},
+        Function = function(val)
+            -- Action selection only
+        end
+    })
+    
+    Detection = AntiBan:CreateDropdown({
+        Name = 'Detection Mode',
+        List = {'Impossible Join'},
+        Function = function(val)
+            -- Detection mode selection only
+        end
+    })
 end)
 	
 run(function()
@@ -5519,7 +5585,116 @@ run(function()
 		end;
 	end;
 end)
-	
+run(function()
+    local OutlineEffect
+    local OutlineColor
+    local outline = Instance.new('Highlight')
+    local outlineTask
+    
+    outline.FillTransparency = 1
+    outline.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    outline.OutlineTransparency = 0
+    outline.Parent = vape.gui
+
+    local function createOutline()
+        if outlineTask then
+            task.cancel(outlineTask)
+            outlineTask = nil
+        end
+        
+        if not entitylib.isAlive then
+            outline.Adornee = nil
+            return
+        end
+        
+        local character = lplr.Character
+        if not character then
+            outline.Adornee = nil
+            return
+        end
+        
+        -- Remove any existing highlights on character
+        local existingHighlight = character:FindFirstChildOfClass('Highlight')
+        if existingHighlight then
+            existingHighlight.Adornee = nil
+            existingHighlight:Destroy()
+        end
+        
+        -- Apply our highlight
+        outline.Adornee = character
+        
+        -- Create task to maintain highlight
+        outlineTask = task.spawn(function()
+            while OutlineEffect.Enabled and entitylib.isAlive do
+                -- Re-apply highlight periodically to ensure it stays
+                outline.Adornee = nil
+                task.wait(0.1)
+                outline.Adornee = character
+                
+                -- Wait before next check
+                task.wait(0.5)
+            end
+        end)
+    end
+
+    OutlineEffect = vape.Categories.Render:CreateModule({
+        Name = 'OutlineEffect',
+        Function = function(callback)
+            if callback then
+                createOutline()
+                
+                -- Recreate outline when character changes
+                OutlineEffect:Clean(lplr.CharacterAdded:Connect(function(character)
+                    task.wait(0.5) -- Wait for character to fully load
+                    if OutlineEffect.Enabled then
+                        createOutline()
+                    end
+                end))
+                
+                -- Cleanup task when character parts change
+                OutlineEffect:Clean(lplr.CharacterRemoving:Connect(function()
+                    if outlineTask then
+                        task.cancel(outlineTask)
+                        outlineTask = nil
+                    end
+                    outline.Adornee = nil
+                end))
+                
+                -- Update color when color slider changes
+                if OutlineColor then
+                    outline.OutlineColor = Color3.fromHSV(OutlineColor.Hue, OutlineColor.Sat, OutlineColor.Value)
+                end
+                
+                -- Cleanup function
+                OutlineEffect:Clean(function()
+                    if outlineTask then
+                        task.cancel(outlineTask)
+                        outlineTask = nil
+                    end
+                    outline.Adornee = nil
+                end)
+                
+            else
+                if outlineTask then
+                    task.cancel(outlineTask)
+                    outlineTask = nil
+                end
+                outline.Adornee = nil
+            end
+        end,
+        Tooltip = 'Adds an outline to your character'
+    })
+
+    OutlineColor = OutlineEffect:CreateColorSlider({
+        Name = 'Color',
+        Function = function(h, s, v)
+            outline.OutlineColor = Color3.fromHSV(h, s, v)
+        end,
+        DefaultHue = 0, -- White color
+        DefaultSat = 0,
+        DefaultValue = 1
+    })
+end)
 run(function()
 	local Breadcrumbs
 	local Texture
@@ -5974,40 +6149,6 @@ run(function()
 	})
 end)
 run(function()
-    local damageboost = nil
-    local damageboostduration = nil
-    local damageboostmultiplier = nil
-    damageboost = vape.Categories.Blatant:CreateModule({
-        Name = 'Damage Boost',
-        Tooltip = 'Makes you go faster whenever you take knockback.',
-        Function = function(callback)
-            if callback then
-                damageboost:Clean(vapeEvents.EntityDamageEvent.Event:Connect(function(damageTable)
-                    local player = damageTable.entityInstance and playersService:GetPlayerFromCharacter(damageTable.entityInstance)
-                    if player and player == lplr and (damageTable.knockbackMultiplier and damageTable.knockbackMultiplier.horizontal and damageTable.knockbackMultiplier.horizontal > 0 or playersService:GetPlayerFromCharacter(damageTable.fromEntity) ~= nil) and not vape.Modules['Long Jump'].Enabled then
-                        damagedata.Multi = damageboostmultiplier.Value --+ (damageTable.knockbackMultiplier.horizontal / 2)
-                        damagedata.lastHit = tick() + damageboostduration.Value
-                    end
-                end))
-            end
-        end
-    })
-    damageboostduration = damageboost:CreateSlider({
-        Name = 'Duration',
-        Min = 0,
-        Max = 2,
-        Decimal = 20,
-        Default = 0.4,
-    })
-    damageboostmultiplier = damageboost:CreateSlider({
-        Name = 'Multiplier',
-        Min = 0,
-        Max = 2,
-        Decimal = 20,
-        Default = 1.4,
-    })
-end)
-run(function()
 	local FOV
 	local Value
 	local oldfov
@@ -6030,7 +6171,7 @@ run(function()
 	Value = FOV:CreateSlider({
 		Name = 'FOV',
 		Min = 30,
-		Max = 120
+		Max = 160
 	})
 end)
 	
@@ -6403,32 +6544,5 @@ run(function()
         end,
         Default = false,
         Tooltip = ""
-    })
-end)
-run(function()
-    local conn
-
-    PixelSword = vape.Categories.Utility:CreateModule({
-        Name = "PixelSword",
-        Function = function(callback)
-            if callback then
-                conn = workspace.CurrentCamera.Viewmodel.ChildAdded:Connect(function(x)
-                    if x and x:FindFirstChild("Handle") then
-                        if string.find(x.Name:lower(), 'sword') then
-                            x.Handle.Material = Enum.Material.ForceField
-                            x.Handle.MeshId = "rbxassetid://13471207377"
-                            x.Handle.BrickColor = BrickColor.new("Hot pink")
-                        end
-                    end
-                end)
-            else
-                if conn then
-                    conn:Disconnect()
-                    conn = nil
-                end
-            end
-        end,
-        Default = false,
-        Tooltip = "Customizes Your Swords"
     })
 end)
