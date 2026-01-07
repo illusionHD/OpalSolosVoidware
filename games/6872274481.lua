@@ -13,6 +13,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -2925,23 +2926,19 @@ run(function()
 		Default = 0,
 		Decimal = 100
 	})
-	
 	AngleSlider = Killaura:CreateSlider({
 		Name = 'Max angle',
 		Min = 1,
 		Max = 360,
 		Default = 360
 	})
-	
 	OneTapCooldown = Killaura:CreateSlider({
 		Name = "OneTap Cooldown",
 		Function = function() end,
 		Min = 0,
 		Max = 0.1,
 		Default = 0.1
-		Decimal = 100
 	})
-	
 	UpdateRate = Killaura:CreateSlider({
 		Name = 'Update rate',
 		Min = 60,
@@ -2949,7 +2946,6 @@ run(function()
 		Default = 60,
 		Suffix = 'hz'
 	})
-	
 	MaxTargets = Killaura:CreateSlider({
 		Name = 'Max targets',
 		Min = 1,
