@@ -12,6 +12,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -2581,10 +2582,18 @@ run(function()
 	local Particles, Boxes = {}, {}
 	local anims, AnimDelay, AnimTween, armC0 = vape.Libraries.auraanims, tick()
 	local AttackRemote = {FireServer = function() end}
+	
+	-- NEW: Range Visualizer variables
+	local RangeVisualizer
+	local AimVisualizer
+	local RangeCirclePart
+	local AimCirclePart
+	local VisualizerColor = {Hue = 0.44, Sat = 1, Value = 1}
+	
 	task.spawn(function()
 		AttackRemote = bedwars.Client:Get(remotes.AttackEntity).instance
 	end)
-
+	
 	local function getAttackData()
 		if Mouse.Enabled then
 			if not inputService:IsMouseButtonPressed(0) then return false end
@@ -2607,6 +2616,47 @@ run(function()
 		end
 
 		return sword, meta
+	end
+	
+	-- NEW: Function to update range visualizer
+	local function updateRangeVisualizer()
+		if RangeCirclePart and entitylib.isAlive then
+			local root = entitylib.character.RootPart
+			if root then
+				RangeCirclePart.Position = root.Position - Vector3.new(0, entitylib.character.Humanoid.HipHeight, 0)
+				RangeCirclePart.Size = Vector3.new(SwingRange.Value * 0.7, 0.01, SwingRange.Value * 0.7)
+			end
+		end
+		
+		if AimCirclePart and entitylib.isAlive then
+			local root = entitylib.character.RootPart
+			if root then
+				local targetedEntity = store.KillauraTarget
+				if targetedEntity and targetedEntity.RootPart then
+					local function closestpos(block, pos)
+						local blockpos = block:GetRenderCFrame()
+						local startpos = (blockpos * CFrame.new(-(block.Size / 2))).Position
+						local endpos = (blockpos * CFrame.new((block.Size / 2))).Position
+						local newpos = block.Position + (pos - block.Position)
+						local x = startpos.X > endpos.X and endpos.X or startpos.X
+						local y = startpos.Y > endpos.Y and endpos.Y or startpos.Y
+						local z = startpos.Z > endpos.Z and endpos.Z or startpos.Z
+						local x2 = startpos.X < endpos.X and endpos.X or startpos.X
+						local y2 = startpos.Y < endpos.Y and endpos.Y or startpos.Y
+						local z2 = startpos.Z < endpos.Z and endpos.Z or startpos.Z
+						return Vector3.new(
+							math.clamp(newpos.X, x, x2),
+							math.clamp(newpos.Y, y, y2),
+							math.clamp(newpos.Z, z, z2)
+						)
+					end
+					
+					AimCirclePart.Position = closestpos(targetedEntity.RootPart, root.Position)
+				else
+					AimCirclePart.Position = Vector3.new(0, -1000, 0) -- Hide when no target
+				end
+			end
+		end
 	end
 
 	Killaura = vape.Categories.Blatant:CreateModule({
@@ -2674,6 +2724,22 @@ run(function()
 						until (not Killaura.Enabled) or (not Animation.Enabled)
 					end)
 				end
+				
+				-- NEW: Set up range visualizer
+				if RangeVisualizer.Enabled then
+					RangeCirclePart.Parent = gameCamera
+					bedwars.QueryUtil:setQueryIgnored(RangeCirclePart, true)
+				end
+				
+				if AimVisualizer.Enabled then
+					AimCirclePart.Parent = gameCamera
+				end
+				
+				-- NEW: Add heartbeat connection for visualizers
+				local visualizerConnection
+				visualizerConnection = runService.Heartbeat:Connect(updateRangeVisualizer)
+				
+				Killaura:Clean(visualizerConnection)
 
 				local swingCooldown = 0
 				repeat
@@ -2772,7 +2838,6 @@ run(function()
 						entitylib.character.RootPart.CFrame = CFrame.lookAt(entitylib.character.RootPart.Position, Vector3.new(vec.X, entitylib.character.RootPart.Position.Y + 0.001, vec.Z))
 					end
 
-					--#attacked > 0 and #attacked * 0.02 or
 					task.wait(1 / UpdateRate.Value)
 				until not Killaura.Enabled
 			else
@@ -2783,6 +2848,15 @@ run(function()
 				for _, v in Particles do
 					v.Parent = nil
 				end
+				
+				-- NEW: Clean up visualizers
+				if RangeCirclePart then
+					RangeCirclePart.Parent = nil
+				end
+				if AimCirclePart then
+					AimCirclePart.Parent = nil
+				end
+				
 				if inputService.TouchEnabled then
 					pcall(function()
 						lplr.PlayerGui.MobileUI['2'].Visible = true
@@ -2801,16 +2875,24 @@ run(function()
 		end,
 		Tooltip = 'Attack players around you\nwithout aiming at them.'
 	})
+	
 	Targets = Killaura:CreateTargets({
 		Players = true,
 		NPCs = true
 	})
+	
 	local methods = {'Damage', 'Distance'}
 	for i in sortmethods do
 		if not table.find(methods, i) then
 			table.insert(methods, i)
 		end
 	end
+	
+	Sort = Killaura:CreateDropdown({
+		Name = 'Target Mode',
+		List = methods
+	})
+	
 	SwingRange = Killaura:CreateSlider({
 		Name = 'Swing range',
 		Min = 16,
@@ -2818,8 +2900,14 @@ run(function()
 		Default = 18,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
+		end,
+		Function = function(val)
+			if RangeCirclePart then
+				RangeCirclePart.Size = Vector3.new(val * 0.7, 0.01, val * 0.7)
+			end
 		end
 	})
+	
 	AttackRange = Killaura:CreateSlider({
 		Name = 'Attack range',
 		Min = 15,
@@ -2829,6 +2917,7 @@ run(function()
 			return val == 1 and 'stud' or 'studs'
 		end
 	})
+	
 	ChargeTime = Killaura:CreateSlider({
 		Name = 'Swing time',
 		Min = 0,
@@ -2836,19 +2925,23 @@ run(function()
 		Default = 0,
 		Decimal = 100
 	})
+	
 	AngleSlider = Killaura:CreateSlider({
 		Name = 'Max angle',
 		Min = 1,
 		Max = 360,
 		Default = 360
 	})
+	
 	OneTapCooldown = Killaura:CreateSlider({
 		Name = "OneTap Cooldown",
 		Function = function() end,
 		Min = 0,
 		Max = 0.1,
 		Default = 0.1
+		Decimal = 100
 	})
+	
 	UpdateRate = Killaura:CreateSlider({
 		Name = 'Update rate',
 		Min = 60,
@@ -2856,19 +2949,18 @@ run(function()
 		Default = 60,
 		Suffix = 'hz'
 	})
+	
 	MaxTargets = Killaura:CreateSlider({
 		Name = 'Max targets',
 		Min = 1,
 		Max = 3,
 		Default = 1
 	})
-	Sort = Killaura:CreateDropdown({
-		Name = 'Target Mode',
-		List = methods
-	})
+	
 	Mouse = Killaura:CreateToggle({Name = 'Require mouse down'})
 	Swing = Killaura:CreateToggle({Name = 'No Swing'})
 	GUI = Killaura:CreateToggle({Name = 'GUI check'})
+	
 	Killaura:CreateToggle({
 		Name = 'Show target',
 		Function = function(callback)
@@ -2898,7 +2990,18 @@ run(function()
 		Darker = true,
 		DefaultHue = 0.6,
 		DefaultOpacity = 0.5,
-		Visible = false
+		Visible = false,
+		Function = function(h, s, v, o)
+			VisualizerColor.Hue = h
+			VisualizerColor.Sat = s
+			VisualizerColor.Value = v
+			if RangeCirclePart then
+				RangeCirclePart.Color = Color3.fromHSV(h, s, v)
+			end
+			if AimCirclePart then
+				AimCirclePart.Color = Color3.fromHSV(h, s, v)
+			end
+		end
 	})
 	BoxAttackColor = Killaura:CreateColorSlider({
 		Name = 'Attack Color',
@@ -2906,6 +3009,51 @@ run(function()
 		DefaultOpacity = 0.5,
 		Visible = false
 	})
+	RangeVisualizer = Killaura:CreateToggle({
+		Name = 'Range Visualizer',
+		Function = function(callback)
+			if callback then
+				RangeCirclePart = Instance.new("MeshPart")
+				RangeCirclePart.MeshId = "rbxassetid://3726303797"
+				RangeCirclePart.Color = Color3.fromHSV(VisualizerColor.Hue, VisualizerColor.Sat, VisualizerColor.Value)
+				RangeCirclePart.CanCollide = false
+				RangeCirclePart.Anchored = true
+				RangeCirclePart.Material = Enum.Material.Neon
+				RangeCirclePart.Size = Vector3.new(SwingRange.Value * 0.7, 0.01, SwingRange.Value * 0.7)
+				RangeCirclePart.Transparency = 0.5
+				RangeCirclePart.Parent = Killaura.Enabled and gameCamera or nil
+			else
+				if RangeCirclePart then
+					RangeCirclePart:Destroy()
+					RangeCirclePart = nil
+				end
+			end
+		end
+	})
+	
+	-- NEW: Aim Visualizer toggle
+	AimVisualizer = Killaura:CreateToggle({
+		Name = 'Aim Visualizer',
+		Function = function(callback)
+			if callback then
+				AimCirclePart = Instance.new("Part")
+				AimCirclePart.Shape = Enum.PartType.Ball
+				AimCirclePart.Color = Color3.fromHSV(VisualizerColor.Hue, VisualizerColor.Sat, VisualizerColor.Value)
+				AimCirclePart.CanCollide = false
+				AimCirclePart.Anchored = true
+				AimCirclePart.Material = Enum.Material.Neon
+				AimCirclePart.Size = Vector3.new(0.5, 0.5, 0.5)
+				AimCirclePart.Transparency = 0.5
+				AimCirclePart.Parent = Killaura.Enabled and gameCamera or nil
+			else
+				if AimCirclePart then
+					AimCirclePart:Destroy()
+					AimCirclePart = nil
+				end
+			end
+		end
+	})
+	
 	Killaura:CreateToggle({
 		Name = 'Target particles',
 		Function = function(callback)
@@ -2948,6 +3096,7 @@ run(function()
 			end
 		end
 	})
+	
 	ParticleTexture = Killaura:CreateTextBox({
 		Name = 'Texture',
 		Default = 'rbxassetid://14736249347',
@@ -2959,6 +3108,7 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 	ParticleColor1 = Killaura:CreateColorSlider({
 		Name = 'Color Begin',
 		Function = function(hue, sat, val)
@@ -2972,6 +3122,7 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 	ParticleColor2 = Killaura:CreateColorSlider({
 		Name = 'Color End',
 		Function = function(hue, sat, val)
@@ -2985,6 +3136,7 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 	ParticleSize = Killaura:CreateSlider({
 		Name = 'Size',
 		Min = 0,
@@ -2999,7 +3151,9 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 	Face = Killaura:CreateToggle({Name = 'Face target'})
+	
 	Animation = Killaura:CreateToggle({
 		Name = 'Custom Animation',
 		Function = function(callback)
@@ -3012,16 +3166,19 @@ run(function()
 			end
 		end
 	})
+	
 	local animnames = {}
 	for i in anims do
 		table.insert(animnames, i)
 	end
+	
 	AnimationMode = Killaura:CreateDropdown({
 		Name = 'Animation Mode',
 		List = animnames,
 		Darker = true,
 		Visible = false
 	})
+	
 	AnimationSpeed = Killaura:CreateSlider({
 		Name = 'Animation Speed',
 		Min = 0.5,
@@ -3031,11 +3188,13 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 	AnimationTween = Killaura:CreateToggle({
 		Name = 'No Tween',
 		Darker = true,
 		Visible = false
 	})
+	
 	Limit = Killaura:CreateToggle({
 		Name = 'Limit to items',
 		Function = function(callback)
@@ -3047,6 +3206,7 @@ run(function()
 		end,
 		Tooltip = 'Only attacks when the sword is held'
 	})
+	
 	LegitAura = Killaura:CreateToggle({
 		Name = 'Swing only',
 		Tooltip = 'Only attacks while swinging manually'
@@ -6827,109 +6987,387 @@ run(function()
 	})
 end)
 	
-run(function()
-	local Viewmodel
-	local Depth
-	local Horizontal
-	local Vertical
-	local NoBob
-	local Rots = {}
-	local old, oldc1
-	
-	Viewmodel = vape.Legit:CreateModule({
-		Name = 'Viewmodel',
-		Function = function(callback)
-			local viewmodel = gameCamera:FindFirstChild('Viewmodel')
-			if callback then
-				old = bedwars.ViewmodelController.playAnimation
-				oldc1 = viewmodel and viewmodel.RightHand.RightWrist.C1 or CFrame.identity
-				if NoBob.Enabled then
-					bedwars.ViewmodelController.playAnimation = function(self, animtype, ...)
-						if bedwars.AnimationType and animtype == bedwars.AnimationType.FP_WALK then return end
-						return old(self, animtype, ...)
-					end
-				end
-	
-				bedwars.InventoryViewmodelController:handleStore(bedwars.Store:getState())
-				if viewmodel then
-					gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldc1 * CFrame.Angles(math.rad(Rots[1].Value), math.rad(Rots[2].Value), math.rad(Rots[3].Value))
-				end
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -Depth.Value)
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', Horizontal.Value)
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', Vertical.Value)
-			else
-				bedwars.ViewmodelController.playAnimation = old
-				if viewmodel then
-					viewmodel.RightHand.RightWrist.C1 = oldc1
-				end
-	
-				bedwars.InventoryViewmodelController:handleStore(bedwars.Store:getState())
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', 0)
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', 0)
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', 0)
-				old = nil
-			end
-		end,
-		Tooltip = 'Changes the viewmodel animations'
-	})
-	Depth = Viewmodel:CreateSlider({
-		Name = 'Depth',
-		Min = 0,
-		Max = 2,
-		Default = 0.8,
-		Decimal = 10,
-		Function = function(val)
-			if Viewmodel.Enabled then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -val)
-			end
-		end
-	})
-	Horizontal = Viewmodel:CreateSlider({
-		Name = 'Horizontal',
-		Min = 0,
-		Max = 2,
-		Default = 0.8,
-		Decimal = 10,
-		Function = function(val)
-			if Viewmodel.Enabled then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', val)
-			end
-		end
-	})
-	Vertical = Viewmodel:CreateSlider({
-		Name = 'Vertical',
-		Min = -0.2,
-		Max = 2,
-		Default = -0.2,
-		Decimal = 10,
-		Function = function(val)
-			if Viewmodel.Enabled then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', val)
-			end
-		end
-	})
-	for _, name in {'Rotation X', 'Rotation Y', 'Rotation Z'} do
-		table.insert(Rots, Viewmodel:CreateSlider({
-			Name = name,
-			Min = 0,
-			Max = 360,
-			Function = function(val)
-				if Viewmodel.Enabled then
-					gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldc1 * CFrame.Angles(math.rad(Rots[1].Value), math.rad(Rots[2].Value), math.rad(Rots[3].Value))
-				end
-			end
-		}))
-	end
-	NoBob = Viewmodel:CreateToggle({
-		Name = 'No Bobbing',
-		Default = true,
-		Function = function()
-			if Viewmodel.Enabled then
-				Viewmodel:Toggle()
-				Viewmodel:Toggle()
-			end
-		end
-	})
+run(function() 
+    local ViewmodelMods
+    local ViewmodelHighlight
+    local ViewmodelThird
+    local ViewmodelTransparency
+    local ViewmodelColor
+    local ViewmodelAttributes
+    local ViewmodelNoBob
+    local nobobdepth
+    local nobobhorizontal
+    local nobobvertical
+    local rotationx
+    local rotationy
+    local rotationz
+    local scythestoswords
+
+    local viewmodelstuff = {}
+    local oldviewmodelanim
+    local oldviewmodelC1
+    
+    local function replace(item1, item2)
+        if not item1 or not item2 then return end
+        
+        local itemsFolder = replicatedStorage:FindFirstChild('Items')
+        if not itemsFolder then return end
+        
+        local i1 = itemsFolder:FindFirstChild(item1)
+        local i2 = itemsFolder:FindFirstChild(item2)
+        
+        if not i1 or not i2 then return end
+        
+        -- Clone the item and replace
+        i1.Archivable = true
+        local clone = i1:Clone()
+        clone.Name = i2.Name
+        clone.Parent = i2.Parent
+        i2:Destroy()
+    end
+
+    local updatefuncs = {
+        Normal = function(part, original) 
+            local highlight = original or Instance.new('Highlight')
+            highlight.FillColor = Color3.fromHSV(ViewmodelColor.Hue, ViewmodelColor.Sat, ViewmodelColor.Value)
+            highlight.FillTransparency = (ViewmodelTransparency.Value / 85)
+            highlight.OutlineTransparency = 1
+            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            highlight.Parent = part
+            table.insert(viewmodelstuff, highlight)
+            part.TextureID = ''
+        end,
+        Classic = function(part)
+            part.TextureID = ''
+            part.Color = Color3.fromHSV(ViewmodelColor.Hue, ViewmodelColor.Sat, ViewmodelColor.Value)
+        end
+    }
+
+    local function viewmodelFunction(handle)
+        local success, viewmodelHandle = pcall(function()
+            if handle and handle:IsA('Part') then
+                return handle
+            end
+            local viewmodel = gameCamera:FindFirstChild('Viewmodel')
+            if viewmodel then
+                return viewmodel:FindFirstChildWhichIsA('Accessory') and viewmodel:FindFirstChildWhichIsA('Accessory').Handle
+            end
+            return nil
+        end)
+        
+        if success and viewmodelHandle then 
+            updatefuncs[ViewmodelHighlight.Value](viewmodelHandle, viewmodelHandle:FindFirstChildWhichIsA('Highlight'))
+        end
+        
+        -- Third person view
+        if ViewmodelThird.Enabled and ViewmodelHighlight.Value == 'Classic' then
+            local success2, thirdPersonHandle = pcall(function()
+                for _, v in next, lplr.Character:GetChildren() do 
+                    if v:IsA('Accessory') and v.Name == viewmodelHandle.Parent.Name and v:GetAttribute('InvItem') then 
+                        return v.Handle
+                    end
+                end
+                return nil
+            end)
+            
+            if success2 and thirdPersonHandle then 
+                updatefuncs[ViewmodelHighlight.Value](thirdPersonHandle, thirdPersonHandle:FindFirstChildWhichIsA('Highlight'))
+            end
+        end
+    end
+
+    ViewmodelMods = vape.Categories.Render:CreateModule({
+        Name = 'ViewModelMods',
+        Function = function(callback)
+            if callback then 
+                local viewmodel = gameCamera:WaitForChild('Viewmodel')
+                
+                -- Initial application
+                viewmodelFunction()
+                
+                -- Update when new items are added to viewmodel
+                ViewmodelMods:Clean(viewmodel.ChildAdded:Connect(function(child)
+                    task.wait(0.1) -- Wait for handle to load
+                    viewmodelFunction()
+                end))
+                
+                -- Hook viewmodel animations to disable bobbing
+                oldviewmodelanim = bedwars.ViewmodelController.playAnimation 
+                bedwars.ViewmodelController.playAnimation = function(self, animid, details)
+                    if animid == bedwars.AnimationType.FP_WALK and ViewmodelAttributes.Enabled and ViewmodelNoBob.Enabled then 
+                        return -- Skip walk animation when no bobbing is enabled
+                    end 
+                    return oldviewmodelanim(self, animid, details)
+                end
+                
+                -- Apply viewmodel offsets if attributes enabled
+                if ViewmodelAttributes.Enabled then 
+                    local controller = lplr.PlayerScripts.TS.controllers.global.viewmodel:FindFirstChild('viewmodel-controller')
+                    if controller then
+                        controller:SetAttribute('ConstantManager_DEPTH_OFFSET', -(nobobdepth.Value / 10))
+                        controller:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', (nobobhorizontal.Value / 10))
+                        controller:SetAttribute('ConstantManager_VERTICAL_OFFSET', (nobobvertical.Value / 10))
+                    end
+                    
+                    -- Store original wrist C1
+                    pcall(function() 
+                        oldviewmodelC1 = viewmodel.RightHand.RightWrist.C1 
+                    end)
+                end
+                
+                -- Cleanup function
+                ViewmodelMods:Clean(function()
+                    if oldviewmodelanim then 
+                        bedwars.ViewmodelController.playAnimation = oldviewmodelanim 
+                        oldviewmodelanim = nil
+                    end
+                    
+                    if oldviewmodelC1 then 
+                        pcall(function() 
+                            gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldviewmodelC1 
+                        end)
+                        oldviewmodelC1 = nil
+                    end
+                    
+                    -- Reset attributes
+                    local controller = lplr.PlayerScripts.TS.controllers.global.viewmodel:FindFirstChild('viewmodel-controller')
+                    if controller then
+                        controller:SetAttribute('ConstantManager_DEPTH_OFFSET', 0)
+                        controller:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', 0)
+                        controller:SetAttribute('ConstantManager_VERTICAL_OFFSET', 0)
+                    end
+                    
+                    -- Cleanup highlights
+                    for _, v in next, viewmodelstuff do 
+                        pcall(function() v:Destroy() end) 
+                    end
+                    table.clear(viewmodelstuff)
+                end)
+            else
+                -- Cleanup on disable
+                if oldviewmodelanim then 
+                    bedwars.ViewmodelController.playAnimation = oldviewmodelanim 
+                    oldviewmodelanim = nil
+                end
+                
+                if oldviewmodelC1 then 
+                    pcall(function() 
+                        gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldviewmodelC1 
+                    end)
+                    oldviewmodelC1 = nil
+                end
+                
+                -- Reset attributes
+                local controller = lplr.PlayerScripts.TS.controllers.global.viewmodel:FindFirstChild('viewmodel-controller')
+                if controller then
+                    controller:SetAttribute('ConstantManager_DEPTH_OFFSET', 0)
+                    controller:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', 0)
+                    controller:SetAttribute('ConstantManager_VERTICAL_OFFSET', 0)
+                end
+                
+                -- Cleanup highlights
+                for _, v in next, viewmodelstuff do 
+                    pcall(function() v:Destroy() end) 
+                end
+                table.clear(viewmodelstuff)
+            end
+        end,
+        Tooltip = 'Customize the first person viewmodel experience'
+    })
+
+    ViewmodelHighlight = ViewmodelMods:CreateDropdown({
+        Name = 'Mode',
+        List = {'Normal', 'Classic'},
+        Function = function(value)
+            ViewmodelThird.Object.Visible = (value ~= 'Normal')
+            ViewmodelTransparency.Object.Visible = (value ~= 'Classic')
+            
+            -- Refresh viewmodel if enabled
+            if ViewmodelMods.Enabled then 
+                ViewmodelMods:Toggle()
+                ViewmodelMods:Toggle()
+            end
+        end
+    })
+
+    ViewmodelColor = ViewmodelMods:CreateColorSlider({
+        Name = 'Color',
+        Function = function(h, s, v)
+            if ViewmodelMods.Enabled then
+               viewmodelFunction() 
+            end
+        end
+    })
+
+    ViewmodelTransparency = ViewmodelMods:CreateSlider({
+        Name = 'Transparency',
+        Min = 0, 
+        Max = 85, 
+        Default = 15,
+        Function = function(val)
+            if ViewmodelMods.Enabled then
+                viewmodelFunction() 
+            end 
+        end
+    })
+
+    ViewmodelThird = ViewmodelMods:CreateToggle({
+        Name = 'Third Person',
+        Default = true,
+        Tooltip = 'Also changes the tool in third person',
+        Function = function(callback)
+            if ViewmodelMods.Enabled then
+                viewmodelFunction() 
+            end
+        end
+    })
+
+    ViewmodelAttributes = ViewmodelMods:CreateToggle({
+        Name = 'Attributes',
+        Tooltip = 'Size & Rotations for viewmodel',
+        Function = function(callback)
+            ViewmodelNoBob.Object.Visible = callback
+            nobobdepth.Object.Visible = callback
+            nobobhorizontal.Object.Visible = callback
+            nobobvertical.Object.Visible = callback
+            rotationx.Object.Visible = callback
+            rotationy.Object.Visible = callback
+            rotationz.Object.Visible = callback
+            
+            if ViewmodelMods.Enabled then 
+                ViewmodelMods:Toggle()
+                ViewmodelMods:Toggle()
+            end
+        end
+    })
+
+    ViewmodelNoBob = ViewmodelMods:CreateToggle({
+        Name = 'No Bobbing',
+        Tooltip = 'No ugly bobbing animation',
+        Function = function(callback)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled then 
+                ViewmodelMods:Toggle()
+                ViewmodelMods:Toggle()
+            end
+        end
+    })
+
+    nobobdepth = ViewmodelMods:CreateSlider({
+        Name = 'Depth Offset',
+        Min = 0,
+        Max = 24,
+        Default = 8,
+        Function = function(val)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled then
+                local controller = lplr.PlayerScripts.TS.controllers.global.viewmodel:FindFirstChild('viewmodel-controller')
+                if controller then
+                    controller:SetAttribute('ConstantManager_DEPTH_OFFSET', -(val / 10))
+                end
+            end
+        end
+    })
+
+    nobobhorizontal = ViewmodelMods:CreateSlider({
+        Name = 'Horizontal Offset',
+        Min = 0,
+        Max = 24,
+        Default = 8,
+        Function = function(val)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled then
+                local controller = lplr.PlayerScripts.TS.controllers.global.viewmodel:FindFirstChild('viewmodel-controller')
+                if controller then
+                    controller:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', (val / 10))
+                end
+            end
+        end
+    })
+
+    nobobvertical = ViewmodelMods:CreateSlider({
+        Name = 'Vertical Offset',
+        Min = 0,
+        Max = 24,
+        Default = -2,
+        Function = function(val)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled then
+                local controller = lplr.PlayerScripts.TS.controllers.global.viewmodel:FindFirstChild('viewmodel-controller')
+                if controller then
+                    controller:SetAttribute('ConstantManager_VERTICAL_OFFSET', (val / 10))
+                end
+            end
+        end
+    })
+
+    rotationx = ViewmodelMods:CreateSlider({
+        Name = 'Rotation X',
+        Min = 0,
+        Max = 360,
+        Default = 0,
+        Function = function(val)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled and oldviewmodelC1 then
+                gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldviewmodelC1 * CFrame.Angles(
+                    math.rad(rotationx.Value), 
+                    math.rad(rotationy.Value), 
+                    math.rad(rotationz.Value)
+                )
+            end
+        end
+    })
+
+    rotationy = ViewmodelMods:CreateSlider({
+        Name = 'Rotation Y',
+        Min = 0,
+        Max = 360,
+        Default = 0,
+        Function = function(val)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled and oldviewmodelC1 then
+                gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldviewmodelC1 * CFrame.Angles(
+                    math.rad(rotationx.Value), 
+                    math.rad(rotationy.Value), 
+                    math.rad(rotationz.Value)
+                )
+            end
+        end
+    })
+
+    rotationz = ViewmodelMods:CreateSlider({
+        Name = 'Rotation Z',
+        Min = 0,
+        Max = 360,
+        Default = 0,
+        Function = function(val)
+            if ViewmodelMods.Enabled and ViewmodelAttributes.Enabled and oldviewmodelC1 then
+                gameCamera.Viewmodel.RightHand.RightWrist.C1 = oldviewmodelC1 * CFrame.Angles(
+                    math.rad(rotationx.Value), 
+                    math.rad(rotationy.Value), 
+                    math.rad(val)
+                )
+            end
+        end
+    })
+
+    scythestoswords = ViewmodelMods:CreateToggle({
+        Name = 'Scythe to Sword',
+        Function = function(callback)
+            if callback then
+                replace("wood_sword", "wood_scythe")
+                replace("stone_sword", "stone_scythe")
+                replace("iron_sword", "iron_scythe")
+                replace("diamond_sword", "diamond_scythe")
+                replace("emerald_sword", "mythic_scythe")
+                notif('ViewModelMods', 'Replaced scythe models with swords', 3)
+            end
+        end
+    })
+    
+    -- Hide dependent objects initially
+    ViewmodelTransparency.Object.Visible = false
+    ViewmodelNoBob.Object.Visible = false
+    nobobdepth.Object.Visible = false
+    nobobhorizontal.Object.Visible = false
+    nobobvertical.Object.Visible = false
+    rotationx.Object.Visible = false
+    rotationy.Object.Visible = false
+    rotationz.Object.Visible = false
 end)
 	
 run(function()
@@ -9803,7 +10241,163 @@ run(function()
 		Suffix = '%'
 	})
 end)
-	
+run(function()
+    local ConfigGUI
+    
+    ConfigGUI = vape.Categories.Exploits:CreateModule({
+        Name = 'Config GUI',
+        Function = function(callback)
+            if callback then
+                -- Create the config GUI frame
+                local frame = Instance.new("Frame")
+                frame.Name = "ConfigGUIFrame"
+                frame.Size = UDim2.new(0, 300, 0, 400)
+                frame.Position = UDim2.new(0.5, -150, 0.5, -200)
+                frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                frame.BorderSizePixel = 2
+                frame.BorderColor3 = Color3.fromRGB(60, 60, 60)
+                frame.Visible = true
+                frame.Parent = game:GetService("CoreGui")
+                
+                -- Title
+                local title = Instance.new("TextLabel")
+                title.Text = "Config Manager"
+                title.Size = UDim2.new(1, 0, 0, 30)
+                title.Position = UDim2.new(0, 0, 0, 0)
+                title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+                title.TextColor3 = Color3.new(1, 1, 1)
+                title.Font = Enum.Font.GothamBold
+                title.TextSize = 16
+                title.Parent = frame
+                
+                -- Close button
+                local closeBtn = Instance.new("TextButton")
+                closeBtn.Text = "×"
+                closeBtn.Size = UDim2.new(0, 30, 0, 30)
+                closeBtn.Position = UDim2.new(1, -30, 0, 0)
+                closeBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+                closeBtn.TextColor3 = Color3.new(1, 1, 1)
+                closeBtn.Font = Enum.Font.GothamBold
+                closeBtn.TextSize = 20
+                closeBtn.Parent = frame
+                
+                closeBtn.MouseButton1Click:Connect(function()
+                    frame:Destroy()
+                    ConfigGUI:Toggle()
+                end)
+                
+                -- Button list
+                local buttons = {
+                    {Name = "💾 Save Current Config", Function = function()
+                        if vape and vape.Save then
+                            vape:Save()
+                        end
+                    end},
+                    
+                    {Name = "📂 Load Default Config", Function = function()
+                        if vape and vape.LoadConfig then
+                            vape:LoadConfig("Default")
+                        end
+                    end},
+                    
+                    {Name = "⚡ Reset All Settings", Function = function()
+                        if vape and vape.ResetToDefaults then
+                            vape:ResetToDefaults()
+                        end
+                    end},
+                    
+                    {Name = "📁 Quick Save Slot 1", Function = function()
+                        if vape and vape.SaveConfig then
+                            vape:SaveConfig("QuickSlot1")
+                        end
+                    end},
+                    
+                    {Name = "📁 Quick Save Slot 2", Function = function()
+                        if vape and vape.SaveConfig then
+                            vape:SaveConfig("QuickSlot2")
+                        end
+                    end},
+                    
+                    {Name = "📂 Load Slot 1", Function = function()
+                        if vape and vape.LoadConfig then
+                            vape:LoadConfig("QuickSlot1")
+                        end
+                    end},
+                    
+                    {Name = "📂 Load Slot 2", Function = function()
+                        if vape and vape.LoadConfig then
+                            vape:LoadConfig("QuickSlot2")
+                        end
+                    end},
+                    
+                    {Name = "🔄 Refresh GUI", Function = function()
+                        frame:Destroy()
+                        ConfigGUI:Toggle()
+                        ConfigGUI:Toggle()
+                    end}
+                }
+                
+                -- Create buttons
+                local buttonHeight = 35
+                for i, buttonInfo in ipairs(buttons) do
+                    local button = Instance.new("TextButton")
+                    button.Text = buttonInfo.Name
+                    button.Size = UDim2.new(1, -20, 0, buttonHeight)
+                    button.Position = UDim2.new(0, 10, 0, 40 + ((i-1) * (buttonHeight + 5)))
+                    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+                    button.TextColor3 = Color3.new(1, 1, 1)
+                    button.Font = Enum.Font.Gotham
+                    button.TextSize = 14
+                    button.Parent = frame
+                    
+                    button.MouseButton1Click:Connect(buttonInfo.Function)
+                end
+                
+                -- Draggable
+                local dragging = false
+                local dragInput, dragStart, startPos
+                
+                title.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = true
+                        dragStart = input.Position
+                        startPos = frame.Position
+                        
+                        input.Changed:Connect(function()
+                            if input.UserInputState == Enum.UserInputState.End then
+                                dragging = false
+                            end
+                        end)
+                    end
+                end)
+                
+                title.InputChanged:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseMovement then
+                        dragInput = input
+                    end
+                end)
+                
+                game:GetService("UserInputService").InputChanged:Connect(function(input)
+                    if dragging and input == dragInput then
+                        local delta = input.Position - dragStart
+                        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, 
+                                                  startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+                    end
+                end)
+                
+                -- Store frame reference for cleanup
+                ConfigGUI:Clean(function()
+                    if frame then
+                        frame:Destroy()
+                    end
+                end)
+            else
+                -- Module disabled - cleanup happens via :Clean above
+            end
+        end,
+        Tooltip = "Config management GUI"
+    })
+end)
 
 	
 run(function()
@@ -10632,6 +11226,283 @@ run(function()
     })
 end)
 run(function()
+    local GodmodeAntiCheatDisabler
+
+    GodmodeAntiCheatDisabler = vape.Categories.Utility:CreateModule({
+        Name = 'Client Side ac disabler',
+        Function = function(callback)
+            if callback then
+                task.wait(2)
+                
+                if not entitylib.isAlive then
+                    notif('GodmodeAntiCheatDisabler', 'Character not alive', 3, 'alert')
+                    return
+                end
+
+                local character = entitylib.character
+                local rootPart = character.RootPart
+                
+                if not rootPart then
+                    notif('GodmodeAntiCheatDisabler', 'RootPart not found', 3, 'alert')
+                    return
+                end
+
+                local hrpRemovalThread
+                local cleanupConnection
+                
+                hrpRemovalThread = task.spawn(function()
+                    while GodmodeAntiCheatDisabler.Enabled and entitylib.isAlive do
+                        -- Temporarily remove HRP from character
+                        rootPart.Parent = nil
+                        
+                        -- Move character to current position
+                        character.Character:MoveTo(character.Character:GetPivot().Position)
+                        
+                        task.wait() -- Yield for one frame
+                        
+                        -- Restore HRP
+                        rootPart.Parent = character.Character
+                        
+                        task.wait(0.25) -- Wait before next iteration
+                    end
+                end)
+
+                -- Store thread for cleanup
+                GodmodeAntiCheatDisabler:Clean(function()
+                    if hrpRemovalThread then
+                        task.cancel(hrpRemovalThread)
+                        hrpRemovalThread = nil
+                    end
+                    
+                    -- Ensure HRP is restored
+                    if entitylib.isAlive and rootPart and rootPart.Parent == nil then
+                        rootPart.Parent = character.Character
+                    end
+                end)
+
+                notif('GodmodeAntiCheatDisabler', 'HRP removal active', 5)
+
+            else
+                notif('GodmodeAntiCheatDisabler', 'Reset character to fully disable', 5)
+            end
+        end,
+        Tooltip = 'Advanced HRP remover for anti-cheat bypass'
+    })
+end)
+local TrollMode = vape.Categories.Exploits:CreateModule({
+    Name = "TrollMode",
+    Function = function(callback)
+        if callback then
+            -- Make everyone's head spin
+            for _, player in pairs(playersService:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Head") then
+                    local spin = Instance.new("BodyAngularVelocity")
+                    spin.AngularVelocity = Vector3.new(0, 50, 0)
+                    spin.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+                    spin.Parent = player.Character.Head
+                    spin.Name = "TrollSpin"
+                end
+            end
+            
+            -- Make screen shake
+            local shakeIntensity = 10
+            local connection
+            connection = runService.RenderStepped:Connect(function()
+                gameCamera.CFrame = gameCamera.CFrame * CFrame.Angles(
+                    math.rad(math.random(-shakeIntensity, shakeIntensity)) * 0.01,
+                    math.rad(math.random(-shakeIntensity, shakeIntensity)) * 0.01,
+                    math.rad(math.random(-shakeIntensity, shakeIntensity)) * 0.01
+                )
+            end)
+            
+            -- Random sound effects
+            local sounds = {
+                "rbxassetid://911089837", -- Vine boom
+                "rbxassetid://138081500", -- Windows XP error
+                "rbxassetid://131147549", -- Bruh sound
+                "rbxassetid://2767098492" -- Oof
+            }
+            
+            task.spawn(function()
+                while TrollMode.Enabled do
+                    task.wait(math.random(2, 5))
+                    bedwars.SoundManager:playSound(sounds[math.random(1, #sounds)], {
+                        position = gameCamera.CFrame.Position
+                    })
+                end
+            end)
+            
+            -- Invert colors occasionally
+            task.spawn(function()
+                while TrollMode.Enabled do
+                    task.wait(math.random(3, 7))
+                    local colorCorrection = Instance.new("ColorCorrectionEffect")
+                    colorCorrection.Parent = game:GetService("Lighting")
+                    colorCorrection.TintColor = Color3.new(1, 0, 1) -- Pink tint
+                    colorCorrection.Saturation = -1
+                    task.wait(0.5)
+                    colorCorrection:Destroy()
+                end
+            end)
+            
+            -- Store connections for cleanup
+            TrollMode.Connections = {
+                playersService.PlayerAdded:Connect(function(player)
+                    player.CharacterAdded:Connect(function(character)
+                        task.wait(0.5)
+                        if TrollMode.Enabled and character:FindFirstChild("Head") then
+                            local spin = Instance.new("BodyAngularVelocity")
+                            spin.AngularVelocity = Vector3.new(0, 50, 0)
+                            spin.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+                            spin.Parent = character.Head
+                            spin.Name = "TrollSpin"
+                        end
+                    end)
+                end),
+                connection
+            }
+        else
+            -- Cleanup
+            for _, player in pairs(playersService:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Head") then
+                    local spin = player.Character.Head:FindFirstChild("TrollSpin")
+                    if spin then spin:Destroy() end
+                end
+            end
+            
+            for _, conn in pairs(TrollMode.Connections or {}) do
+                conn:Disconnect()
+            end
+        end
+    end,
+    Tooltip = "Troll everyone with funny effects"
+})
+
+local RainbowSky = TrollMode:CreateToggle({
+    Name = "Rainbow Skybox",
+    Function = function(callback)
+        if callback then
+            local sky = Instance.new("Sky")
+            sky.Parent = game:GetService("Lighting")
+            sky.CelestialBodiesShown = false
+            
+            local hue = 0
+            local connection
+            connection = runService.RenderStepped:Connect(function()
+                hue = (hue + 0.001) % 1
+                local color = Color3.fromHSV(hue, 1, 1)
+                
+                sky.SkyboxBk = "rbxassetid://3010081835"
+                sky.SkyboxDn = "rbxassetid://3010082122"
+                sky.SkyboxFt = "rbxassetid://3010081835"
+                sky.SkyboxLf = "rbxassetid://3010081835"
+                sky.SkyboxRt = "rbxassetid://3010081835"
+                sky.SkyboxUp = "rbxassetid://3010081835"
+                
+                game:GetService("Lighting").Ambient = color
+                game:GetService("Lighting").OutdoorAmbient = color
+            end)
+            
+            TrollMode.Connections = TrollMode.Connections or {}
+            table.insert(TrollMode.Connections, connection)
+        else
+            local sky = game:GetService("Lighting"):FindFirstChildOfClass("Sky")
+            if sky then sky:Destroy() end
+        end
+    end
+})
+
+local GiantHeads = TrollMode:CreateToggle({
+    Name = "Giant Heads",
+    Function = function(callback)
+        if callback then
+            for _, player in pairs(playersService:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Head") then
+                    player.Character.Head.Mesh.Scale = Vector3.new(5, 5, 5)
+                end
+            end
+        else
+            for _, player in pairs(playersService:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Head") then
+                    player.Character.Head.Mesh.Scale = Vector3.new(1, 1, 1)
+                end
+            end
+        end
+    end
+})
+
+local RandomTeleport = TrollMode:CreateToggle({
+    Name = "Random Teleport",
+    Function = function(callback)
+        if callback then
+            task.spawn(function()
+                while TrollMode.Enabled and RandomTeleport.Enabled do
+                    task.wait(math.random(5, 10))
+                    if entitylib.isAlive then
+                        local randomPos = Vector3.new(
+                            math.random(-100, 100),
+                            math.random(50, 100),
+                            math.random(-100, 100)
+                        )
+                        entitylib.character.RootPart.CFrame = CFrame.new(randomPos)
+                    end
+                end
+            end)
+        end
+    end
+})
+run(function()
+    local AutoBuyFire
+    local shopId
+
+    local function getShopNPC()
+        local shop, newid = nil, nil
+        if entitylib.isAlive then
+            local localPosition = entitylib.character.RootPart.Position
+            for _, v in store.shop do
+                if (v.RootPart.Position - localPosition).Magnitude <= 10 then
+                    shop = v.Shop
+                    newid = v.Id
+                end
+            end
+        end
+        return shop, newid
+    end
+
+    local function buyFireball()
+        local fireballItem = bedwars.Shop.getShopItem('fireball', lplr)
+        if fireballItem and fireballItem.currency == 'iron' then
+            local iron = getItem('iron')
+            if iron and iron.amount >= fireballItem.price then
+                bedwars.Client:Get('BedwarsPurchaseItem'):CallServerAsync({
+                    shopItem = fireballItem,
+                    shopId = shopId
+                })
+            end
+        end
+    end
+
+    AutoBuyFire = vape.Categories.Exploits:CreateModule({
+        Name = 'AutoBuyFireball',
+        Tooltip = 'auto buy fireballs',
+        Function = function(callback)
+            if callback then
+                task.spawn(function()
+                    repeat
+                        local iron = getItem('iron')
+                        local shop, newid = getShopNPC()
+                        if iron and iron.amount >= 75 and shop then
+                            shopId = newid
+                            buyFireball()
+                        end
+                        task.wait(0) -- fast polling
+                    until not AutoBuyFire.Enabled
+                end)
+            end
+        end
+    })
+end)
+run(function()
     local AutoBuyWool
     local shopId
 
@@ -10662,7 +11533,7 @@ run(function()
         end
     end
 
-    AutoBuyWool = vape.Categories.World:CreateModule({
+    AutoBuyWool = vape.Categories.Exploits:CreateModule({
         Name = 'AutoBuyWool',
         Tooltip = 'Buys White Wool instantly when you have ≥8 iron near shop',
         Function = function(callback)
@@ -10675,101 +11546,11 @@ run(function()
                             shopId = newid
                             buyWool()
                         end
-                        task.wait(0.001) -- fast polling
+                        task.wait(0) -- fast polling
                     until not AutoBuyWool.Enabled
                 end)
             end
         end
-    })
-end)
-run(function()
-    local JadeExploit = {Enabled = false}
-    JadeExploit = vape.Categories.Blatant:CreateModule({
-        Name = "Jade Disabler",
-        Function = function(call)
-            if call then
-                task.spawn(function()
-                    while JadeExploit.Enabled do
-                        game:GetService("ReplicatedStorage"):WaitForChild("events-@easy-games/game-core:shared/game-core-networking@getEvents.Events"):WaitForChild("useAbility"):FireServer("jade_hammer_jump")
-                        task.wait(0.1)
-                        game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("JadeHammerSlam"):FireServer({slamIndex = 0})
-                    end
-                end)
-            end
-        end
-    })
-end)
-run(function()
-    local KillAuraV2 = vape.Categories.Blatant:CreateModule({
-        Name = "KillauraV2",
-        Tooltip = "Customizable CPS kill aura with spoof validation",
-        ExtraText = function() return "V2" end,
-        Function = function(enabled)
-            if not enabled then return end
-
-            local AttackRemote = bedwars.Client:Get(remotes.AttackEntity).instance
-            local lastSwingTime = 0
-
-            bedwars.SwordController.isClickingTooFast = function(self)
-                self.lastSwing = os.clock()
-                return false
-            end
-
-            KillAuraV2:Clean(runService.Heartbeat:Connect(function()
-                if not entitylib.isAlive then return end
-                local sword = store.hand
-                if not sword or sword.toolType ~= "sword" or not sword.tool then return end
-
-                local cpsDelay = 1 / (KillAuraCPS.Value > 0 and KillAuraCPS.Value or 1)
-                local now = tick()
-                if now - lastSwingTime < cpsDelay then return end
-                lastSwingTime = now
-
-                local targets = entitylib.AllPosition({
-                    Range = 18,
-                    Sort = sortmethods.Damage,
-                    Part = "RootPart",
-                    Wallcheck = true,
-                    Players = true,
-                    NPCs = false,
-                    Limit = 10
-                })
-
-                for _, v in targets do
-                    local root = v.Character and v.Character.PrimaryPart
-                    if not root then continue end
-
-                    local selfPos = entitylib.character.RootPart.Position
-                    local targetPos = root.Position
-                    local dir = CFrame.lookAt(selfPos, targetPos).LookVector
-                    local spoofPos = selfPos + dir * math.max((targetPos - selfPos).Magnitude - 14.399, 0)
-
-                    AttackRemote:FireServer({
-                        weapon = sword.tool,
-                        chargedAttack = { chargeRatio = 0 },
-                        lastSwingServerTimeDelta = 0,
-                        entityInstance = v.Character,
-                        validate = {
-                            raycast = {
-                                cameraPosition = { value = spoofPos },
-                                cursorDirection = { value = dir }
-                            },
-                            targetPosition = { value = targetPos },
-                            selfPosition = { value = spoofPos }
-                        }
-                    })
-                end
-            end))
-        end
-    })
-
-    KillAuraCPS = KillAuraV2:CreateSlider({
-        Name = "CPS",
-        Min = 1,
-        Max = 1000000000,
-        Default = 100,
-        Suffix = "cps",
-        Tooltip = "Set your preferred click rate"
     })
 end)
 
