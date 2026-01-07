@@ -15,6 +15,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -11144,7 +11145,335 @@ if not shared.CheatEngineMode then
 		})
 	end)
 end
+run(function()
+    local AnticheatDisabler = {}
+    
+    function AnticheatDisabler:engage()
+        if self.on then return end
+        self.on = true
+        
+        -- Check for special conditions
+        if WhitelistFunctions and WhitelistFunctions:IsSpecialIngame() then 
+            createwarning("Disabler", "No access in this state", 10)
+            self:disengage()
+            return
+        end
+        
+        -- Check match state and forcefield
+        if matchState == 0 or (lplr.Character and lplr.Character:FindFirstChildWhichIsA("ForceField")) then
+            task.spawn(function()
+                -- Get the character
+                local character = entityLibrary.character or lplr.Character
+                if not character or not character:FindFirstChild("Humanoid") then
+                    createwarning("AnticheatDisabler", "Character not found", 10)
+                    return
+                end
+                
+                local humanoid = character.Humanoid
+                
+                -- Enable death state and kill player
+                humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+                humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+                
+                -- Wait for movement
+                repeat 
+                    task.wait() 
+                until humanoid.MoveDirection ~= Vector3.zero
+                
+                task.wait(0.2)
+                
+                -- Revive player
+                humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+                humanoid:ChangeState(Enum.HumanoidStateType.Running)
+                
+                -- Reset gravity
+                workspace.Gravity = 192.6
+                
+                createwarning("AnticheatDisabler", "Disabled Anticheat!", 10)
+                
+                -- Auto-disable after execution
+                task.wait(0.1)
+                self:disengage()
+            end)
+        else
+            createwarning("AnticheatDisabler", "Failed to disable - wrong game state", 10)
+            self:disengage()
+        end
+    end
+    
+    function AnticheatDisabler:disengage()
+        self.on = false
+        
+        -- Module automatically disables after execution
+        if vapeHandle then
+            vapeHandle.Enabled = false
+        end
+    end
+    
+    -- Create Vape module
+    local module = vape.Categories.Utility:CreateModule({
+        Name = "AnticheatDisabler",
+        Function = function(enabled)
+            if enabled then
+                AnticheatDisabler:engage()
+            else
+                AnticheatDisabler:disengage()
+            end
+        end,
+        Tooltip = "Attempts to disable anticheat by killing and reviving the player"
+    })
+    
+    -- Store reference for auto-disable
+    local vapeHandle = module
+end)
+run(function()
+    local PulseSpeed
+    local MinSpeedValue
+    local MaxSpeedValue
+    local PulseDurationValue
+    local WallCheck
+    local AutoJump
+    local JumpHeight
+    local AlwaysJump
+    local JumpSound
+    local VanillaJump
+    local SlowdownAnim
+    
+    local rayCheck = RaycastParams.new()
+    rayCheck.RespectCanCollide = true
+    
+    -- Pulse variables
+    local pulseStartTime = 0
+    local pulseEnabled = false
+    
+    -- Calculate current pulse speed
+    local function getPulseSpeed()
+        if not pulseEnabled then return MinSpeedValue.Value end
+        
+        local elapsed = tick() - pulseStartTime
+        local progress = (elapsed % PulseDurationValue.Value) / PulseDurationValue.Value
+        
+        -- Sine wave for smooth pulsing between min and max
+        local factor = (math.sin(progress * math.pi * 2) + 1) / 2  -- 0 to 1
+        
+        return MinSpeedValue.Value + (MaxSpeedValue.Value - MinSpeedValue.Value) * factor
+    end
 
+    PulseSpeed = vape.Categories.Blatant:CreateModule({
+        Name = 'PulseSpeed',
+        Function = function(callback)
+            frictionTable.Speed = callback or nil
+            updateVelocity()
+            pcall(function()
+                debug.setconstant(bedwars.WindWalkerController.updateSpeed, 7, callback and 'constantSpeedMultiplier' or 'moveSpeedMultiplier')
+            end)
+
+            if callback then
+                pulseStartTime = tick()
+                pulseEnabled = true
+                
+                PulseSpeed:Clean(runService.PreSimulation:Connect(function(dt)
+                    bedwars.StatefulEntityKnockbackController.lastImpulseTime = callback and math.huge or time()
+                    if entitylib.isAlive and not Fly.Enabled and not InfiniteFly.Enabled and not LongJump.Enabled and isnetworkowner(entitylib.character.RootPart) then
+                        local state = entitylib.character.Humanoid:GetState()
+                        if state == Enum.HumanoidStateType.Climbing then return end
+
+                        local root = entitylib.character.RootPart
+                        local currentPulseSpeed = getPulseSpeed()
+                        local velo = getSpeed() * (currentPulseSpeed / 23) -- Adjust for base speed
+                        local moveDirection = AntiFallDirection or entitylib.character.Humanoid.MoveDirection
+                        local destination = (moveDirection * math.max(currentPulseSpeed - velo, 0) * dt)
+
+                        if WallCheck.Enabled then
+                            rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
+                            rayCheck.CollisionGroup = root.CollisionGroup
+                            local ray = workspace:Raycast(root.Position, destination, rayCheck)
+                            if ray then
+                                destination = ((ray.Position + ray.Normal) - root.Position)
+                            end
+                        end
+
+                        root.CFrame += destination
+                        root.AssemblyLinearVelocity = (moveDirection * currentPulseSpeed) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+
+                        if SlowdownAnim.Enabled then
+                            for _, anim in pairs(entitylib.character.Humanoid:GetPlayingAnimationTracks()) do
+                                if anim.Name == "WalkAnim" or anim.Name == "RunAnim" then
+                                    anim:AdjustSpeed(entitylib.character.Humanoid.WalkSpeed / 16)
+                                end
+                            end
+                        end
+
+                        if AutoJump.Enabled and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed) 
+                           and moveDirection ~= Vector3.zero and (Attacking or AlwaysJump.Enabled) then
+                            if VanillaJump.Enabled then
+                                entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                            else
+                                local v = entitylib.character.HumanoidRootPart.Velocity
+                                entitylib.character.HumanoidRootPart.Velocity = Vector3.new(v.X, JumpHeight.Value, v.Z)
+                                if JumpSound.Enabled then
+                                    pcall(function() entitylib.character.HumanoidRootPart.Jumping:Play() end)
+                                end
+                            end
+                        end
+                    end
+                end))
+            else
+                pulseEnabled = false
+            end
+        end,
+        ExtraText = function()
+            return 'Pulse'
+        end,
+        Tooltip = 'Oscillates speed between min and max values'
+    })
+
+    MinSpeedValue = PulseSpeed:CreateSlider({
+        Name = 'Min Speed',
+        Min = 1,
+        Max = 40,
+        Default = 22,
+        Suffix = function(val)
+            return val == 1 and 'stud' or 'studs'
+        end,
+        Function = function(val)
+            if val >= MaxSpeedValue.Value then
+                MaxSpeedValue:SetValue(val + 2)
+            end
+        end
+    })
+
+    MaxSpeedValue = PulseSpeed:CreateSlider({
+        Name = 'Max Speed',
+        Min = 1,
+        Max = 80,
+        Default = 44,
+        Suffix = function(val)
+            return val == 1 and 'stud' or 'studs'
+        end,
+        Function = function(val)
+            if val <= MinSpeedValue.Value then
+                MinSpeedValue:SetValue(val - 2)
+            end
+        end
+    })
+
+    PulseDurationValue = PulseSpeed:CreateSlider({
+        Name = 'Pulse Duration',
+        Min = 0.5,
+        Max = 5,
+        Default = 1.5,
+        Increment = 0.1,
+        Suffix = function(val)
+            return val == 1 and 'second' or 'seconds'
+        end
+    })
+
+    WallCheck = PulseSpeed:CreateToggle({
+        Name = 'Wall Check',
+        Default = true
+    })
+
+    JumpHeight = PulseSpeed:CreateSlider({
+        Name = 'Jump Height',
+        Min = 0,
+        Max = 30,
+        Default = 25
+    })
+
+    AlwaysJump = PulseSpeed:CreateToggle({
+        Name = 'Always Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    JumpSound = PulseSpeed:CreateToggle({
+        Name = 'Jump Sound',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    VanillaJump = PulseSpeed:CreateToggle({
+        Name = 'Real Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    AutoJump = PulseSpeed:CreateToggle({
+        Name = 'AutoJump',
+        Default = true,
+        Function = function(callback)
+            JumpHeight.Object.Visible = callback
+            AlwaysJump.Object.Visible = callback
+            JumpSound.Object.Visible = callback
+            VanillaJump.Object.Visible = callback
+        end
+    })
+
+    SlowdownAnim = PulseSpeed:CreateToggle({
+        Name = 'Slowdown Anim',
+        Default = false
+    })
+end)
+run(function()
+    local IgnorePlaceRegions = {}
+    local denyRegionsBackup = {}
+    local isActive = false
+    local cleanupTask = nil
+    
+    function IgnorePlaceRegions:engage()
+        if self.on then return end
+        self.on = true
+        isActive = true
+        
+        -- Backup original deny regions
+        if bedwars and bedwars.MapController then
+            denyRegionsBackup = bedwars.MapController.denyRegions or {}
+        end
+        
+        -- Start clearing deny regions
+        cleanupTask = task.spawn(function()
+            while isActive and bedwars and bedwars.MapController do
+                bedwars.MapController.denyRegions = {}
+                task.wait()
+            end
+        end)
+    end
+    
+    function IgnorePlaceRegions:disengage()
+        self.on = false
+        isActive = false
+        
+        -- Stop the clearing task
+        if cleanupTask then
+            task.cancel(cleanupTask)
+            cleanupTask = nil
+        end
+        
+        -- Restore original deny regions
+        if bedwars and bedwars.MapController then
+            bedwars.MapController.denyRegions = denyRegionsBackup
+        end
+        
+        denyRegionsBackup = {}
+    end
+    
+    -- Create Vape module
+    local module = vape.Categories.Utility:CreateModule({
+        Name = "IgnorePlaceRegions",
+        Function = function(enabled)
+            if enabled then
+                IgnorePlaceRegions:engage()
+            else
+                IgnorePlaceRegions:disengage()
+            end
+        end,
+        Tooltip = "Ignores region restrictions for placing blocks"
+    })
+end)
 run(function()
     local ClientCrasher
 	local collectionService = game:GetService("CollectionService")
