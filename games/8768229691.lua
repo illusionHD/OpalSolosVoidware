@@ -1472,7 +1472,7 @@ run(function()
 		end
 	end
 	
-	AutoBuy = vape.Categories.Inventory:CreateModule({
+	AutoBuy = vape.Categories.Utility:CreateModule({
 		Name = 'AutoBuy',
 		Function = function(callback)
 			if callback then
@@ -1550,7 +1550,7 @@ run(function()
 		end
 	end
 	
-	AutoConsume = vape.Categories.Inventory:CreateModule({
+	AutoConsume = vape.Categories.Utility:CreateModule({
 		Name = 'AutoConsume',
 		Function = function(callback)
 			if callback then
@@ -1673,7 +1673,7 @@ run(function()
 		end)
 	end
 	
-	Breaker = vape.Categories.Minigames:CreateModule({
+	Breaker = vape.Categories.Combat:CreateModule({
 		Name = 'Breaker',
 		Function = function(callback)
 			if callback then
