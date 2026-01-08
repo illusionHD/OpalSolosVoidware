@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.
 local run = function(func)
 	func()
 end
@@ -1032,35 +1033,496 @@ end)
 	
 run(function()
 	local NoFall
-	local rayCheck = RaycastParams.new()
+	local Mode
+	local rayParams = RaycastParams.new()
+	local groundHit
+	task.spawn(function()
+		groundHit = bedwars.Client:Get(remotes.GroundHit).instance
+	end)
 	
 	NoFall = vape.Categories.Blatant:CreateModule({
 		Name = 'NoFall',
 		Function = function(callback)
 			if callback then
-				repeat
-					local waitdelay = 0
-					if entitylib.isAlive then
-						local hum = entitylib.character.Humanoid
-						if (entitylib.character.GroundPosition.Y - entitylib.character.RootPart.Position.Y) > 10 then
-							rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
-							local ray = workspace:Raycast(entitylib.character.RootPart.Position, Vector3.new(0, -(entitylib.character.HipHeight + 10), 0), rayCheck)
-							if not ray then
-								hum:ChangeState(Enum.HumanoidStateType.Ragdoll)
-								task.wait(0.1)
-								hum:ChangeState(Enum.HumanoidStateType.Running)
-								waitdelay = 0.05
+				local tracked = 0
+				if Mode.Value == 'Gravity' then
+					local extraGravity = 0
+					NoFall:Clean(runService.PreSimulation:Connect(function(dt)
+						if entitylib.isAlive then
+							local root = entitylib.character.RootPart
+							if root.AssemblyLinearVelocity.Y < -85 then
+								rayParams.FilterDescendantsInstances = {lplr.Character, gameCamera}
+								rayParams.CollisionGroup = root.CollisionGroup
+	
+								local rootSize = root.Size.Y / 2 + entitylib.character.HipHeight
+								local ray = workspace:Blockcast(root.CFrame, Vector3.new(3, 3, 3), Vector3.new(0, (tracked * 0.1) - rootSize, 0), rayParams)
+								if not ray then
+									root.AssemblyLinearVelocity = Vector3.new(root.AssemblyLinearVelocity.X, -86, root.AssemblyLinearVelocity.Z)
+									root.CFrame += Vector3.new(0, extraGravity * dt, 0)
+									extraGravity += -workspace.Gravity * dt
+								end
+							else
+								extraGravity = 0
 							end
 						end
-					end
-					task.wait(waitdelay)
-				until not NoFall.Enabled
+					end))
+				else
+					repeat
+						if entitylib.isAlive then
+							local root = entitylib.character.RootPart
+							tracked = entitylib.character.Humanoid.FloorMaterial == Enum.Material.Air and math.min(tracked, root.AssemblyLinearVelocity.Y) or 0
+	
+							if tracked < -85 then
+								if Mode.Value == 'Packet' then
+									groundHit:FireServer(nil, Vector3.new(0, tracked, 0), workspace:GetServerTimeNow())
+								else
+									rayParams.FilterDescendantsInstances = {lplr.Character, gameCamera}
+									rayParams.CollisionGroup = root.CollisionGroup
+	
+									local rootSize = root.Size.Y / 2 + entitylib.character.HipHeight
+									if Mode.Value == 'Teleport' then
+										local ray = workspace:Blockcast(root.CFrame, Vector3.new(3, 3, 3), Vector3.new(0, -1000, 0), rayParams)
+										if ray then
+											root.CFrame -= Vector3.new(0, root.Position.Y - (ray.Position.Y + rootSize), 0)
+										end
+									else
+										local ray = workspace:Blockcast(root.CFrame, Vector3.new(3, 3, 3), Vector3.new(0, (tracked * 0.1) - rootSize, 0), rayParams)
+										if ray then
+											tracked = 0
+											root.AssemblyLinearVelocity = Vector3.new(root.AssemblyLinearVelocity.X, -80, root.AssemblyLinearVelocity.Z)
+										end
+									end
+								end
+							end
+						end
+	
+						task.wait(0.03)
+					until not NoFall.Enabled
+				end
 			end
 		end,
 		Tooltip = 'Prevents taking fall damage.'
 	})
+	Mode = NoFall:CreateDropdown({
+		Name = 'Mode',
+		List = {'Packet', 'Gravity', 'Teleport', 'Bounce'},
+		Function = function()
+			if NoFall.Enabled then
+				NoFall:Toggle()
+				NoFall:Toggle()
+			end
+		end
+	})
 end)
-	
+run(function()
+    local Speed
+    local SpeedValue
+    local WallCheck
+    local AutoJump
+    local JumpHeight
+    local AlwaysJump
+    local JumpSound
+    local VanillaJump
+    local SlowdownAnim
+
+    local rayCheck = RaycastParams.new()
+    rayCheck.RespectCanCollide = true
+
+    Speed = vape.Categories.Blatant:CreateModule({
+        Name = 'Speed',
+        Function = function(callback)
+            frictionTable.Speed = callback or nil
+            updateVelocity()
+            pcall(function()
+                debug.setconstant(bedwars.WindWalkerController.updateSpeed, 7, callback and 'constantSpeedMultiplier' or 'moveSpeedMultiplier')
+            end)
+
+            if callback then
+                Speed:Clean(runService.PreSimulation:Connect(function(dt)
+                    bedwars.StatefulEntityKnockbackController.lastImpulseTime = callback and math.huge or time()
+                    if entitylib.isAlive and not Fly.Enabled and not InfiniteFly.Enabled and not LongJump.Enabled and isnetworkowner(entitylib.character.RootPart) then
+                        local state = entitylib.character.Humanoid:GetState()
+                        if state == Enum.HumanoidStateType.Climbing then return end
+
+                        local root = entitylib.character.RootPart
+                        local velo = getSpeed()
+                        local moveDirection = AntiFallDirection or entitylib.character.Humanoid.MoveDirection
+                        local destination = (moveDirection * math.max(SpeedValue.Value - velo, 0) * dt)
+
+                        if WallCheck.Enabled then
+                            rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
+                            rayCheck.CollisionGroup = root.CollisionGroup
+                            local ray = workspace:Raycast(root.Position, destination, rayCheck)
+                            if ray then
+                                destination = ((ray.Position + ray.Normal) - root.Position)
+                            end
+                        end
+
+                        root.CFrame += destination
+                        root.AssemblyLinearVelocity = (moveDirection * velo) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+
+                        if SlowdownAnim.Enabled then
+                            for _, anim in pairs(entitylib.character.Humanoid:GetPlayingAnimationTracks()) do
+                                if anim.Name == "WalkAnim" or anim.Name == "RunAnim" then
+                                    anim:AdjustSpeed(entitylib.character.Humanoid.WalkSpeed / 16)
+                                end
+                            end
+                        end
+
+                        if AutoJump.Enabled and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed) 
+                           and moveDirection ~= Vector3.zero and (Attacking or AlwaysJump.Enabled) then
+                            if VanillaJump.Enabled then
+                                entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                            else
+                                local v = entitylib.character.HumanoidRootPart.Velocity
+                                entitylib.character.HumanoidRootPart.Velocity = Vector3.new(v.X, JumpHeight.Value, v.Z)
+                                if JumpSound.Enabled then
+                                    pcall(function() entitylib.character.HumanoidRootPart.Jumping:Play() end)
+                                end
+                            end
+                        end
+                    end
+                end))
+            end
+        end,
+        ExtraText = function()
+            return 'Heatseeker'
+        end,
+        Tooltip = 'Increases your movement'
+    })
+
+    SpeedValue = Speed:CreateSlider({
+        Name = 'Speed',
+        Min = 1,
+        Max = 23,
+        Default = 23,
+        Suffix = function(val)
+            return val == 1 and 'stud' or 'studs'
+        end
+    })
+
+    WallCheck = Speed:CreateToggle({
+        Name = 'Wall Check',
+        Default = true
+    })
+
+    JumpHeight = Speed:CreateSlider({
+        Name = 'Jump Height',
+        Min = 0,
+        Max = 30,
+        Default = 25
+    })
+
+    AlwaysJump = Speed:CreateToggle({
+        Name = 'Always Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    JumpSound = Speed:CreateToggle({
+        Name = 'Jump Sound',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    VanillaJump = Speed:CreateToggle({
+        Name = 'Real Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    AutoJump = Speed:CreateToggle({
+        Name = 'AutoJump',
+        Default = true,
+        Function = function(callback)
+            JumpHeight.Object.Visible = callback
+            AlwaysJump.Object.Visible = callback
+            JumpSound.Object.Visible = callback
+            VanillaJump.Object.Visible = callback
+        end
+    })
+
+    SlowdownAnim = Speed:CreateToggle({
+        Name = 'Slowdown Anim',
+        Default = false
+    })
+end)
+run(function()
+    local PulseSpeed
+    local MinSpeedValue
+    local MaxSpeedValue
+    local PulseDurationValue
+    local WallCheck
+    local AutoJump
+    local JumpHeight
+    local AlwaysJump
+    local JumpSound
+    local VanillaJump
+    local SlowdownAnim
+    
+    local rayCheck = RaycastParams.new()
+    rayCheck.RespectCanCollide = true
+    
+    -- Pulse variables
+    local pulseStartTime = 0
+    local pulseEnabled = false
+    
+    -- Calculate current pulse speed
+    local function getPulseSpeed()
+        if not pulseEnabled then return MinSpeedValue.Value end
+        
+        local elapsed = tick() - pulseStartTime
+        local progress = (elapsed % PulseDurationValue.Value) / PulseDurationValue.Value
+        
+        -- Sine wave for smooth pulsing between min and max
+        local factor = (math.sin(progress * math.pi * 2) + 1) / 2  -- 0 to 1
+        
+        return MinSpeedValue.Value + (MaxSpeedValue.Value - MinSpeedValue.Value) * factor
+    end
+
+    PulseSpeed = vape.Categories.Blatant:CreateModule({
+        Name = 'PulseSpeed',
+        Function = function(callback)
+            frictionTable.Speed = callback or nil
+            updateVelocity()
+            pcall(function()
+                debug.setconstant(bedwars.WindWalkerController.updateSpeed, 7, callback and 'constantSpeedMultiplier' or 'moveSpeedMultiplier')
+            end)
+
+            if callback then
+                pulseStartTime = tick()
+                pulseEnabled = true
+                
+                PulseSpeed:Clean(runService.PreSimulation:Connect(function(dt)
+                    bedwars.StatefulEntityKnockbackController.lastImpulseTime = callback and math.huge or time()
+                    if entitylib.isAlive and not Fly.Enabled and not InfiniteFly.Enabled and not LongJump.Enabled and isnetworkowner(entitylib.character.RootPart) then
+                        local state = entitylib.character.Humanoid:GetState()
+                        if state == Enum.HumanoidStateType.Climbing then return end
+
+                        local root = entitylib.character.RootPart
+                        local currentPulseSpeed = getPulseSpeed()
+                        local velo = getSpeed() * (currentPulseSpeed / 23) -- Adjust for base speed
+                        local moveDirection = AntiFallDirection or entitylib.character.Humanoid.MoveDirection
+                        local destination = (moveDirection * math.max(currentPulseSpeed - velo, 0) * dt)
+
+                        if WallCheck.Enabled then
+                            rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
+                            rayCheck.CollisionGroup = root.CollisionGroup
+                            local ray = workspace:Raycast(root.Position, destination, rayCheck)
+                            if ray then
+                                destination = ((ray.Position + ray.Normal) - root.Position)
+                            end
+                        end
+
+                        root.CFrame += destination
+                        root.AssemblyLinearVelocity = (moveDirection * currentPulseSpeed) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+
+                        if SlowdownAnim.Enabled then
+                            for _, anim in pairs(entitylib.character.Humanoid:GetPlayingAnimationTracks()) do
+                                if anim.Name == "WalkAnim" or anim.Name == "RunAnim" then
+                                    anim:AdjustSpeed(entitylib.character.Humanoid.WalkSpeed / 16)
+                                end
+                            end
+                        end
+
+                        if AutoJump.Enabled and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed) 
+                           and moveDirection ~= Vector3.zero and (Attacking or AlwaysJump.Enabled) then
+                            if VanillaJump.Enabled then
+                                entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                            else
+                                local v = entitylib.character.HumanoidRootPart.Velocity
+                                entitylib.character.HumanoidRootPart.Velocity = Vector3.new(v.X, JumpHeight.Value, v.Z)
+                                if JumpSound.Enabled then
+                                    pcall(function() entitylib.character.HumanoidRootPart.Jumping:Play() end)
+                                end
+                            end
+                        end
+                    end
+                end))
+            else
+                pulseEnabled = false
+            end
+        end,
+        ExtraText = function()
+            return 'Pulse'
+        end,
+        Tooltip = 'Oscillates speed between min and max values'
+    })
+
+    MinSpeedValue = PulseSpeed:CreateSlider({
+        Name = 'Min Speed',
+        Min = 1,
+        Max = 40,
+        Default = 22,
+        Suffix = function(val)
+            return val == 1 and 'stud' or 'studs'
+        end,
+        Function = function(val)
+            if val >= MaxSpeedValue.Value then
+                MaxSpeedValue:SetValue(val + 2)
+            end
+        end
+    })
+
+    MaxSpeedValue = PulseSpeed:CreateSlider({
+        Name = 'Max Speed',
+        Min = 1,
+        Max = 80,
+        Default = 44,
+        Suffix = function(val)
+            return val == 1 and 'stud' or 'studs'
+        end,
+        Function = function(val)
+            if val <= MinSpeedValue.Value then
+                MinSpeedValue:SetValue(val - 2)
+            end
+        end
+    })
+
+    PulseDurationValue = PulseSpeed:CreateSlider({
+        Name = 'Pulse Duration',
+        Min = 0.5,
+        Max = 5,
+        Default = 1.5,
+        Increment = 0.1,
+        Suffix = function(val)
+            return val == 1 and 'second' or 'seconds'
+        end
+    })
+
+    WallCheck = PulseSpeed:CreateToggle({
+        Name = 'Wall Check',
+        Default = true
+    })
+
+    JumpHeight = PulseSpeed:CreateSlider({
+        Name = 'Jump Height',
+        Min = 0,
+        Max = 30,
+        Default = 25
+    })
+
+    AlwaysJump = PulseSpeed:CreateToggle({
+        Name = 'Always Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    JumpSound = PulseSpeed:CreateToggle({
+        Name = 'Jump Sound',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    VanillaJump = PulseSpeed:CreateToggle({
+        Name = 'Real Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    AutoJump = PulseSpeed:CreateToggle({
+        Name = 'AutoJump',
+        Default = true,
+        Function = function(callback)
+            JumpHeight.Object.Visible = callback
+            AlwaysJump.Object.Visible = callback
+            JumpSound.Object.Visible = callback
+            VanillaJump.Object.Visible = callback
+        end
+    })
+
+    SlowdownAnim = PulseSpeed:CreateToggle({
+        Name = 'Slowdown Anim',
+        Default = false
+    })
+end)
+run(function()
+    local AnticheatDisabler = {}
+    
+    function AnticheatDisabler:engage()
+        if self.on then return end
+        self.on = true
+        
+        -- Check for special conditions
+        if WhitelistFunctions and WhitelistFunctions:IsSpecialIngame() then 
+            createwarning("Disabler", "No access in this state", 10)
+            self:disengage()
+            return
+        end
+        
+        -- Check match state and forcefield
+        if matchState == 0 or (lplr.Character and lplr.Character:FindFirstChildWhichIsA("ForceField")) then
+            task.spawn(function()
+                -- Get the character
+                local character = entityLibrary.character or lplr.Character
+                if not character or not character:FindFirstChild("Humanoid") then
+                    createwarning("AnticheatDisabler", "Character not found", 10)
+                    return
+                end
+                
+                local humanoid = character.Humanoid
+                
+                -- Enable death state and kill player
+                humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+                humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+                
+                -- Wait for movement
+                repeat 
+                    task.wait() 
+                until humanoid.MoveDirection ~= Vector3.zero
+                
+                task.wait(0.2)
+                
+                -- Revive player
+                humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+                humanoid:ChangeState(Enum.HumanoidStateType.Running)
+                
+                -- Reset gravity
+                workspace.Gravity = 192.6
+                
+                createwarning("AnticheatDisabler", "Disabled Anticheat!", 10)
+                
+                -- Auto-disable after execution
+                task.wait(0.1)
+                self:disengage()
+            end)
+        else
+            createwarning("AnticheatDisabler", "Failed to disable - wrong game state", 10)
+            self:disengage()
+        end
+    end
+    
+    function AnticheatDisabler:disengage()
+        self.on = false
+        
+        -- Module automatically disables after execution
+        if vapeHandle then
+            vapeHandle.Enabled = false
+        end
+    end
+    
+    -- Create Vape module
+    local module = vape.Categories.Utility:CreateModule({
+        Name = "AnticheatDisabler",
+        Function = function(enabled)
+            if enabled then
+                AnticheatDisabler:engage()
+            else
+                AnticheatDisabler:disengage()
+            end
+        end,
+        Tooltip = "Attempts to disable anticheat by killing and reviving the player"
+    })
+    
+    -- Store reference for auto-disable
+    local vapeHandle = module
+end)
 run(function()
 	local old, old2
 	
