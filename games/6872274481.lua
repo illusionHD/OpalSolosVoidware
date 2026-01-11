@@ -1289,15 +1289,15 @@ run(function()
 	})
 	AimSpeed = AimAssist:CreateSlider({
 		Name = 'Aim Speed',
-		Min = 5,
-		Max = 40,
-		Default = 8.407515
+		Min = 2,
+		Max = 20,
+		Default = 6
 	})
 	Distance = AimAssist:CreateSlider({
 		Name = 'Distance',
-		Min = 16,
-		Max = 35,
-		Default = 30,
+		Min = 10,
+		Max = 25,
+		Default = 22,
 		Suffx = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
@@ -1390,9 +1390,9 @@ run(function()
 	CPS = AutoClicker:CreateTwoSlider({
 		Name = 'CPS',
 		Min = 6,
-		Max = 9000000,
+		Max = 10,
 		DefaultMin = 10,
-		DefaultMax = 15
+		DefaultMax = 10
 	})
 	AutoClicker:CreateToggle({
 		Name = 'Place Blocks',
@@ -1406,9 +1406,9 @@ run(function()
 	BlockCPS = AutoClicker:CreateTwoSlider({
 		Name = 'Block CPS',
 		Min = 1,
-		Max = 12000000,
-		DefaultMin = 12,
-		DefaultMax = 12,
+		Max = 20,
+		DefaultMin = 20,
+		DefaultMax = 20,
 		Darker = true
 	})
 end)
@@ -1446,8 +1446,8 @@ run(function()
 	Value = Reach:CreateSlider({
 		Name = 'Range',
 		Min = 0,
-		Max = 28.563,
-		Default = 28.563,
+		Max = 22,
+		Default = 22,
 		Function = function(val)
 			if Reach.Enabled then
 				bedwars.CombatConstant.RAYCAST_SWORD_CHARACTER_DISTANCE = val + 2
@@ -2317,8 +2317,8 @@ run(function()
 	Expand = HitBoxes:CreateSlider({
 		Name = 'Expand amount',
 		Min = 0,
-		Max = 14.4,
-		Default = 14.4,
+		Max = 22,
+		Default = 22,
 		Decimal = 10,
 		Function = function(val)
 			if HitBoxes.Enabled then
@@ -2455,7 +2455,7 @@ run(function()
 	end
 
 	Killaura = vape.Categories.Blatant:CreateModule({
-		Name = 'Aura',
+		Name = 'Killaura',
 		Function = function(callback)
 			if callback then
 				if inputService.TouchEnabled then
@@ -3404,9 +3404,9 @@ run(function()
 		})
 		Value = LongJump:CreateSlider({
 			Name = 'Speed',
-			Min = 1,
-			Max = 37,
-			Default = 37,
+			Min = 22,
+			Max = 36,
+			Default = 36,
 			Suffix = function(val)
 				return val == 1 and 'stud' or 'studs'
 			end
@@ -3417,8 +3417,8 @@ run(function()
 		Speds = LongJump:CreateSlider({
             Name = 'Walk Speed',
             Min = 1,
-            Max = 23,
-            Default = 23,
+            Max = 22,
+            Default = 22,
             Suffix = function(val)
                 return val == 1 and 'stud' or 'studs'
             end
@@ -3509,7 +3509,7 @@ run(function()
 	})
 	Mode = NoFall:CreateDropdown({
 		Name = 'Mode',
-		List = {'Packet', 'Gravity', 'Teleport', 'Bounce'},
+		List = {'Packet', 'Gravity', 'Teleport', 'Feather Falling'},
 		Function = function()
 			if NoFall.Enabled then
 				NoFall:Toggle()
@@ -3642,8 +3642,8 @@ run(function()
 	FOV = ProjectileAimbot:CreateSlider({
 		Name = 'FOV',
 		Min = 1,
-		Max = 1000,
-		Default = 1000
+		Max = 360,
+		Default = 360
 	})
 	OtherProjectiles = ProjectileAimbot:CreateToggle({
 		Name = 'Other Projectiles',
@@ -3757,9 +3757,9 @@ run(function()
 	})
 	Range = ProjectileAura:CreateSlider({
 		Name = 'Range',
-		Min = 1,
-		Max = 50,
-		Default = 50,
+		Min = 50,
+		Max = 200,
+		Default = 100,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
@@ -9099,8 +9099,8 @@ run(function()
 	Range = ChestSteal:CreateSlider({
 		Name = 'Range',
 		Min = 0,
-		Max = 18,
-		Default = 18,
+		Max = 25,
+		Default = 20,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
@@ -9880,17 +9880,17 @@ run(function()
 	Range = Nuker:CreateSlider({
 		Name = 'Break range',
 		Min = 1,
-		Max = 30,
-		Default = 30,
+		Max = 25,
+		Default = 20,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
 	})
 	UpdateRate = Nuker:CreateSlider({
 		Name = 'Update rate',
-		Min = 1,
-		Max = 120,
-		Default = 60,
+		Min = 60,
+		Max = 144,
+		Default = 120,
 		Suffix = 'hz'
 	})
 	Custom = Nuker:CreateTextList({
@@ -9907,14 +9907,6 @@ run(function()
 	})
 	Bed = Nuker:CreateToggle({
 		Name = 'Break Bed',
-		Default = true
-	})
-	LuckyBlock = Nuker:CreateToggle({
-		Name = 'Break Lucky Block',
-		Default = true
-	})
-	IronOre = Nuker:CreateToggle({
-		Name = 'Break Iron Ore',
 		Default = true
 	})
 	Effect = Nuker:CreateToggle({
@@ -10019,7 +10011,7 @@ run(function()
 	})
 	Value = FOV:CreateSlider({
 		Name = 'FOV',
-		Min = 30,
+		Min = 70,
 		Max = 120
 	})
 end)
@@ -10269,163 +10261,7 @@ run(function()
 		Suffix = '%'
 	})
 end)
-run(function()
-    local ConfigGUI
-    
-    ConfigGUI = vape.Categories.Exploits:CreateModule({
-        Name = 'Config GUI',
-        Function = function(callback)
-            if callback then
-                -- Create the config GUI frame
-                local frame = Instance.new("Frame")
-                frame.Name = "ConfigGUIFrame"
-                frame.Size = UDim2.new(0, 300, 0, 400)
-                frame.Position = UDim2.new(0.5, -150, 0.5, -200)
-                frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                frame.BorderSizePixel = 2
-                frame.BorderColor3 = Color3.fromRGB(60, 60, 60)
-                frame.Visible = true
-                frame.Parent = game:GetService("CoreGui")
-                
-                -- Title
-                local title = Instance.new("TextLabel")
-                title.Text = "Config Manager"
-                title.Size = UDim2.new(1, 0, 0, 30)
-                title.Position = UDim2.new(0, 0, 0, 0)
-                title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-                title.TextColor3 = Color3.new(1, 1, 1)
-                title.Font = Enum.Font.GothamBold
-                title.TextSize = 16
-                title.Parent = frame
-                
-                -- Close button
-                local closeBtn = Instance.new("TextButton")
-                closeBtn.Text = "×"
-                closeBtn.Size = UDim2.new(0, 30, 0, 30)
-                closeBtn.Position = UDim2.new(1, -30, 0, 0)
-                closeBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-                closeBtn.TextColor3 = Color3.new(1, 1, 1)
-                closeBtn.Font = Enum.Font.GothamBold
-                closeBtn.TextSize = 20
-                closeBtn.Parent = frame
-                
-                closeBtn.MouseButton1Click:Connect(function()
-                    frame:Destroy()
-                    ConfigGUI:Toggle()
-                end)
-                
-                -- Button list
-                local buttons = {
-                    {Name = "💾 Save Current Config", Function = function()
-                        if vape and vape.Save then
-                            vape:Save()
-                        end
-                    end},
-                    
-                    {Name = "📂 Load Default Config", Function = function()
-                        if vape and vape.LoadConfig then
-                            vape:LoadConfig("Default")
-                        end
-                    end},
-                    
-                    {Name = "⚡ Reset All Settings", Function = function()
-                        if vape and vape.ResetToDefaults then
-                            vape:ResetToDefaults()
-                        end
-                    end},
-                    
-                    {Name = "📁 Quick Save Slot 1", Function = function()
-                        if vape and vape.SaveConfig then
-                            vape:SaveConfig("QuickSlot1")
-                        end
-                    end},
-                    
-                    {Name = "📁 Quick Save Slot 2", Function = function()
-                        if vape and vape.SaveConfig then
-                            vape:SaveConfig("QuickSlot2")
-                        end
-                    end},
-                    
-                    {Name = "📂 Load Slot 1", Function = function()
-                        if vape and vape.LoadConfig then
-                            vape:LoadConfig("QuickSlot1")
-                        end
-                    end},
-                    
-                    {Name = "📂 Load Slot 2", Function = function()
-                        if vape and vape.LoadConfig then
-                            vape:LoadConfig("QuickSlot2")
-                        end
-                    end},
-                    
-                    {Name = "🔄 Refresh GUI", Function = function()
-                        frame:Destroy()
-                        ConfigGUI:Toggle()
-                        ConfigGUI:Toggle()
-                    end}
-                }
-                
-                -- Create buttons
-                local buttonHeight = 35
-                for i, buttonInfo in ipairs(buttons) do
-                    local button = Instance.new("TextButton")
-                    button.Text = buttonInfo.Name
-                    button.Size = UDim2.new(1, -20, 0, buttonHeight)
-                    button.Position = UDim2.new(0, 10, 0, 40 + ((i-1) * (buttonHeight + 5)))
-                    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-                    button.TextColor3 = Color3.new(1, 1, 1)
-                    button.Font = Enum.Font.Gotham
-                    button.TextSize = 14
-                    button.Parent = frame
-                    
-                    button.MouseButton1Click:Connect(buttonInfo.Function)
-                end
-                
-                -- Draggable
-                local dragging = false
-                local dragInput, dragStart, startPos
-                
-                title.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        dragging = true
-                        dragStart = input.Position
-                        startPos = frame.Position
-                        
-                        input.Changed:Connect(function()
-                            if input.UserInputState == Enum.UserInputState.End then
-                                dragging = false
-                            end
-                        end)
-                    end
-                end)
-                
-                title.InputChanged:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseMovement then
-                        dragInput = input
-                    end
-                end)
-                
-                game:GetService("UserInputService").InputChanged:Connect(function(input)
-                    if dragging and input == dragInput then
-                        local delta = input.Position - dragStart
-                        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, 
-                                                  startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-                    end
-                end)
-                
-                -- Store frame reference for cleanup
-                ConfigGUI:Clean(function()
-                    if frame then
-                        frame:Destroy()
-                    end
-                end)
-            else
-                -- Module disabled - cleanup happens via :Clean above
-            end
-        end,
-        Tooltip = "Config management GUI"
-    })
-end)
+
 
 	
 run(function()
@@ -10666,7 +10502,7 @@ run(function()
 				end
 			end
 		end,
-		Tooltip = 'Disables GetPropertyChangedSignal detections for movement'
+		Tooltip = 'Totally works...'
 	})
 end)
 run(function()
@@ -10910,376 +10746,6 @@ run(function()
 		end,
 		WhitelistRequired = 1
 	}) 
-end)
-if not shared.CheatEngineMode then
-	run(function()
-		local AntiLagback = {Enabled = false}
-		local control_module = require(lplr:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")).controls
-		local old = control_module.moveFunction
-		local clone
-		local connection
-		local function clone_lplr_char()
-			if not (lplr.Character ~= nil and lplr.Character.PrimaryPart ~= nil) then return nil end
-			lplr.Character.Archivable = true
-		
-			local clone = lplr.Character:Clone()
-		
-			clone.Parent = game.Workspace
-			clone.Name = "Clone"
-		
-			clone.PrimaryPart.CFrame = lplr.Character.PrimaryPart.CFrame
-		
-			gameCamera.CameraSubject = clone.Humanoid	
-		
-			task.spawn(function()
-				for i, v in next, clone:FindFirstChild("Head"):GetDescendants() do
-					v:Destroy()
-				end
-				for i, v in next, clone:GetChildren() do
-					if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then
-						v.Transparency = 1
-					end
-					if v:IsA("Accessory") then
-						v:FindFirstChild("Handle").Transparency = 1
-					end
-				end
-			end)
-			return clone
-		end
-		local function bypass()
-			clone = clone_lplr_char()
-			if not entitylib.isAlive then return AntiLagback:Toggle() end
-			if not clone then return AntiLagback:Toggle() end
-			control_module.moveFunction = function(self, vec, ...)
-				local RaycastParameters = RaycastParams.new()
-	
-				RaycastParameters.FilterType = Enum.RaycastFilterType.Include
-				RaycastParameters.FilterDescendantsInstances = {CollectionService:GetTagged("block")}
-	
-				local LookVector = Vector3.new(gameCamera.CFrame.LookVector.X, 0, gameCamera.CFrame.LookVector.Z).Unit
-	
-				if clone.PrimaryPart then
-					local Raycast = game.Workspace:Raycast((clone.PrimaryPart.Position + LookVector), Vector3.new(0, -1000, 0), RaycastParameters)
-					local Raycast2 = game.Workspace:Raycast(((clone.PrimaryPart.Position - Vector3.new(0, 15, 0)) + (LookVector * 3)), Vector3.new(0, -1000, 0), RaycastParameters)
-	
-					if Raycast or Raycast2 then
-						clone.PrimaryPart.CFrame = CFrame.new(clone.PrimaryPart.Position + (LookVector / (GetSpeed())))
-						vec = LookVector
-					end
-	
-					if (not clone) and entitylib.isAlive then
-						control_module.moveFunction = OldMoveFunction
-						gameCamera.CameraSubject = lplr.Character.Humanoid
-					end
-				end
-	
-				return old(self, vec, ...)
-			end
-		end
-		local function safe_revert()
-			control_module.moveFunction = old
-			if entitylib.isAlive then
-				gameCamera.CameraSubject = lplr.Character:WaitForChild("Humanoid")
-			end
-						pcall(function()
-				clone:Destroy()
-			end)
-		end
-		AntiLagback = vape.Categories.Blatant:CreateModule({
-			Name = "AntiLagback",
-			Function = function(call)
-				if call then
-					connection = lplr:GetAttributeChangedSignal("LastTeleported"):Connect(function()
-						if entitylib.isAlive and store.matchState ~= 0 and not lplr.Character:FindFirstChildWhichIsA("ForceField") and (not vape.Modules.BedTP.Enabled) and (not vape.Modules.PlayerTP.Enabled) then					
-							bypass()
-							task.wait(4.5)
-							safe_revert()
-						end 
-					end)
-				else
-					pcall(function() connection:Disconnect() end)
-					control_module.moveFunction = old
-					if entitylib.isAlive then
-						gameCamera.CameraSubject = lplr.Character:WaitForChild("Humanoid")
-					end
-					pcall(function() clone:Destroy() end)
-				end
-			end
-		})
-	end)
-end
-run(function()
-    local AnticheatDisabler = {}
-    
-    function AnticheatDisabler:engage()
-        if self.on then return end
-        self.on = true
-        
-        -- Check for special conditions
-        if WhitelistFunctions and WhitelistFunctions:IsSpecialIngame() then 
-            createwarning("Disabler", "No access in this state", 10)
-            self:disengage()
-            return
-        end
-        
-        -- Check match state and forcefield
-        if matchState == 0 or (lplr.Character and lplr.Character:FindFirstChildWhichIsA("ForceField")) then
-            task.spawn(function()
-                -- Get the character
-                local character = entityLibrary.character or lplr.Character
-                if not character or not character:FindFirstChild("Humanoid") then
-                    createwarning("AnticheatDisabler", "Character not found", 10)
-                    return
-                end
-                
-                local humanoid = character.Humanoid
-                
-                -- Enable death state and kill player
-                humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
-                humanoid:ChangeState(Enum.HumanoidStateType.Dead)
-                
-                -- Wait for movement
-                repeat 
-                    task.wait() 
-                until humanoid.MoveDirection ~= Vector3.zero
-                
-                task.wait(0.2)
-                
-                -- Revive player
-                humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
-                humanoid:ChangeState(Enum.HumanoidStateType.Running)
-                
-                -- Reset gravity
-                workspace.Gravity = 192.6
-                
-                createwarning("AnticheatDisabler", "Disabled Anticheat!", 10)
-                
-                -- Auto-disable after execution
-                task.wait(0.1)
-                self:disengage()
-            end)
-        else
-            createwarning("AnticheatDisabler", "Failed to disable - wrong game state", 10)
-            self:disengage()
-        end
-    end
-    
-    function AnticheatDisabler:disengage()
-        self.on = false
-        
-        -- Module automatically disables after execution
-        if vapeHandle then
-            vapeHandle.Enabled = false
-        end
-    end
-    
-    -- Create Vape module
-    local module = vape.Categories.Utility:CreateModule({
-        Name = "AnticheatDisabler",
-        Function = function(enabled)
-            if enabled then
-                AnticheatDisabler:engage()
-            else
-                AnticheatDisabler:disengage()
-            end
-        end,
-        Tooltip = "Attempts to disable anticheat by killing and reviving the player"
-    })
-    
-    -- Store reference for auto-disable
-    local vapeHandle = module
-end)
-run(function()
-    local PulseSpeed
-    local MinSpeedValue
-    local MaxSpeedValue
-    local PulseDurationValue
-    local WallCheck
-    local AutoJump
-    local JumpHeight
-    local AlwaysJump
-    local JumpSound
-    local VanillaJump
-    local SlowdownAnim
-    
-    local rayCheck = RaycastParams.new()
-    rayCheck.RespectCanCollide = true
-    
-    -- Pulse variables
-    local pulseStartTime = 0
-    local pulseEnabled = false
-    
-    -- Calculate current pulse speed
-    local function getPulseSpeed()
-        if not pulseEnabled then return MinSpeedValue.Value end
-        
-        local elapsed = tick() - pulseStartTime
-        local progress = (elapsed % PulseDurationValue.Value) / PulseDurationValue.Value
-        
-        -- Sine wave for smooth pulsing between min and max
-        local factor = (math.sin(progress * math.pi * 2) + 1) / 2  -- 0 to 1
-        
-        return MinSpeedValue.Value + (MaxSpeedValue.Value - MinSpeedValue.Value) * factor
-    end
-
-    PulseSpeed = vape.Categories.Blatant:CreateModule({
-        Name = 'PulseSpeed',
-        Function = function(callback)
-            frictionTable.Speed = callback or nil
-            updateVelocity()
-            pcall(function()
-                debug.setconstant(bedwars.WindWalkerController.updateSpeed, 7, callback and 'constantSpeedMultiplier' or 'moveSpeedMultiplier')
-            end)
-
-            if callback then
-                pulseStartTime = tick()
-                pulseEnabled = true
-                
-                PulseSpeed:Clean(runService.PreSimulation:Connect(function(dt)
-                    bedwars.StatefulEntityKnockbackController.lastImpulseTime = callback and math.huge or time()
-                    if entitylib.isAlive and not Fly.Enabled and not InfiniteFly.Enabled and not LongJump.Enabled and isnetworkowner(entitylib.character.RootPart) then
-                        local state = entitylib.character.Humanoid:GetState()
-                        if state == Enum.HumanoidStateType.Climbing then return end
-
-                        local root = entitylib.character.RootPart
-                        local currentPulseSpeed = getPulseSpeed()
-                        local velo = getSpeed() * (currentPulseSpeed / 23) -- Adjust for base speed
-                        local moveDirection = AntiFallDirection or entitylib.character.Humanoid.MoveDirection
-                        local destination = (moveDirection * math.max(currentPulseSpeed - velo, 0) * dt)
-
-                        if WallCheck.Enabled then
-                            rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
-                            rayCheck.CollisionGroup = root.CollisionGroup
-                            local ray = workspace:Raycast(root.Position, destination, rayCheck)
-                            if ray then
-                                destination = ((ray.Position + ray.Normal) - root.Position)
-                            end
-                        end
-
-                        root.CFrame += destination
-                        root.AssemblyLinearVelocity = (moveDirection * currentPulseSpeed) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
-
-                        if SlowdownAnim.Enabled then
-                            for _, anim in pairs(entitylib.character.Humanoid:GetPlayingAnimationTracks()) do
-                                if anim.Name == "WalkAnim" or anim.Name == "RunAnim" then
-                                    anim:AdjustSpeed(entitylib.character.Humanoid.WalkSpeed / 16)
-                                end
-                            end
-                        end
-
-                        if AutoJump.Enabled and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed) 
-                           and moveDirection ~= Vector3.zero and (Attacking or AlwaysJump.Enabled) then
-                            if VanillaJump.Enabled then
-                                entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                            else
-                                local v = entitylib.character.HumanoidRootPart.Velocity
-                                entitylib.character.HumanoidRootPart.Velocity = Vector3.new(v.X, JumpHeight.Value, v.Z)
-                                if JumpSound.Enabled then
-                                    pcall(function() entitylib.character.HumanoidRootPart.Jumping:Play() end)
-                                end
-                            end
-                        end
-                    end
-                end))
-            else
-                pulseEnabled = false
-            end
-        end,
-        ExtraText = function()
-            return 'Pulse'
-        end,
-        Tooltip = 'Oscillates speed between min and max values'
-    })
-
-    MinSpeedValue = PulseSpeed:CreateSlider({
-        Name = 'Min Speed',
-        Min = 1,
-        Max = 40,
-        Default = 22,
-        Suffix = function(val)
-            return val == 1 and 'stud' or 'studs'
-        end,
-        Function = function(val)
-            if val >= MaxSpeedValue.Value then
-                MaxSpeedValue:SetValue(val + 2)
-            end
-        end
-    })
-
-    MaxSpeedValue = PulseSpeed:CreateSlider({
-        Name = 'Max Speed',
-        Min = 1,
-        Max = 80,
-        Default = 44,
-        Suffix = function(val)
-            return val == 1 and 'stud' or 'studs'
-        end,
-        Function = function(val)
-            if val <= MinSpeedValue.Value then
-                MinSpeedValue:SetValue(val - 2)
-            end
-        end
-    })
-
-    PulseDurationValue = PulseSpeed:CreateSlider({
-        Name = 'Pulse Duration',
-        Min = 0.5,
-        Max = 5,
-        Default = 1.5,
-        Increment = 0.1,
-        Suffix = function(val)
-            return val == 1 and 'second' or 'seconds'
-        end
-    })
-
-    WallCheck = PulseSpeed:CreateToggle({
-        Name = 'Wall Check',
-        Default = true
-    })
-
-    JumpHeight = PulseSpeed:CreateSlider({
-        Name = 'Jump Height',
-        Min = 0,
-        Max = 30,
-        Default = 25
-    })
-
-    AlwaysJump = PulseSpeed:CreateToggle({
-        Name = 'Always Jump',
-        Default = false,
-        Visible = false,
-        Darker = true
-    })
-
-    JumpSound = PulseSpeed:CreateToggle({
-        Name = 'Jump Sound',
-        Default = false,
-        Visible = false,
-        Darker = true
-    })
-
-    VanillaJump = PulseSpeed:CreateToggle({
-        Name = 'Real Jump',
-        Default = false,
-        Visible = false,
-        Darker = true
-    })
-
-    AutoJump = PulseSpeed:CreateToggle({
-        Name = 'AutoJump',
-        Default = true,
-        Function = function(callback)
-            JumpHeight.Object.Visible = callback
-            AlwaysJump.Object.Visible = callback
-            JumpSound.Object.Visible = callback
-            VanillaJump.Object.Visible = callback
-        end
-    })
-
-    SlowdownAnim = PulseSpeed:CreateToggle({
-        Name = 'Slowdown Anim',
-        Default = false
-    })
 end)
 run(function()
     local IgnorePlaceRegions = {}
@@ -11575,8 +11041,8 @@ run(function()
     VeloAntiHit:CreateSlider({
         Name = "Scan Perimeter",
         Min = 1,
-        Max = 30,
-        Default = 30,
+        Max = 25,
+        Default = 20,
         Suffix = function(v) return v == 1 and "span" or "spans" end,
         Function = function(v) scanRad = v end
     })
