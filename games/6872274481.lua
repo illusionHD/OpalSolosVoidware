@@ -16,6 +16,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -1662,7 +1663,7 @@ run(function()
 	})
 	Mode = AntiFall:CreateDropdown({
 		Name = 'Move Mode',
-		List = {'Normal', 'Collide', 'Velocity'},
+		List = {'Tween to surface', 'Collide', 'Velocity'},
 		Function = function(val)
 			if AntiFallPart then
 				AntiFallPart.CanCollide = val == 'Collide'
@@ -1723,182 +1724,6 @@ run(function()
 		Decimal = 100,
 		Suffix = 'seconds'
 	})
-end)
-run(function()
-    local Skybox
-    GameThemeV2 = vape.Categories.Render:CreateModule({
-        Name = 'Skybox',
-        Tooltip = '',
-        Function = function(call)
-            if call then
-                if Skybox.Value == "NebulaSky" then
-					local Vignette = true
-
-					local Lighting = game:GetService("Lighting")
-					local ColorCor = Instance.new("ColorCorrectionEffect")
-					local Sky = Instance.new("Sky")
-					local Atm = Instance.new("Atmosphere")
-					
-					for i, v in pairs(Lighting:GetChildren()) do
-						if v then
-							v:Destroy()
-						end
-					end
-					
-					ColorCor.Parent = Lighting
-					Sky.Parent = Lighting
-					Atm.Parent = Lighting
-					
-					if Vignette == true then
-						local Gui = Instance.new("ScreenGui")
-						Gui.Parent = game:GetService("StarterGui")
-						Gui.IgnoreGuiInset = true
-					
-						local ShadowFrame = Instance.new("ImageLabel")
-						ShadowFrame.Parent = Gui
-						ShadowFrame.AnchorPoint = Vector2.new(0, 1)
-						ShadowFrame.Position = UDim2.new(0, 0, 0, 0)
-						ShadowFrame.Size = UDim2.new(0, 0, 0, 0)
-						ShadowFrame.BackgroundTransparency = 1
-						ShadowFrame.Image = ""
-						ShadowFrame.ImageTransparency = 1
-						ShadowFrame.ZIndex = 0
-					end
-					
-					ColorCor.Brightness = 0
-					ColorCor.Contrast = 0.5
-					ColorCor.Saturation = -0.3
-					ColorCor.TintColor = Color3.fromRGB(255, 235, 203)
-					
-					Sky.SkyboxBk = "rbxassetid://13581437029"
-					Sky.SkyboxDn = "rbxassetid://13581439832"
-					Sky.SkyboxFt = "rbxassetid://13581447312"
-					Sky.SkyboxLf = "rbxassetid://13581443463"
-					Sky.SkyboxRt = "rbxassetid://13581452875"
-					Sky.SkyboxUp = "rbxassetid://13581450222"
-					Sky.SunAngularSize = 0
-					
-					Lighting.Ambient = Color3.fromRGB(2, 2, 2)
-					Lighting.Brightness = 1
-					Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
-					Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
-					Lighting.EnvironmentDiffuseScale = 0.2
-					Lighting.EnvironmentSpecularScale = 0.2
-					Lighting.GlobalShadows = true
-					Lighting.OutdoorAmbient = Color3.fromRGB(0, 0, 0)
-					Lighting.ShadowSoftness = 0.2
-					Lighting.ClockTime = 8
-					Lighting.GeographicLatitude = 45
-					Lighting.ExposureCompensation = 0.5
-					
-					Atm.Density = 0.364
-					Atm.Offset = 0.556
-					Atm.Color = Color3.fromRGB(172, 120, 186)
-					Atm.Decay = Color3.fromRGB(155, 212, 255)
-					Atm.Glare = 0.36
-					Atm.Haze = 1.72					
-                elseif Skybox.Value == "PinkMountainSky" then
-					game.Lighting.Sky.SkyboxBk = "http://www.roblox.com/asset/?id=160188495"
-					game.Lighting.Sky.SkyboxDn = "http://www.roblox.com/asset/?id=160188614"
-					game.Lighting.Sky.SkyboxFt = "http://www.roblox.com/asset/?id=160188609"
-					game.Lighting.Sky.SkyboxLf = "http://www.roblox.com/asset/?id=160188589"
-					game.Lighting.Sky.SkyboxRt = "http://www.roblox.com/asset/?id=160188597"
-					game.Lighting.Sky.SkyboxUp = "http://www.roblox.com/asset/?id=160188588"
-                elseif Skybox.Value == "CitySky" then
-
-					local Vignette = true
-
-					local Lighting = game:GetService("Lighting")
-					local ColorCor = Instance.new("ColorCorrectionEffect")
-					local Sky = Instance.new("Sky")
-					local Atm = Instance.new("Atmosphere")
-
-					game.Lighting.Sky.SkyboxBk = "rbxassetid://11263062161"
-					game.Lighting.Sky.SkyboxDn = "rbxassetid://11263065295"
-					game.Lighting.Sky.SkyboxFt = "rbxassetid://11263066644"
-					game.Lighting.Sky.SkyboxLf = "rbxassetid://11263068413"
-					game.Lighting.Sky.SkyboxRt = "rbxassetid://11263069782"
-					game.Lighting.Sky.SkyboxUp = "rbxassetid://11263070890"
-
-					Atm.Density = 0.364
-					Atm.Offset = 0.556
-					Atm.Color = Color3.fromRGB(172, 120, 186)
-					Atm.Decay = Color3.fromRGB(155, 212, 255)
-					Atm.Glare = 0.36
-					Atm.Haze = 1.72		
-                elseif Skybox.Value == "PinkSky" then
-					game.Lighting.Sky.SkyboxBk = "http://www.roblox.com/asset/?id=271042516"
-					game.Lighting.Sky.SkyboxDn = "http://www.roblox.com/asset/?id=271077243"
-					game.Lighting.Sky.SkyboxFt = "http://www.roblox.com/asset/?id=271042556"
-					game.Lighting.Sky.SkyboxLf = "http://www.roblox.com/asset/?id=271042310"
-					game.Lighting.Sky.SkyboxRt = "http://www.roblox.com/asset/?id=271042467"
-					game.Lighting.Sky.SkyboxUp = "http://www.roblox.com/asset/?id=271077958"
-                elseif Skybox.Value == "EgirlSky" then
-					game.Lighting.Sky.SkyboxBk = "rbxassetid://2128458653"
-					game.Lighting.Sky.SkyboxDn = "rbxassetid://2128462480"
-					game.Lighting.Sky.SkyboxFt = "rbxassetid://2128458653"
-					game.Lighting.Sky.SkyboxLf = "rbxassetid://2128462027"
-					game.Lighting.Sky.SkyboxRt = "rbxassetid://2128462027"
-					game.Lighting.Sky.SkyboxUp = "rbxassetid://2128462236"
-					game.Lighting.sky.SunAngularSize = 4
-					game.Lighting.sky.MoonTextureId = "rbxassetid://8139665943"
-					game.Lighting.sky.MoonAngularSize = 11
-					lightingService.Atmosphere.Color = Color3.fromRGB(255, 214, 172)
-					lightingService.Atmosphere.Decay = Color3.fromRGB(255, 202, 175)
-                elseif Skybox.Value == "SpaceSky" then
-					game.Lighting.Sky.SkyboxBk = "rbxassetid://1735468027"
-					game.Lighting.Sky.SkyboxDn = "rbxassetid://1735500192"
-					game.Lighting.Sky.SkyboxFt = "rbxassetid://1735467260"
-					game.Lighting.Sky.SkyboxLf = "rbxassetid://1735467682"
-					game.Lighting.Sky.SkyboxRt = "rbxassetid://1735466772"
-					game.Lighting.Sky.SkyboxUp = "rbxassetid://1735500898"
-				elseif Skybox.Value == "WhiteMountains" then 
-					local Vignette = true
-					local Lighting = game:GetService("Lighting")
-					local ColorCor = Instance.new("ColorCorrectionEffect")
-					local SunRays = Instance.new("SunRaysEffect")
-					local Sky = Instance.new("Sky")
-					local Atm = Instance.new("Atmosphere")
-					game.Lighting.Sky.SkyboxBk = "http://www.roblox.com/asset/?id=14365017479"
-					game.Lighting.Sky.SkyboxDn = "http://www.roblox.com/asset/?id=14365021997"
-					game.Lighting.Sky.SkyboxFt = "http://www.roblox.com/asset/?id=14365016611"
-					game.Lighting.Sky.SkyboxLf = "http://www.roblox.com/asset/?id=14365016884"
-					game.Lighting.Sky.SkyboxRt = "http://www.roblox.com/asset/?id=14365016261"
-					game.Lighting.Sky.SkyboxUp = "http://www.roblox.com/asset/?id=14365017884"
-					
-
-					Lighting.Ambient = Color3.fromRGB(2,2,2)
-					Lighting.Brightness = 0.3
-					Lighting.EnvironmentDiffuseScale = 0.2
-					Lighting.EnvironmentSpecularScale = 0.2
-					Lighting.GlobalShadows = true
-					Lighting.ShadowSoftness = 0.2
-					Lighting.ClockTime = 15
-					Lighting.GeographicLatitude = 45
-					Lighting.ExposureCompensation = 0.5
-					Atm.Density = 0.364
-					Atm.Offset = 0.556
-					Atm.Glare = 0.36
-					Atm.Haze = 1.72
-                elseif Skybox.Value == "Infinite" then
-					game.Lighting.Sky.SkyboxBk = "rbxassetid://14358449723"
-					game.Lighting.Sky.SkyboxDn = "rbxassetid://14358455642"
-					game.Lighting.Sky.SkyboxFt = "rbxassetid://14358452362"
-					game.Lighting.Sky.SkyboxLf = "rbxassetid://14358784700"
-					game.Lighting.Sky.SkyboxRt = "rbxassetid://14358454172"
-					game.Lighting.Sky.SkyboxUp = "rbxassetid://14358455112"
-                end
-            end
-        end
-    })
-    Skybox = GameThemeV2:CreateDropdown({
-        Name = 'Themes',
-        List = {'NebulaSky', "PinkMountainSky", 
-		"CitySky", "PinkSky", 
-		"EgirlSky", "SpaceSky", "WhiteMountains",
-		"Infinite"},
-        ["Function"] = function() end
-    })
 end)
 run(function()
 	local HotbarVisuals: table = {}
@@ -2411,14 +2236,14 @@ run(function()
 	FlySpeed = InfiniteFly:CreateSlider({
 		Name = 'Speed',
 		Min = 1,
-		Max = 23,
-		Default = 23
+		Max = 22,
+		Default = 22
 	})
 	VerticalSpeed = InfiniteFly:CreateSlider({
 		Name = 'Vertical Speed',
-		Min = 1,
-		Max = 150,
-		Default = 70
+		Min = 50,
+		Max = 200,
+		Default = 80
 	})
 	SafeMode = InfiniteFly:CreateToggle({
 		Name = 'Safe Mode'
@@ -2866,7 +2691,7 @@ run(function()
 	SwingRange = Killaura:CreateSlider({
 		Name = 'Swing range',
 		Min = 16,
-		Max = 30,
+		Max = 20,
 		Default = 18,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
@@ -2881,7 +2706,7 @@ run(function()
 	AttackRange = Killaura:CreateSlider({
 		Name = 'Attack range',
 		Min = 15,
-		Max = 30,
+		Max = 20,
 		Default = 18,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
@@ -2891,7 +2716,7 @@ run(function()
 	ChargeTime = Killaura:CreateSlider({
 		Name = 'Swing time',
 		Min = 0,
-		Max = 0.1,
+		Max = 0.3,
 		Default = 0,
 		Decimal = 100
 	})
@@ -2901,25 +2726,18 @@ run(function()
 		Max = 360,
 		Default = 360
 	})
-	OneTapCooldown = Killaura:CreateSlider({
-		Name = "OneTap Cooldown",
-		Function = function() end,
-		Min = 0,
-		Max = 0.1,
-		Default = 0.1
-	})
 	UpdateRate = Killaura:CreateSlider({
 		Name = 'Update rate',
 		Min = 60,
-		Max = 180,
-		Default = 60,
+		Max = 144,
+		Default = 120,
 		Suffix = 'hz'
 	})
 	MaxTargets = Killaura:CreateSlider({
 		Name = 'Max targets',
 		Min = 1,
-		Max = 3,
-		Default = 1
+		Max = 4,
+		Default = 2
 	})
 	
 	Mouse = Killaura:CreateToggle({Name = 'Require mouse down'})
@@ -4029,8 +3847,8 @@ run(function()
     SpeedValue = Speed:CreateSlider({
         Name = 'Speed',
         Min = 1,
-        Max = 23,
-        Default = 23,
+        Max = 22,
+        Default = 22,
         Suffix = function(val)
             return val == 1 and 'stud' or 'studs'
         end
@@ -6700,6 +6518,51 @@ run(function()
 		end,
 		Darker = true
 	})
+end)
+run(function()
+	local ReachDisplay
+	local label
+	
+	ReachDisplay = vape.Legit:CreateModule({
+		Name = 'Reach Display',
+		Function = function(callback)
+			if callback then
+				repeat
+					label.Text = (store.attackReachUpdate > tick() and store.attackReach or '0.00')..' studs'
+					task.wait(0.4)
+				until not ReachDisplay.Enabled
+			end
+		end,
+		Size = UDim2.fromOffset(100, 41)
+	})
+	ReachDisplay:CreateFont({
+		Name = 'Font',
+		Blacklist = 'Gotham',
+		Function = function(val)
+			label.FontFace = val
+		end
+	})
+	ReachDisplay:CreateColorSlider({
+		Name = 'Color',
+		DefaultValue = 0,
+		DefaultOpacity = 0.5,
+		Function = function(hue, sat, val, opacity)
+			label.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
+			label.BackgroundTransparency = 1 - opacity
+		end
+	})
+	label = Instance.new('TextLabel')
+	label.Size = UDim2.fromScale(1, 1)
+	label.BackgroundTransparency = 0.5
+	label.TextSize = 15
+	label.Font = Enum.Font.Gotham
+	label.Text = '0.00 studs'
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.BackgroundColor3 = Color3.new()
+	label.Parent = ReachDisplay.Children
+	local corner = Instance.new('UICorner')
+	corner.CornerRadius = UDim.new(0, 4)
+	corner.Parent = label
 end)
 run(function()
     local Disabler = {Enabled = false}
