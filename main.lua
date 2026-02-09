@@ -12,7 +12,7 @@ local vape
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then
-		vape:CreateNotification('OSVPrivate', 'Failed to load : '..err, 30, 'alert')
+		vape:CreateNotification('shoreline', 'Failed to load : '..err, 30, 'alert')
 	end
 	return res
 end
@@ -31,9 +31,9 @@ local playersService = cloneref(game:GetService('Players'))
 local function downloadFile(path, func)
 	if not isfile(path) then
 		-- Check if commit.txt exists
-		local commitFile = 'OSVPrivate/profiles/commit.txt'
+		local commitFile = 'shoreline/profiles/commit.txt'
 		if not isfile(commitFile) then
-			error("commit.txt file is missing! Please make sure OSVPrivate is properly installed.")
+			error("commit.txt file is missing! Please make sure shoreline is properly installed.")
 		end
 		
 		local commit = readfile(commitFile)
@@ -42,13 +42,13 @@ local function downloadFile(path, func)
 		end
 		
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..commit..'/'..select(1, path:gsub('OSVPrivate/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..commit..'/'..select(1, path:gsub('shoreline/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error("Failed to download file: " .. (res or "Unknown error"))
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after OSVPrivate updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after shoreline updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -72,9 +72,9 @@ local function finishLoading()
 			local teleportScript = [[
 				shared.vapereload = true
 				if shared.VapeDeveloper then
-					loadstring(readfile('OSVPrivate/loader.lua'), 'loader')()
+					loadstring(readfile('shoreline/loader.lua'), 'loader')()
 				else
-					loadstring(game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/loader.lua', true), 'loader')()
+					loadstring(game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('shoreline/profiles/commit.txt')..'/loader.lua', true), 'loader')()
 				end
 			]]
 			if shared.VapeDeveloper then
@@ -96,46 +96,46 @@ local function finishLoading()
 	end
 end
 
--- Check if OSVPrivate folder structure exists
-if not isfolder('OSVPrivate') then
-	makefolder('OSVPrivate')
+-- Check if shoreline folder structure exists
+if not isfolder('shoreline') then
+	makefolder('shoreline')
 end
-if not isfolder('OSVPrivate/profiles') then
-	makefolder('OSVPrivate/profiles')
+if not isfolder('shoreline/profiles') then
+	makefolder('shoreline/profiles')
 end
-if not isfolder('OSVPrivate/guis') then
-	makefolder('OSVPrivate/guis')
+if not isfolder('shoreline/guis') then
+	makefolder('shoreline/guis')
 end
-if not isfolder('OSVPrivate/assets') then
-	makefolder('OSVPrivate/assets')
+if not isfolder('shoreline/assets') then
+	makefolder('shoreline/assets')
 end
-if not isfolder('OSVPrivate/Configs') then
-	makefolder('OSVPrivate/Configs')
+if not isfolder('shoreline/Configs') then
+	makefolder('shoreline/Configs')
 end
 
-if not isfile('OSVPrivate/profiles/gui.txt') then
-	writefile('OSVPrivate/profiles/gui.txt', 'new')
+if not isfile('shoreline/profiles/gui.txt') then
+	writefile('shoreline/profiles/gui.txt', 'new')
 end
 
 -- Create default commit.txt if it doesn't exist
-if not isfile('OSVPrivate/profiles/commit.txt') then
+if not isfile('shoreline/profiles/commit.txt') then
 	-- You need to put your actual commit hash here
-	writefile('OSVPrivate/profiles/commit.txt', 'main') -- Change 'main' to your actual commit hash
-	warn("Please update OSVPrivate/profiles/commit.txt with the correct commit hash!")
+	writefile('shoreline/profiles/commit.txt', 'main') -- Change 'main' to your actual commit hash
+	warn("Please update shoreline/profiles/commit.txt with the correct commit hash!")
 end
 
-local gui = readfile('OSVPrivate/profiles/gui.txt')
+local gui = readfile('shoreline/profiles/gui.txt')
 
-if not isfolder('OSVPrivate/assets/'..gui) then
-	makefolder('OSVPrivate/assets/'..gui)
+if not isfolder('shoreline/assets/'..gui) then
+	makefolder('shoreline/assets/'..gui)
 end
-if not isfolder('OSVPrivate/Configs/'..gui) then
-	makefolder('OSVPrivate/Configs/'..gui)
+if not isfolder('shoreline/Configs/'..gui) then
+	makefolder('shoreline/Configs/'..gui)
 end
 
 -- Try to load the GUI with error handling
 local success, err = pcall(function()
-	vape = loadstring(downloadFile('OSVPrivate/guis/'..gui..'.lua'), 'gui')()
+	vape = loadstring(downloadFile('shoreline/guis/'..gui..'.lua'), 'gui')()
 end)
 
 if not success then
@@ -151,7 +151,7 @@ shared.vape = vape
 if not shared.VapeIndependent then
 	-- Load universal scripts
 	local uniSuccess, uniErr = pcall(function()
-		loadstring(downloadFile('OSVPrivate/games/universal.lua'), 'universal')()
+		loadstring(downloadFile('shoreline/games/universal.lua'), 'universal')()
 	end)
 	
 	if not uniSuccess then
@@ -159,7 +159,7 @@ if not shared.VapeIndependent then
 	end
 	
 	-- Try to load game-specific script
-	local gameFile = 'OSVPrivate/games/'..game.PlaceId..'.lua'
+	local gameFile = 'shoreline/games/'..game.PlaceId..'.lua'
 	if isfile(gameFile) then
 		local gameSuccess, gameErr = pcall(function()
 			loadstring(readfile(gameFile), tostring(game.PlaceId))()
@@ -172,7 +172,7 @@ if not shared.VapeIndependent then
 		-- Try to download if not exists
 		if not shared.VapeDeveloper then
 			local suc, res = pcall(function()
-				return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('OSVPrivate/profiles/commit.txt')..'/games/'..game.PlaceId..'.lua', true)
+				return game:HttpGet('https://raw.githubusercontent.com/illusionHD/OpalSolosVoidware/'..readfile('shoreline/profiles/commit.txt')..'/games/'..game.PlaceId..'.lua', true)
 			end)
 			if suc and res ~= '404: Not Found' then
 				local downloadSuccess, downloadErr = pcall(function()
